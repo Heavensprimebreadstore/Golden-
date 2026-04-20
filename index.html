@@ -1,19 +1,183 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Heavens Prime Bread Store</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heaven's Prime Bread Store</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fffaf3;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #d35400;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.navbar a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+/* HERO SECTION */
+.hero {
+    background: url('https://images.unsplash.com/photo-1608198093002-ad4e005484ec') center/cover;
+    height: 300px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero h2 {
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* SECTIONS */
+.section {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.section h2 {
+    color: #d35400;
+}
+
+/* CARDS */
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    width: 250px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #ddd;
+}
+
+/* CONTACT */
+.contact {
+    background: #fbe9d0;
+    padding: 40px;
+}
+
+/* WHATSAPP BUTTON */
+.whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    color: white;
+    padding: 15px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+/* MOBILE */
+@media(max-width: 600px){
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+</style>
+
 </head>
+
 <body>
 
-  <h1>Welcome to Heavens Prime Bread Store</h1>
+<!-- NAV -->
+<div class="navbar">
+    <h1>Heaven's Prime Bread Store</h1>
+    <div>
+        <a href="#about">About</a>
+        <a href="#products">Products</a>
+        <a href="#contact">Contact</a>
+    </div>
+</div>
 
-  <p>
-    We distribute quality bread to businesses of all sizes. 
-    We also sell at affordable retail prices.
-  </p>
+<!-- HERO -->
+<div class="hero">
+    <h2>Fresh Bread • Wholesale & Retail Supply Across Lagos</h2>
+</div>
 
-  <h3>Contact Us</h3>
-  <p>Phone: 080XXXXXXXX</p>
+<!-- ABOUT -->
+<div class="section" id="about">
+    <h2>About Us</h2>
+    <p>
+        Heaven's Prime Bread Store supplies fresh bread in large quantities (wholesale) and retail across Lagos.
+        We serve homes, shops, restaurants, and businesses with affordable and reliable delivery.
+    </p>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section" id="products">
+    <h2>Our Services</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Wholesale Supply</h3>
+            <p>Bulk bread supply for shops, restaurants, and vendors.</p>
+        </div>
+
+        <div class="card">
+            <h3>Retail Sales</h3>
+            <p>Buy fresh bread directly at affordable retail prices.</p>
+        </div>
+
+        <div class="card">
+            <h3>Fast Delivery</h3>
+            <p>We deliver across Lagos quickly and safely.</p>
+        </div>
+    </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <p>Phone: 09043207269</p>
+    <p>Location: Lagos, Nigeria</p>
+</div>
+
+<!-- WHATSAPP -->
+<a class="whatsapp" href="https://wa.me/2348094222602" target="_blank">
+💬 Chat on WhatsApp
+</a>
+
+<!-- FOOTER -->
+<footer>
+    © 2026 Heaven's Prime Bread Store. All rights reserved.
+</footer>
 
 </body>
   </html>
