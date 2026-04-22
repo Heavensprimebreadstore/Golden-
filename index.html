@@ -1,30 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Heavens Prime Bread Distribution</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heavens Prime Bread store</title>
 
 <style>
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  background: #f2f2f2;
+  font-family: Arial;
+  background: #f4f4f4;
 }
 
 /* HEADER */
 header {
-  background: #8b0000;
+  background: linear-gradient(135deg, #8b0000, #b22222);
   color: white;
   text-align: center;
-  padding: 25px;
+  padding: 20px;
+}
+
+.logoPreview {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+  margin: auto;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.logoPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* NAV */
 nav {
   background: #222;
   text-align: center;
-  padding: 12px;
+  padding: 10px;
 }
 
 nav a {
@@ -35,199 +51,210 @@ nav a {
 
 /* HERO */
 .hero {
-  text-align: center;
-  padding: 40px;
   background: white;
+  text-align: center;
+  padding: 30px;
 }
 
-/* CARD */
-.card {
+/* SECTIONS */
+section {
   background: white;
   margin: 15px;
-  padding: 20px;
+  padding: 15px;
   border-radius: 10px;
 }
 
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
 }
 
-.box {
+.card {
   background: #fff5f5;
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
-  border-left: 5px solid #8b0000;
+  border-left: 4px solid #8b0000;
+  text-align: center;
 }
 
 /* FORM */
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input, select, textarea {
-  margin: 8px 0;
+input, select {
+  width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  margin: 5px 0;
 }
 
+/* BUTTON */
 button {
+  width: 100%;
+  padding: 12px;
   background: #8b0000;
   color: white;
-  padding: 12px;
   border: none;
   cursor: pointer;
-  margin-top: 10px;
-  border-radius: 6px;
 }
 
-button:hover {
-  background: #a30000;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 15px;
-  background: #222;
-  color: white;
-}
-
-/* WHATSAPP BUTTON */
-.whatsapp-float {
+/* FLOAT */
+.whatsapp {
   position: fixed;
   bottom: 20px;
   right: 20px;
   background: #25d366;
   color: white;
-  padding: 12px 15px;
+  padding: 12px;
   border-radius: 50px;
   text-decoration: none;
-  font-weight: bold;
+}
+
+/* ADMIN */
+.adminBox {
+  background: #111;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
 }
 </style>
-
 </head>
 
 <body>
 
 <header>
-  <h1>Heavens Prime Bread Distribution</h1>
-  <p>Wholesale & Retail Bread Supply Across Lagos</p>
+  <div class="logoPreview">
+    <img id="logoImg" src="">
+  </div>
+
+  <h2>Heavens Prime Bread</h2>
+  <p>Wholesale & Retail Distribution</p>
+
+  <input type="file" onchange="loadLogo(event)" style="color:white">
 </header>
 
 <nav>
-  <a href="#about">About</a>
-  <a href="#products">Products</a>
+  <a href="#shop">Shop</a>
   <a href="#order">Order</a>
-  <a href="#contact">Contact</a>
+  <a href="#admin">Admin</a>
 </nav>
 
-<section class="hero">
-  <h2>Fresh Bread. Fast Delivery. Bulk Supply.</h2>
-  <p>We supply bread to shops, vendors, hotels, schools and individuals.</p>
-</section>
+<!-- HERO -->
+<div class="hero">
+  <h2>Fresh Bread • Fast Delivery • Trusted Supply</h2>
+</div>
 
-<section id="about" class="card">
-  <h2>About Us</h2>
-  <p>
-    Heavens Prime Bread Distribution specializes in wholesale and retail supply of fresh bread across Lagos.
-  </p>
-</section>
-
-<section id="products" class="card">
-  <h2>Our Products</h2>
-
+<!-- GALLERY -->
+<section>
+  <h3>Product Gallery</h3>
   <div class="grid">
-    <div class="box">
-      <h3>Retail Bread</h3>
-      <p>For individuals and families.</p>
-    </div>
-
-    <div class="box">
-      <h3>Wholesale Supply</h3>
-      <p>Bulk supply for shops and vendors.</p>
-    </div>
-
-    <div class="box">
-      <h3>Daily Delivery</h3>
-      <p>Regular supply for businesses.</p>
-    </div>
+    <div class="card">🍞 Loaf Bread</div>
+    <div class="card">🥖 Sandwich Bread</div>
+    <div class="card">📦 Wholesale Pack</div>
   </div>
 </section>
 
-<section id="order" class="card">
-  <h2>Place Your Order</h2>
+<!-- ORDER -->
+<section id="order">
+  <h3>Place Order</h3>
 
-  <form id="orderForm">
+  <input id="name" placeholder="Name">
+  <input id="phone" placeholder="Phone">
 
-    <input type="text" id="name" placeholder="Your Name" required>
+  <select id="type" onchange="calcPrice()">
+    <option value="Retail">Retail</option>
+    <option value="Wholesale">Wholesale</option>
+  </select>
 
-    <input type="tel" id="phone" placeholder="Phone Number" required>
+  <input id="qty" type="number" placeholder="Quantity" oninput="calcPrice()">
 
-    <select id="type" required>
-      <option value="">Select Order Type</option>
-      <option value="Retail">Retail</option>
-      <option value="Wholesale">Wholesale</option>
-    </select>
+  <select id="zone" onchange="calcPrice()">
+    <option value="0">Select Delivery Zone</option>
+    <option value="500">Ikorodu (+₦500)</option>
+    <option value="1000">Mainland (+₦1000)</option>
+    <option value="1500">Island (+₦1500)</option>
+  </select>
 
-    <input type="text" id="product" placeholder="Product (e.g. Loaf Bread)" required>
+  <h4 id="total">Total: ₦0</h4>
 
-    <input type="number" id="quantity" placeholder="Quantity" required>
-
-    <textarea id="address" placeholder="Delivery Address"></textarea>
-
-    <button type="submit">Order via WhatsApp</button>
-
-  </form>
+  <button onclick="sendOrder()">Order on WhatsApp</button>
 </section>
 
-<section id="contact" class="card">
-  <h2>Contact</h2>
-  <p>WhatsApp Orders Available 24/7</p>
-  <p><b>WhatsApp:</b> +2349043207269</p>
+<!-- ADMIN DASHBOARD -->
+<section id="admin">
+  <h3>Admin Dashboard</h3>
+
+  <div class="adminBox">
+    <p>Total Orders: <span id="orders">0</span></p>
+    <p>Daily Sales: ₦<span id="sales">0</span></p>
+    <button onclick="resetData()">Reset Data</button>
+  </div>
 </section>
 
-<footer>
-  <p>© 2026 Heavens Prime Bread Distribution</p>
-</footer>
-
-<a class="whatsapp-float" href="https://wa.me/2348094222602" target="_blank">
-  💬 WhatsApp Order
-</a>
+<a class="whatsapp" href="https://wa.me/2348094222602">WhatsApp</a>
 
 <script>
-document.getElementById("orderForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+let retail = 1500;
+let wholesale = 1200;
 
+function calcPrice() {
+  let type = document.getElementById("type").value;
+  let qty = Number(document.getElementById("qty").value || 0);
+  let zone = Number(document.getElementById("zone").value);
+
+  let pricePer = type === "Wholesale" ? wholesale : retail;
+
+  let total = (pricePer * qty) + zone;
+
+  document.getElementById("total").innerText = "Total: ₦" + total;
+
+  localStorage.setItem("lastTotal", total);
+}
+
+function sendOrder() {
   let name = document.getElementById("name").value;
   let phone = document.getElementById("phone").value;
   let type = document.getElementById("type").value;
-  let product = document.getElementById("product").value;
-  let quantity = document.getElementById("quantity").value;
-  let address = document.getElementById("address").value;
+  let qty = document.getElementById("qty").value;
+  let total = localStorage.getItem("lastTotal") || 0;
 
-  let message =
-`Hello, I want to place an order:
-
+  let msg =
+`Order:
 Name: ${name}
 Phone: ${phone}
 Type: ${type}
-Product: ${product}
-Quantity: ${quantity}
-Address: ${address}`;
+Qty: ${qty}
+Total: ₦${total}`;
 
-  let whatsappNumber = "2348094222602";
+  let url = "https://wa.me/2348094222602?text=" + encodeURIComponent(msg);
 
-  let url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+  // save admin data
+  let orders = Number(localStorage.getItem("orders") || 0);
+  let sales = Number(localStorage.getItem("sales") || 0);
+
+  localStorage.setItem("orders", orders + 1);
+  localStorage.setItem("sales", sales + Number(total));
+
+  updateAdmin();
 
   window.open(url, "_blank");
-});
+}
+
+function updateAdmin() {
+  document.getElementById("orders").innerText = localStorage.getItem("orders") || 0;
+  document.getElementById("sales").innerText = localStorage.getItem("sales") || 0;
+}
+
+function resetData() {
+  localStorage.clear();
+  updateAdmin();
+}
+
+function loadLogo(event) {
+  let img = document.getElementById("logoImg");
+  img.src = URL.createObjectURL(event.target.files[0]);
+}
+
+updateAdmin();
 </script>
 
 </body>
-                                          </html>
+  </html>
