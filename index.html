@@ -1,50 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heaven's Prime Bread Store</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Heavens Prime Bread Distribution</title>
 
 <style>
-body {margin:0;font-family:Arial;background:#fffaf3}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f2f2f2;
+}
+
+/* HEADER */
+header {
+  background: #8b0000;
+  color: white;
+  text-align: center;
+  padding: 25px;
+}
 
 /* NAV */
-.navbar {background:#d35400;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center}
-.navbar a {color:white;text-decoration:none;margin-left:15px}
+nav {
+  background: #222;
+  text-align: center;
+  padding: 12px;
+}
+
+nav a {
+  color: white;
+  margin: 10px;
+  text-decoration: none;
+}
 
 /* HERO */
-.hero {background:url('https://images.unsplash.com/photo-1608198093002-ad4e005484ec') center/cover;height:300px;display:flex;align-items:center;justify-content:center;color:white;text-align:center}
-.hero h2 {background:rgba(0,0,0,0.6);padding:20px;border-radius:10px}
+.hero {
+  text-align: center;
+  padding: 40px;
+  background: white;
+}
 
-/* SECTION */
-.section {padding:30px;text-align:center}
+/* CARD */
+.card {
+  background: white;
+  margin: 15px;
+  padding: 20px;
+  border-radius: 10px;
+}
 
-/* PRODUCTS */
-.cards {display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
-.card {background:white;padding:15px;width:250px;border-radius:10px;box-shadow:0 0 10px #ccc;transition:.3s}
-.card:hover {transform:scale(1.05)}
-.card img {width:100%;border-radius:10px}
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
 
-/* BUTTON */
-button {background:#d35400;color:white;border:none;padding:10px;border-radius:5px;cursor:pointer}
-button:hover {background:#a04000}
-
-/* CART */
-.cart {position:fixed;top:0;right:0;background:white;width:300px;height:100%;box-shadow:-2px 0 10px #ccc;padding:15px;overflow:auto}
+.box {
+  background: #fff5f5;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 5px solid #8b0000;
+}
 
 /* FORM */
-input,textarea {width:90%;padding:10px;margin:5px;border-radius:5px;border:1px solid #ccc}
+form {
+  display: flex;
+  flex-direction: column;
+}
 
-/* CONTACT */
-.contact {background:#fbe9d0;padding:30px}
+input, select, textarea {
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
 
-/* WHATSAPP */
-.whatsapp {position:fixed;bottom:20px;right:20px;background:#25D366;color:white;padding:15px;border-radius:50px;text-decoration:none}
+button {
+  background: #8b0000;
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 6px;
+}
 
-/* MOBILE */
-@media(max-width:600px){
-.cards {flex-direction:column;align-items:center}
-.cart {width:100%}
+button:hover {
+  background: #a30000;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #222;
+  color: white;
+}
+
+/* WHATSAPP BUTTON */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25d366;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
 }
 </style>
 
@@ -52,135 +115,119 @@ input,textarea {width:90%;padding:10px;margin:5px;border-radius:5px;border:1px s
 
 <body>
 
-<!-- NAV -->
-<div class="navbar">
-<h2>Heaven's Prime Bread</h2>
-<div>
-<a href="#products">Products</a>
-<a href="#order">Order</a>
-</div>
-</div>
+<header>
+  <h1>Heavens Prime Bread Distribution</h1>
+  <p>Wholesale & Retail Bread Supply Across Lagos</p>
+</header>
 
-<!-- HERO -->
-<div class="hero">
-<h2>Fresh Bread • Wholesale & Retail Supply Across Lagos</h2>
-</div>
+<nav>
+  <a href="#about">About</a>
+  <a href="#products">Products</a>
+  <a href="#order">Order</a>
+  <a href="#contact">Contact</a>
+</nav>
 
-<!-- PRODUCTS -->
-<div class="section" id="products">
-<h2>Our Products</h2>
+<section class="hero">
+  <h2>Fresh Bread. Fast Delivery. Bulk Supply.</h2>
+  <p>We supply bread to shops, vendors, hotels, schools and individuals.</p>
+</section>
 
-<div class="cards">
+<section id="about" class="card">
+  <h2>About Us</h2>
+  <p>
+    Heavens Prime Bread Distribution specializes in wholesale and retail supply of fresh bread across Lagos.
+  </p>
+</section>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec">
-<h3>Small Bread</h3>
-<p>Perfect for individuals</p>
-<h4>₦500</h4>
-<button onclick="addToCart('Small Bread',500)">Add to Cart</button>
-</div>
+<section id="products" class="card">
+  <h2>Our Products</h2>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1585238342024-78d387f4a707">
-<h3>Medium Bread</h3>
-<p>Family size bread</p>
-<h4>₦800</h4>
-<button onclick="addToCart('Medium Bread',800)">Add to Cart</button>
-</div>
+  <div class="grid">
+    <div class="box">
+      <h3>Retail Bread</h3>
+      <p>For individuals and families.</p>
+    </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73">
-<h3>Wholesale Pack</h3>
-<p>Bulk supply for shops</p>
-<h4>₦10,000</h4>
-<button onclick="addToCart('Wholesale Pack',10000)">Add to Cart</button>
-</div>
+    <div class="box">
+      <h3>Wholesale Supply</h3>
+      <p>Bulk supply for shops and vendors.</p>
+    </div>
 
-</div>
-</div>
+    <div class="box">
+      <h3>Daily Delivery</h3>
+      <p>Regular supply for businesses.</p>
+    </div>
+  </div>
+</section>
 
-<!-- CART -->
-<div class="cart">
-<h3>Your Cart</h3>
-<ul id="cartItems"></ul>
-<p><strong>Total: ₦<span id="total">0</span></strong></p>
-</div>
+<section id="order" class="card">
+  <h2>Place Your Order</h2>
 
-<!-- ORDER FORM -->
-<div class="section" id="order">
-<h2>Delivery Details</h2>
-<input id="name" placeholder="Your Name"><br>
-<input id="phone" placeholder="Phone Number"><br>
-<textarea id="address" placeholder="Delivery Address"></textarea><br>
+  <form id="orderForm">
 
-<button onclick="sendOrder()">Place Order on WhatsApp</button>
-</div>
+    <input type="text" id="name" placeholder="Your Name" required>
 
-<!-- TESTIMONIAL -->
-<div class="section">
-<h2>Customer Reviews</h2>
-<p>⭐ "Best bread supplier in Lagos!"</p>
-<p>⭐ "Affordable and fast delivery!"</p>
-</div>
+    <input type="tel" id="phone" placeholder="Phone Number" required>
 
-<!-- CONTACT -->
-<div class="contact">
-<h2>Contact Us</h2>
-<p>Phone: 09043207269</p>
-<p>Location: Lagos, Nigeria</p>
-<p style="color:red;">⚡ Limited stock available daily!</p>
-</div>
+    <select id="type" required>
+      <option value="">Select Order Type</option>
+      <option value="Retail">Retail</option>
+      <option value="Wholesale">Wholesale</option>
+    </select>
 
-<!-- WHATSAPP FLOAT -->
-<a class="whatsapp" href="https://wa.me/2348094222602">Chat</a>
+    <input type="text" id="product" placeholder="Product (e.g. Loaf Bread)" required>
+
+    <input type="number" id="quantity" placeholder="Quantity" required>
+
+    <textarea id="address" placeholder="Delivery Address"></textarea>
+
+    <button type="submit">Order via WhatsApp</button>
+
+  </form>
+</section>
+
+<section id="contact" class="card">
+  <h2>Contact</h2>
+  <p>WhatsApp Orders Available 24/7</p>
+  <p><b>WhatsApp:</b> +2349043207269</p>
+</section>
+
+<footer>
+  <p>© 2026 Heavens Prime Bread Distribution</p>
+</footer>
+
+<a class="whatsapp-float" href="https://wa.me/2348094222602" target="_blank">
+  💬 WhatsApp Order
+</a>
 
 <script>
-let cart = []
-let total = 0
+document.getElementById("orderForm").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-function addToCart(name, price){
-    cart.push({name,price})
-    total += price
-    displayCart()
-}
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let type = document.getElementById("type").value;
+  let product = document.getElementById("product").value;
+  let quantity = document.getElementById("quantity").value;
+  let address = document.getElementById("address").value;
 
-function displayCart(){
-    let list = document.getElementById("cartItems")
-    list.innerHTML = ""
-    cart.forEach(item=>{
-        list.innerHTML += `<li>${item.name} - ₦${item.price}</li>`
-    })
-    document.getElementById("total").innerText = total
-}
-
-function sendOrder(){
-
-    let name = document.getElementById("name").value
-    let phone = document.getElementById("phone").value
-    let address = document.getElementById("address").value
-
-    if(cart.length === 0){
-        alert("Your cart is empty!")
-        return
-    }
-
-    let orderList = cart.map(item => `${item.name} - ₦${item.price}`).join("%0A")
-
-    let message = 
+  let message =
 `Hello, I want to place an order:
 
 Name: ${name}
 Phone: ${phone}
-Address: ${address}
+Type: ${type}
+Product: ${product}
+Quantity: ${quantity}
+Address: ${address}`;
 
-Order:
-${orderList}
+  let whatsappNumber = "2348094222602";
 
-Total: ₦${total}`
+  let url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
 
-    window.open(`https://wa.me/2348094222602?text=${message}`)
-}
+  window.open(url, "_blank");
+});
 </script>
 
 </body>
-    </html>
+                                          </html>
