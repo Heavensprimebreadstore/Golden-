@@ -3,258 +3,344 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heavens Prime Bread store</title>
+<title>Heaven's Prime Bread Store</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial;
-  background: #f4f4f4;
+  background: linear-gradient(135deg, #fff3e0, #fff8f0);
 }
 
-/* HEADER */
-header {
-  background: linear-gradient(135deg, #8b0000, #b22222);
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-.logoPreview {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: white;
-  margin: auto;
-  margin-bottom: 10px;
-  overflow: hidden;
-}
-
-.logoPreview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* NAV */
 nav {
-  background: #222;
-  text-align: center;
-  padding: 10px;
+  background: linear-gradient(90deg, #d2691e, #ff8c42);
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 nav a {
   color: white;
-  margin: 10px;
-  text-decoration: none;
+  margin: 5px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-/* HERO */
-.hero {
-  background: white;
-  text-align: center;
-  padding: 30px;
-}
-
-/* SECTIONS */
-section {
-  background: white;
-  margin: 15px;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-}
+.container { padding: 15px; }
 
 .card {
-  background: #fff5f5;
-  padding: 10px;
-  border-radius: 10px;
-  border-left: 4px solid #8b0000;
-  text-align: center;
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* FORM */
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-}
-
-/* BUTTON */
 button {
-  width: 100%;
-  padding: 12px;
-  background: #8b0000;
+  background: linear-gradient(90deg, #d2691e, #ff8c42);
   color: white;
   border: none;
+  padding: 10px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-/* FLOAT */
-.whatsapp {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #25d366;
-  color: white;
-  padding: 12px;
-  border-radius: 50px;
-  text-decoration: none;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  gap: 10px;
 }
 
-/* ADMIN */
-.adminBox {
-  background: #111;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-}
+.hidden { display: none; }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logoPreview">
-    <img id="logoImg" src="">
-  </div>
-
-  <h2>Heavens Prime Bread</h2>
-  <p>Wholesale & Retail Distribution</p>
-
-  <input type="file" onchange="loadLogo(event)" style="color:white">
-</header>
-
 <nav>
-  <a href="#shop">Shop</a>
-  <a href="#order">Order</a>
-  <a href="#admin">Admin</a>
+  <div>🍞 Heaven's Prime</div>
+  <div>
+    <a onclick="show('home')">Home</a>
+    <a onclick="show('shop')">Shop</a>
+    <a onclick="show('cart')">Cart (<span id="count">0</span>)</a>
+    <a onclick="show('track')">Track</a>
+    <a onclick="goAdmin()">Admin</a>
+  </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <h2>Fresh Bread • Fast Delivery • Trusted Supply</h2>
+<div class="container">
+
+<!-- HOME -->
+<div id="home">
+
+  <div class="card">
+    <h1>Fresh Bread Distribution Across Lagos 🍞</h1>
+    <p>Fast delivery • Wholesale & Retail Supply • Trusted by Businesses</p>
+  </div>
+
+  <!-- ✅ BUSINESS DESCRIPTION (UPDATED + CORRECTED) -->
+  <div class="card">
+    <h2>About Heaven’s Prime Bread Store 🏢🍞</h2>
+
+    <p>
+      Heaven’s Prime Bread Store is a trusted bread distribution company
+      serving Lagos State with reliable supply of bread to businesses of all sizes.
+    </p>
+
+    <p>
+      We specialize in <b>wholesale and retail bread distribution</b>,
+      ensuring supermarkets, schools, restaurants, hotels, retail shops,
+      and corporate organizations receive steady and timely supply.
+    </p>
+
+    <p>
+      Our mission is to make bread distribution fast, affordable, and consistent
+      across Lagos by connecting production sources to businesses through a
+      smooth and reliable supply chain.
+    </p>
+
+    <p>
+      🚚 Fast delivery across Lagos<br>
+      🏢 Wholesale supply for businesses of all sizes<br>
+      🛒 Retail supply for smaller orders<br>
+      📦 Daily and bulk distribution system<br>
+      💼 Trusted by growing businesses across Lagos
+    </p>
+
+    <p>
+      Whether you run a small shop or a large commercial operation,
+      we ensure you get steady supply, fair pricing, and reliable delivery.
+    </p>
+  </div>
+
 </div>
 
-<!-- GALLERY -->
-<section>
-  <h3>Product Gallery</h3>
-  <div class="grid">
-    <div class="card">🍞 Loaf Bread</div>
-    <div class="card">🥖 Sandwich Bread</div>
-    <div class="card">📦 Wholesale Pack</div>
+<!-- SHOP -->
+<div id="shop" class="hidden">
+  <h2>Products</h2>
+  <div id="products" class="grid"></div>
+</div>
+
+<!-- CART -->
+<div id="cart" class="hidden card">
+  <h2>Your Cart</h2>
+  <div id="items"></div>
+  <h3>Total: ₦<span id="total">0</span></h3>
+  <button onclick="checkout()">Checkout</button>
+</div>
+
+<!-- TRACK -->
+<div id="track" class="hidden card">
+  <h2>Track Order</h2>
+  <input id="trackId" placeholder="Order ID">
+  <button onclick="trackOrder()">Track</button>
+  <div id="trackResult"></div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin" class="hidden">
+
+  <div class="card">
+    <h2>📦 Product Manager</h2>
+
+    <input id="pname" placeholder="Product Name"><br><br>
+    <input id="pprice" placeholder="Price"><br><br>
+    <input id="pimg" placeholder="Image URL"><br><br>
+
+    <button onclick="addProduct()">Add Product</button>
   </div>
-</section>
 
-<!-- ORDER -->
-<section id="order">
-  <h3>Place Order</h3>
-
-  <input id="name" placeholder="Name">
-  <input id="phone" placeholder="Phone">
-
-  <select id="type" onchange="calcPrice()">
-    <option value="Retail">Retail</option>
-    <option value="Wholesale">Wholesale</option>
-  </select>
-
-  <input id="qty" type="number" placeholder="Quantity" oninput="calcPrice()">
-
-  <select id="zone" onchange="calcPrice()">
-    <option value="0">Select Delivery Zone</option>
-    <option value="500">Ikorodu (+₦500)</option>
-    <option value="1000">Mainland (+₦1000)</option>
-    <option value="1500">Island (+₦1500)</option>
-  </select>
-
-  <h4 id="total">Total: ₦0</h4>
-
-  <button onclick="sendOrder()">Order on WhatsApp</button>
-</section>
-
-<!-- ADMIN DASHBOARD -->
-<section id="admin">
-  <h3>Admin Dashboard</h3>
-
-  <div class="adminBox">
-    <p>Total Orders: <span id="orders">0</span></p>
-    <p>Daily Sales: ₦<span id="sales">0</span></p>
-    <button onclick="resetData()">Reset Data</button>
+  <div class="card">
+    <h2>🔥 Orders Dashboard (Live Timeline)</h2>
+    <div id="orders"></div>
   </div>
-</section>
 
-<a class="whatsapp" href="https://wa.me/2348094222602">WhatsApp</a>
+</div>
 
-<script>
-let retail = 1500;
-let wholesale = 1200;
+</div>
 
-function calcPrice() {
-  let type = document.getElementById("type").value;
-  let qty = Number(document.getElementById("qty").value || 0);
-  let zone = Number(document.getElementById("zone").value);
+<script type="module">
 
-  let pricePer = type === "Wholesale" ? wholesale : retail;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  push,
+  onValue,
+  update,
+  remove,
+  get,
+  child
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  let total = (pricePer * qty) + zone;
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  document.getElementById("total").innerText = "Total: ₦" + total;
+const firebaseConfig = {
+  apiKey: "AIzaSyDexFAjH2YvspspIe94FqSljJlXV6Ji1IA",
+  authDomain: "bread-store-a28e8.firebaseapp.com",
+  projectId: "bread-store-a28e8",
+  storageBucket: "bread-store-a28e8.firebasestorage.app",
+  messagingSenderId: "126719314073",
+  appId: "1:126719314073:web:cbc9a3fd876bcd3a97d008"
+};
 
-  localStorage.setItem("lastTotal", total);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+const ADMIN_EMAIL = "okorosavi2006@gmail.com";
+const WHATSAPP_NUMBER = "2348094222602";
+
+/* NAV */
+window.show = function(page){
+  ["home","shop","cart","track","admin"].forEach(p=>{
+    document.getElementById(p).classList.add("hidden");
+  });
+
+  document.getElementById(page).classList.remove("hidden");
 }
 
-function sendOrder() {
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
-  let type = document.getElementById("type").value;
-  let qty = document.getElementById("qty").value;
-  let total = localStorage.getItem("lastTotal") || 0;
+/* PRODUCTS */
+const productRef = ref(db,"products");
 
-  let msg =
-`Order:
-Name: ${name}
-Phone: ${phone}
-Type: ${type}
-Qty: ${qty}
-Total: ₦${total}`;
+onValue(productRef,(snap)=>{
+  let data = snap.val();
+  let html = "";
 
-  let url = "https://wa.me/2348094222602?text=" + encodeURIComponent(msg);
+  for(let id in data){
+    html += `
+      <div class="card">
+        <h3>${data[id].name}</h3>
+        <p>₦${data[id].price}</p>
 
-  // save admin data
-  let orders = Number(localStorage.getItem("orders") || 0);
-  let sales = Number(localStorage.getItem("sales") || 0);
+        <button onclick="addCart('${id}','${data[id].name}',${data[id].price})">Add</button>
+        <button onclick="editProduct('${id}','${data[id].name}',${data[id].price})">Edit</button>
+        <button onclick="deleteProduct('${id}')">Delete</button>
+      </div>
+    `;
+  }
 
-  localStorage.setItem("orders", orders + 1);
-  localStorage.setItem("sales", sales + Number(total));
+  products.innerHTML = html || "No products yet";
+});
 
-  updateAdmin();
+/* ADD PRODUCT */
+window.addProduct = function(){
+  push(ref(db,"products"),{
+    name: pname.value,
+    price: parseInt(pprice.value),
+    image: pimg.value
+  });
 
-  window.open(url, "_blank");
+  alert("Product added");
 }
 
-function updateAdmin() {
-  document.getElementById("orders").innerText = localStorage.getItem("orders") || 0;
-  document.getElementById("sales").innerText = localStorage.getItem("sales") || 0;
+/* EDIT */
+window.editProduct = function(id,name,price){
+  let newPrice = prompt("New price:",price);
+  let newName = prompt("New name:",name);
+
+  update(ref(db,"products/"+id),{
+    name: newName,
+    price: parseInt(newPrice)
+  });
 }
 
-function resetData() {
-  localStorage.clear();
-  updateAdmin();
+/* DELETE */
+window.deleteProduct = function(id){
+  remove(ref(db,"products/"+id));
 }
 
-function loadLogo(event) {
-  let img = document.getElementById("logoImg");
-  img.src = URL.createObjectURL(event.target.files[0]);
+/* CART */
+let cart = [];
+
+window.addCart = function(id,name,price){
+  cart.push({id,name,price});
+  count.innerText = cart.length;
+  render();
 }
 
-updateAdmin();
+function render(){
+  let total = 0;
+  let html = "";
+
+  cart.forEach((c,i)=>{
+    total += c.price;
+    html += `<p>${c.name} ₦${c.price}
+    <button onclick="removeItem(${i})">X</button></p>`;
+  });
+
+  items.innerHTML = html;
+  total.innerText = total;
+}
+
+window.removeItem = function(i){
+  cart.splice(i,1);
+  count.innerText = cart.length;
+  render();
+}
+
+/* CHECKOUT + WHATSAPP */
+window.checkout = function(){
+
+  const orderRef = push(ref(db,"orders"),{
+    items: cart,
+    status: "pending",
+    timeline: [{status:"pending",time:new Date().toString()}]
+  });
+
+  const orderId = orderRef.key;
+
+  let msg = `New Order:%0AID: ${orderId}%0AItems: ${JSON.stringify(cart)}`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
+
+  alert("Order placed: " + orderId);
+
+  cart = [];
+  render();
+  count.innerText = 0;
+}
+
+/* TRACK */
+window.trackOrder = function(){
+  const id = trackId.value;
+
+  get(child(ref(db),"orders/"+id)).then((snap)=>{
+    if(snap.exists()){
+      let d = snap.val();
+
+      let timeline = "";
+      d.timeline.forEach(t=>{
+        timeline += `<p>✔ ${t.status} - ${t.time}</p>`;
+      });
+
+      trackResult.innerHTML =
+        `Status: ${d.status}<br><br>${timeline}`;
+    } else {
+      trackResult.innerHTML = "Order not found";
+    }
+  });
+}
+
+/* ADMIN */
+window.goAdmin = function(){
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Login required");
+    return;
+  }
+
+  if(user.email !== ADMIN_EMAIL){
+    alert("Access denied");
+    return;
+  }
+
+  show("admin");
+}
+
 </script>
 
 </body>
-  </html>
+                                      </html>
