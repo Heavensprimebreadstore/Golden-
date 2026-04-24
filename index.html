@@ -1,11 +1,10 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heavens Prime Bread Store | Freshness Delivered</title>
+    <title>Heavens Prime Bread Store | All-In-One Enterprise</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -15,163 +14,80 @@
             --primary: #f68b1e; 
             --secondary: #282828;
             --white: #ffffff;
-            --success: #25D366; /* WhatsApp Green */
+            --success: #25D366;
+            --gray: #f4f4f4;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f5f5f5; overflow-x: hidden; }
+        body { background-color: #f9f9f9; color: var(--secondary); overflow-x: hidden; }
 
-        /* --- WELCOME SCREEN ANIMATION --- */
+        /* Welcome Splash */
         #welcome-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: var(--secondary);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: white;
-            transition: opacity 1s ease-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--secondary); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999; color: white;
+            transition: 0.8s;
         }
 
-        .loader-logo {
-            font-size: 40px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        .welcome-text {
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* --- HEADER & LOGO --- */
+        /* Header */
         header {
-            background: var(--white);
-            padding: 10px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0; z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: var(--white); padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
         .logo-box { display: flex; align-items: center; gap: 10px; }
-        .logo-circle {
-            background: var(--primary);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .logo-text { font-weight: 900; font-size: 20px; color: var(--secondary); }
-        .logo-text span { color: var(--primary); }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 400px;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* --- AI CHATBOT BOX --- */
-        #ai-chat {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: none;
-            overflow: hidden;
-        }
-
-        .chat-header { background: var(--primary); color: white; padding: 10px; font-weight: bold; display: flex; justify-content: space-between; }
-        .chat-body { height: 250px; padding: 10px; overflow-y: auto; font-size: 13px; }
-        .chat-input { display: flex; border-top: 1px solid #eee; }
-        .chat-input input { border: none; padding: 10px; flex: 1; outline: none; }
+        .logo-circle { background: var(--primary); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; }
         
+        /* Layout */
+        .section-container { padding: 30px 5%; }
+        .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        @media (max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
+
+        .panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        h2 { margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 15px; font-size: 18px; }
+
+        /* Products */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .product-card { border: 1px solid #eee; padding: 10px; border-radius: 8px; text-align: center; }
+        .product-card img { width: 100%; border-radius: 5px; height: 140px; object-fit: cover; }
+        .btn-buy { background: var(--success); color: white; border: none; width: 100%; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+
+        /* Tracking */
+        .track-container { display: flex; justify-content: space-between; margin-top: 20px; position: relative; }
+        .track-dot { width: 25px; height: 25px; background: #ddd; border-radius: 50%; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; z-index: 1; }
+        .active-dot { background: var(--primary); }
+        .track-line { position: absolute; top: 12px; left: 10%; width: 80%; height: 2px; background: #ddd; z-index: 0; }
+
+        /* AI Chatbot Floating UI */
+        #ai-chat-window {
+            position: fixed; bottom: 90px; right: 20px; width: 300px;
+            background: white; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            z-index: 1000; display: none; overflow: hidden; border: 1px solid #eee;
+        }
+        .chat-header { background: var(--primary); color: white; padding: 12px; font-weight: bold; }
+        .chat-body { height: 250px; padding: 10px; overflow-y: auto; background: #fdfdfd; font-size: 13px; }
+        .chat-footer { display: flex; border-top: 1px solid #eee; }
+        .chat-footer input { flex: 1; border: none; padding: 10px; outline: none; }
+        .chat-footer button { background: var(--primary); color: white; border: none; padding: 10px; cursor: pointer; }
+
         .chat-trigger {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 999;
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--primary); color: white;
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 999; box-shadow: 0 4px 15px rgba(246, 139, 30, 0.4);
         }
 
-        /* --- PRODUCTS --- */
-        .container { padding: 30px 5%; }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .card { background: white; padding: 15px; border-radius: 8px; text-align: center; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; }
-        
-        .btn-whatsapp {
-            background: var(--success);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        /* Admin UI */
-        .admin-btn { background: #eee; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .calc-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
+        .calc-btn { background: var(--secondary); color: white; border: none; padding: 10px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="welcome-screen">
-        <div class="logo-circle loader-logo">H</div>
-        <h1 class="welcome-text">Heavens Prime Bread Store</h1>
-        <p style="margin-top:10px; color: #aaa;">Baking Excellence for You...</p>
+        <div class="logo-circle" style="width:70px; height:70px; font-size:35px;">H</div>
+        <h1 style="margin-top:20px;">Heavens Prime Bread</h1>
+        <p>Freshly Baked in Odogunyan...</p>
     </div>
 
     <header>
@@ -179,60 +95,82 @@
             <div class="logo-circle">H</div>
             <div class="logo-text">HEAVENS<span>PRIME</span></div>
         </div>
-        <div class="nav-right">
-            <button class="admin-btn" onclick="toggleAdmin()">Admin Dashboard</button>
-        </div>
+        <button onclick="document.getElementById('adminPanel').style.display='block'" class="calc-btn" style="width:auto; padding:5px 15px; font-size:12px;">Admin</button>
     </header>
 
-    <section class="hero">
-        <h2 style="font-size: 2.5rem;">Freshly Baked Daily</h2>
-        <p>Distributing to businesses and retail customers nationwide.</p>
-    </section>
+    <div class="section-container">
+        <div class="grid-layout">
+            
+            <div>
+                <div class="panel">
+                    <h2><i class="fas fa-truck-loading"></i> Track Order</h2>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="trackID" placeholder="Order ID (e.g. HP-101)" class="calc-input">
+                        <button onclick="trackOrder()" class="calc-btn" style="width:100px; background:var(--primary)">Track</button>
+                    </div>
+                    <div id="trackingView" style="display:none; margin-top:20px;">
+                        <div class="track-container">
+                            <div class="track-line"></div>
+                            <div class="track-step"><div class="track-dot active-dot">1</div><small>Paid</small></div>
+                            <div class="track-step"><div class="track-dot active-dot">2</div><small>Oven</small></div>
+                            <div class="track-step"><div class="track-dot" id="s3">3</div><small>Rider</small></div>
+                            <div class="track-step"><div class="track-dot" id="s4">4</div><small>Home</small></div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="container">
-        <h2 style="margin-bottom: 20px; border-left: 5px solid var(--primary); padding-left: 10px;">Available Products</h2>
-        <div class="product-grid" id="productDisplay">
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400" alt="Bread">
-                <h3>Special Milk Bread</h3>
-                <p style="color: var(--primary); font-weight: bold; font-size: 20px; margin: 10px 0;">₦1,200</p>
-                <button class="btn-whatsapp" onclick="orderViaWhatsApp('Special Milk Bread', '1200')">
-                    <i class="fab fa-whatsapp"></i> ORDER ON WHATSAPP
-                </button>
+                <div class="panel">
+                    <h2>Our Bakery Store</h2>
+                    <div class="product-grid" id="productDisplay">
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
+                            <h4>Premium Butter Bread</h4>
+                            <p style="color:var(--primary); font-weight:bold;">₦1,300</p>
+                            <button class="btn-buy" onclick="orderNow('Premium Butter Bread', 1300)">Order on WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="panel">
+                    <h2><i class="fas fa-calculator"></i> Delivery Calc</h2>
+                    <input type="number" id="distance" placeholder="Distance from Odogunyan (KM)" class="calc-input">
+                    <button onclick="calculateFee()" class="calc-btn">Check Price</button>
+                    <div id="feeResult" style="margin-top:10px; font-weight:bold; color:var(--primary); font-size:18px; text-align:center;"></div>
+                </div>
+
+                <div class="panel">
+                    <h2><i class="fas fa-exclamation-circle"></i> Complaints</h2>
+                    <input type="text" id="compName" placeholder="Name" class="calc-input">
+                    <textarea id="compMessage" placeholder="What happened?" class="calc-input" style="height:70px;"></textarea>
+                    <button onclick="submitComplaint()" class="calc-btn" style="background:#d9534f">Submit Report</button>
+                </div>
             </div>
         </div>
-
-        <div id="adminPanel" style="display:none; background:white; padding:30px; margin-top:40px; border-radius:10px;">
-            <h3>Admin: Add New Bread</h3>
-            <input type="text" id="pName" placeholder="Bread Name" style="width:100%; padding:10px; margin:10px 0;">
-            <input type="number" id="pPrice" placeholder="Price (₦)" style="width:100%; padding:10px; margin:10px 0;">
-            <button onclick="saveToFirebase()" style="background:var(--primary); color:white; border:none; padding:15px; width:100%; cursor:pointer; font-weight:bold;">UPLOAD TO STORE</button>
-            <canvas id="salesChart" width="400" height="150" style="margin-top:20px;"></canvas>
-        </div>
     </div>
 
-    <div class="chat-trigger" onclick="toggleChat()">
-        <i class="fas fa-robot fa-2x"></i>
-    </div>
-
-    <div id="ai-chat">
-        <div class="chat-header">
-            <span>Heavens AI Assistant</span>
-            <span onclick="toggleChat()" style="cursor:pointer;">×</span>
-        </div>
+    <div class="chat-trigger" onclick="toggleChat()"><i class="fas fa-robot fa-2x"></i></div>
+    <div id="ai-chat-window">
+        <div class="chat-header">Heavens AI Assistant</div>
         <div class="chat-body" id="chatFlow">
-            <p style="background:#f1f1f1; padding:8px; border-radius:5px; margin-bottom:10px;">
-                Hello! Welcome to Heavens Prime. I am your AI assistant. How can I help you today?
-            </p>
+            <p style="background:#eee; padding:8px; border-radius:8px; margin-bottom:10px;">Welcome to Heavens Prime! I can help with prices, wholesale, or location questions. What's on your mind?</p>
         </div>
-        <div class="chat-input">
-            <input type="text" id="userMsg" placeholder="Ask about bread prices...">
-            <button onclick="aiResponse()" style="background:var(--primary); color:white; border:none; padding:10px;">Send</button>
+        <div class="chat-footer">
+            <input type="text" id="userMsg" placeholder="Type a message...">
+            <button onclick="aiResponse()">Send</button>
         </div>
+    </div>
+
+    <div id="adminPanel" style="display:none; position:fixed; top:10%; left:10%; width:80%; height:80%; background:white; z-index:2000; border:2px solid var(--primary); padding:30px; border-radius:15px; overflow-y:auto;">
+        <button onclick="this.parentElement.style.display='none'" style="float:right;">Close</button>
+        <h3>Admin Inventory</h3>
+        <input type="text" id="newName" placeholder="Bread Name" class="calc-input">
+        <input type="number" id="newPrice" placeholder="Price" class="calc-input">
+        <button onclick="addProduct()" class="calc-btn">Upload to Shop</button>
     </div>
 
     <script>
-        // --- 1. CONFIG & INIT ---
         const firebaseConfig = {
             apiKey: "AIzaSyDexFAjH2YvspspIe94FqSljJlXV6Ji1IA",
             authDomain: "bread-store-a28e8.firebaseapp.com",
@@ -244,85 +182,85 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // --- 2. WELCOME SCREEN TIMER ---
-        setTimeout(() => {
-            document.getElementById('welcome-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('welcome-screen').style.display = 'none';
-            }, 1000);
-        }, 3000); // Shows for 3 seconds
+        // 1. Splash
+        setTimeout(() => { document.getElementById('welcome-screen').style.opacity='0'; 
+        setTimeout(()=> document.getElementById('welcome-screen').style.display='none', 800); }, 2500);
 
-        // --- 3. WHATSAPP PAYMENT SYSTEM ---
-        function orderViaWhatsApp(product, price) {
-            const phone = "2348094222602"; // Your Number
-            const message = `Hello Heavens Prime Bread Store, I would like to order:\n\n*Product:* ${product}\n*Price:* ₦${price}\n\nPlease provide delivery details.`;
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
-
-        // --- 4. AI CHAT LOGIC ---
-        function toggleChat() {
-            const chat = document.getElementById('ai-chat');
-            chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+        // 2. AI Chat Logic
+        function toggleChat() { 
+            const win = document.getElementById('ai-chat-window');
+            win.style.display = win.style.display === 'block' ? 'none' : 'block';
         }
 
         function aiResponse() {
-            const input = document.getElementById('userMsg');
+            const msg = document.getElementById('userMsg').value.toLowerCase();
             const flow = document.getElementById('chatFlow');
-            if(!input.value) return;
-
-            // User message
-            flow.innerHTML += `<p style="text-align:right; margin-bottom:10px;"><b>You:</b> ${input.value}</p>`;
+            if(!msg) return;
+            flow.innerHTML += `<p style="text-align:right; margin:10px 0;"><b>You:</b> ${msg}</p>`;
             
-            // Simple AI Logic
-            let reply = "I'm sorry, I didn't get that. You can ask about 'prices', 'delivery', or 'wholesale'.";
-            const val = input.value.toLowerCase();
-
-            if(val.includes("price")) reply = "Our bread prices range from ₦800 to ₦2,500 depending on the size.";
-            if(val.includes("wholesale")) reply = "Yes! We offer bulk discounts for businesses and hotels. Send us a message on WhatsApp for the price list.";
-            if(val.includes("delivery")) reply = "We deliver across the city. You can use our cost calculator on the main page!";
+            let reply = "I'll get a human to help with that! Or you can try asking about 'wholesale' or 'delivery'.";
+            if(msg.includes("price")) reply = "Our fresh loaves range from ₦1,000 to ₦2,500.";
+            if(msg.includes("location")) reply = "We are located at Igbosoro Opaara, off Odogunyan, Ikorodu.";
+            if(msg.includes("wholesale")) reply = "We do bulk supply for businesses! Message our WhatsApp for the wholesale list.";
 
             setTimeout(() => {
-                flow.innerHTML += `<p style="background:#f1f1f1; padding:8px; border-radius:5px; margin-bottom:10px;"><b>AI:</b> ${reply}</p>`;
+                flow.innerHTML += `<p style="background:#eee; padding:8px; border-radius:8px; margin-bottom:10px;"><b>AI:</b> ${reply}</p>`;
                 flow.scrollTop = flow.scrollHeight;
-            }, 800);
-
-            input.value = "";
+            }, 600);
+            document.getElementById('userMsg').value = "";
         }
 
-        // --- 5. FIREBASE PRODUCTS ---
-        function saveToFirebase() {
-            const name = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            db.collection("products").add({
-                name: name,
-                price: price,
-                time: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => { alert("Saved!"); location.reload(); });
+        // 3. Calculator
+        function calculateFee() {
+            const km = document.getElementById('distance').value;
+            let fee = km <= 2 ? 500 : 500 + ((km-2)*150);
+            document.getElementById('feeResult').innerText = "Delivery Fee: ₦" + fee;
         }
 
-        // Fetching items
+        // 4. WhatsApp
+        function orderNow(item, price) {
+            const phone = "2348094222602";
+            const text = `*New Order: Heavens Prime*%0A*Item:* ${item}%0A*Price:* ₦${price}`;
+            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+        }
+
+        // 5. Tracking
+        function trackOrder() {
+            document.getElementById('trackingView').style.display='block';
+            setTimeout(() => {
+                document.getElementById('s3').classList.add('active-dot');
+                alert("Rider is currently heading to your location!");
+            }, 1200);
+        }
+
+        // 6. Complaints
+        function submitComplaint() {
+            const name = document.getElementById('compName').value;
+            const msg = document.getElementById('compMessage').value;
+            db.collection("complaints").add({ name, msg, date: new Date() })
+            .then(() => { alert("Report Sent!"); location.reload(); });
+        }
+
+        // 7. Admin & Store Load
+        function addProduct() {
+            const name = document.getElementById('newName').value;
+            const price = document.getElementById('newPrice').value;
+            db.collection("products").add({ name, price, time: firebase.firestore.FieldValue.serverTimestamp() })
+            .then(() => location.reload());
+        }
+
         db.collection("products").orderBy("time", "desc").onSnapshot(snap => {
-            const grid = document.getElementById('productDisplay');
+            const display = document.getElementById('productDisplay');
             snap.forEach(doc => {
                 const data = doc.data();
-                grid.innerHTML += `
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400" alt="Bread">
-                        <h3>${data.name}</h3>
-                        <p style="color: var(--primary); font-weight: bold; font-size: 20px; margin: 10px 0;">₦${data.price}</p>
-                        <button class="btn-whatsapp" onclick="orderViaWhatsApp('${data.name}', '${data.price}')">
-                            <i class="fab fa-whatsapp"></i> ORDER ON WHATSAPP
-                        </button>
-                    </div>
-                `;
+                display.innerHTML += `<div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
+                    <h4>${data.name}</h4><p style="color:var(--primary); font-weight:bold;">₦${data.price}</p>
+                    <button class="btn-buy" onclick="orderNow('${data.name}', ${data.price})">Order on WhatsApp</button>
+                </div>`;
             });
         });
-
-        function toggleAdmin() {
-            const p = document.getElementById('adminPanel');
-            p.style.display = p.style.display === 'none' ? 'block' : 'none';
-        }
     </script>
 </body>
-        </html>
+      </html>                          
+    
