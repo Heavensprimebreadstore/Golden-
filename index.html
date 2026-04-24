@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heavens Prime Bread Store | All-In-One Enterprise</title>
+    <title>HEAVENS PRIME BREAD STORE | Freshness Delivered</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -15,79 +15,111 @@
             --secondary: #282828;
             --white: #ffffff;
             --success: #25D366;
-            --gray: #f4f4f4;
+            --accent: #ff4757;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f9f9f9; color: var(--secondary); overflow-x: hidden; }
+        
+        body { 
+            /* Background Graphics: Baked Cookies/Pastries */
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                        url('https://images.unsplash.com/photo-1486427944299-d1955d23e34d?q=80&w=1500');
+            background-attachment: fixed;
+            background-size: cover;
+            color: var(--secondary);
+            overflow-x: hidden;
+        }
 
-        /* Welcome Splash */
+        /* Catchy Ticker */
+        .ticker {
+            background: var(--accent);
+            color: white;
+            padding: 8px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        /* Splash Screen */
         #welcome-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: var(--secondary); display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999; color: white;
-            transition: 0.8s;
         }
 
-        /* Header */
+        /* Colourful & Bolder Header */
         header {
-            background: var(--white); padding: 10px 5%;
+            background: var(--white); padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 100; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--primary);
         }
-        .logo-box { display: flex; align-items: center; gap: 10px; }
-        .logo-circle { background: var(--primary); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; }
-        
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-circle { background: var(--primary); color: white; width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .logo-text { font-weight: 900; font-size: 26px; letter-spacing: -1px; text-transform: uppercase; color: var(--secondary); }
+        .logo-text span { color: var(--primary); }
+
+        /* Search Bar Area */
+        .search-area { padding: 20px 5%; text-align: center; }
+        .search-box { width: 100%; max-width: 600px; padding: 15px; border: 2px solid var(--primary); border-radius: 30px; outline: none; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
         /* Layout */
-        .section-container { padding: 30px 5%; }
-        .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .section-container { padding: 20px 5%; }
+        .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
         @media (max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
 
-        .panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        h2 { margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 15px; font-size: 18px; }
+        .panel { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #eee; }
+        h2 { margin-bottom: 20px; border-left: 6px solid var(--primary); padding-left: 15px; font-weight: 800; color: var(--secondary); text-transform: uppercase; }
 
-        /* Products */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .product-card { border: 1px solid #eee; padding: 10px; border-radius: 8px; text-align: center; }
-        .product-card img { width: 100%; border-radius: 5px; height: 140px; object-fit: cover; }
-        .btn-buy { background: var(--success); color: white; border: none; width: 100%; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        /* Product Cards */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .product-card { background: white; border: 1px solid #eee; padding: 15px; border-radius: 15px; text-align: center; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
+        .product-card img { width: 100%; border-radius: 10px; height: 160px; object-fit: cover; margin-bottom: 10px; }
+        .price-tag { color: var(--primary); font-weight: 800; font-size: 20px; margin: 5px 0; }
 
-        /* Tracking */
-        .track-container { display: flex; justify-content: space-between; margin-top: 20px; position: relative; }
-        .track-dot { width: 25px; height: 25px; background: #ddd; border-radius: 50%; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; z-index: 1; }
-        .active-dot { background: var(--primary); }
-        .track-line { position: absolute; top: 12px; left: 10%; width: 80%; height: 2px; background: #ddd; z-index: 0; }
+        /* Enticement Word */
+        .enticement { font-weight: bold; color: var(--accent); font-size: 13px; margin-bottom: 10px; display: block; }
 
-        /* AI Chatbot Floating UI */
+        .btn-buy { background: var(--success); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-buy:hover { background: #1eb954; }
+
+        /* Floating AI Chat */
         #ai-chat-window {
-            position: fixed; bottom: 90px; right: 20px; width: 300px;
-            background: white; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            z-index: 1000; display: none; overflow: hidden; border: 1px solid #eee;
+            position: fixed; bottom: 95px; right: 20px; width: 320px;
+            background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000; display: none; overflow: hidden; border: 1px solid var(--primary);
         }
-        .chat-header { background: var(--primary); color: white; padding: 12px; font-weight: bold; }
-        .chat-body { height: 250px; padding: 10px; overflow-y: auto; background: #fdfdfd; font-size: 13px; }
+        .chat-header { background: var(--primary); color: white; padding: 15px; font-weight: bold; }
+        .chat-body { height: 280px; padding: 15px; overflow-y: auto; font-size: 14px; background: #fff; }
         .chat-footer { display: flex; border-top: 1px solid #eee; }
-        .chat-footer input { flex: 1; border: none; padding: 10px; outline: none; }
-        .chat-footer button { background: var(--primary); color: white; border: none; padding: 10px; cursor: pointer; }
+        .chat-footer input { flex: 1; border: none; padding: 15px; outline: none; }
+        .chat-footer button { background: var(--primary); color: white; border: none; padding: 15px; cursor: pointer; }
 
         .chat-trigger {
             position: fixed; bottom: 20px; right: 20px;
             background: var(--primary); color: white;
-            width: 60px; height: 60px; border-radius: 50%;
+            width: 65px; height: 65px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            cursor: pointer; z-index: 999; box-shadow: 0 4px 15px rgba(246, 139, 30, 0.4);
+            cursor: pointer; z-index: 999; box-shadow: 0 6px 20px rgba(246, 139, 30, 0.5);
         }
 
-        .calc-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
-        .calc-btn { background: var(--secondary); color: white; border: none; padding: 10px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .calc-input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; margin-bottom: 10px; font-size: 14px; }
+        .calc-btn { background: var(--secondary); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
+    <div class="ticker">
+        🔥 CRAVING FRESHNESS? WE DELIVER THE SOFTEST BREAD IN IKORODU RIGHT TO YOUR DOOR! 🔥
+    </div>
+
     <div id="welcome-screen">
-        <div class="logo-circle" style="width:70px; height:70px; font-size:35px;">H</div>
-        <h1 style="margin-top:20px;">Heavens Prime Bread</h1>
-        <p>Freshly Baked in Odogunyan...</p>
+        <div class="logo-circle" style="width:80px; height:80px; font-size:40px;">H</div>
+        <h1 style="margin-top:20px; font-size: 2.5rem;">HEAVENS PRIME</h1>
+        <p style="letter-spacing: 3px;">BREAD STORE</p>
     </div>
 
     <header>
@@ -95,38 +127,42 @@
             <div class="logo-circle">H</div>
             <div class="logo-text">HEAVENS<span>PRIME</span></div>
         </div>
-        <button onclick="document.getElementById('adminPanel').style.display='block'" class="calc-btn" style="width:auto; padding:5px 15px; font-size:12px;">Admin</button>
+        <button onclick="secureAdminToggle()" style="background:none; border: 1px solid #ccc; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">ADMIN</button>
     </header>
+
+    <div class="search-area">
+        <input type="text" id="storeSearch" class="search-box" placeholder="Search for your favorite loaf (e.g., Butter, Milk, Wheat)..." onkeyup="filterProducts()">
+    </div>
 
     <div class="section-container">
         <div class="grid-layout">
             
             <div>
                 <div class="panel">
-                    <h2><i class="fas fa-truck-loading"></i> Track Order</h2>
+                    <h2><i class="fas fa-route"></i> Order Tracking</h2>
                     <div style="display:flex; gap:10px;">
-                        <input type="text" id="trackID" placeholder="Order ID (e.g. HP-101)" class="calc-input">
-                        <button onclick="trackOrder()" class="calc-btn" style="width:100px; background:var(--primary)">Track</button>
+                        <input type="text" id="trackID" placeholder="Paste Order ID here" class="calc-input" style="margin:0;">
+                        <button onclick="trackOrder()" class="calc-btn" style="width:120px; background:var(--primary)">LOCATE</button>
                     </div>
-                    <div id="trackingView" style="display:none; margin-top:20px;">
-                        <div class="track-container">
-                            <div class="track-line"></div>
-                            <div class="track-step"><div class="track-dot active-dot">1</div><small>Paid</small></div>
-                            <div class="track-step"><div class="track-dot active-dot">2</div><small>Oven</small></div>
-                            <div class="track-step"><div class="track-dot" id="s3">3</div><small>Rider</small></div>
-                            <div class="track-step"><div class="track-dot" id="s4">4</div><small>Home</small></div>
+                    <div id="trackingView" style="display:none; margin-top:25px;">
+                        <div style="display:flex; justify-content:space-between; position:relative;">
+                            <div style="height:4px; width:100%; background:#eee; position:absolute; top:12px; z-index:0;"></div>
+                            <div style="z-index:1; text-align:center;"><div style="width:25px; height:25px; background:var(--primary); border-radius:50%; margin:auto;"></div><small>Confirmed</small></div>
+                            <div style="z-index:1; text-align:center;"><div style="width:25px; height:25px; background:var(--primary); border-radius:50%; margin:auto;"></div><small>Packed</small></div>
+                            <div style="z-index:1; text-align:center;"><div id="dot3" style="width:25px; height:25px; background:#ddd; border-radius:50%; margin:auto;"></div><small>On Road</small></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="panel">
-                    <h2>Our Bakery Store</h2>
+                    <h2><i class="fas fa-bread-slice"></i> Store Inventory</h2>
                     <div class="product-grid" id="productDisplay">
                         <div class="product-card">
+                            <span class="enticement">Best Seller!</span>
                             <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
-                            <h4>Premium Butter Bread</h4>
-                            <p style="color:var(--primary); font-weight:bold;">₦1,300</p>
-                            <button class="btn-buy" onclick="orderNow('Premium Butter Bread', 1300)">Order on WhatsApp</button>
+                            <h4>Jendol-Style Butter Loaf</h4>
+                            <p class="price-tag">₦1,350</p>
+                            <button class="btn-buy" onclick="orderNow('Jendol-Style Butter Loaf', 1350)">BUY ON WHATSAPP</button>
                         </div>
                     </div>
                 </div>
@@ -134,40 +170,46 @@
 
             <div>
                 <div class="panel">
-                    <h2><i class="fas fa-calculator"></i> Delivery Calc</h2>
-                    <input type="number" id="distance" placeholder="Distance from Odogunyan (KM)" class="calc-input">
-                    <button onclick="calculateFee()" class="calc-btn">Check Price</button>
-                    <div id="feeResult" style="margin-top:10px; font-weight:bold; color:var(--primary); font-size:18px; text-align:center;"></div>
+                    <h2><i class="fas fa-truck"></i> Delivery Calc</h2>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Pickup: Igbosoro Opaara, Odogunyan</p>
+                    <input type="number" id="distance" placeholder="Distance from Store (KM)" class="calc-input">
+                    <button onclick="calculateFee()" class="calc-btn">CALCULATE FEE</button>
+                    <div id="feeResult" style="margin-top:15px; font-weight:900; color:var(--primary); font-size:22px; text-align:center;"></div>
                 </div>
 
                 <div class="panel">
-                    <h2><i class="fas fa-exclamation-circle"></i> Complaints</h2>
-                    <input type="text" id="compName" placeholder="Name" class="calc-input">
-                    <textarea id="compMessage" placeholder="What happened?" class="calc-input" style="height:70px;"></textarea>
-                    <button onclick="submitComplaint()" class="calc-btn" style="background:#d9534f">Submit Report</button>
+                    <h2><i class="fas fa-headset"></i> Help Center</h2>
+                    <input type="text" id="compName" placeholder="Full Name" class="calc-input">
+                    <textarea id="compMessage" placeholder="What is the issue?" class="calc-input" style="height:80px;"></textarea>
+                    <button onclick="submitComplaint()" class="calc-btn" style="background:#ff4757">SUBMIT COMPLAINT</button>
                 </div>
             </div>
+
         </div>
     </div>
 
-    <div class="chat-trigger" onclick="toggleChat()"><i class="fas fa-robot fa-2x"></i></div>
+    <div class="chat-trigger" onclick="toggleChat()"><i class="fas fa-comment-dots fa-2x"></i></div>
     <div id="ai-chat-window">
-        <div class="chat-header">Heavens AI Assistant</div>
+        <div class="chat-header">Heavens Prime AI Assistant</div>
         <div class="chat-body" id="chatFlow">
-            <p style="background:#eee; padding:8px; border-radius:8px; margin-bottom:10px;">Welcome to Heavens Prime! I can help with prices, wholesale, or location questions. What's on your mind?</p>
+            <p style="background:#f1f1f1; padding:10px; border-radius:10px; margin-bottom:10px;">Hello! I am the Heavens Prime Assistant. I can help you with prices, wholesale orders, and our store location in Odogunyan.</p>
         </div>
         <div class="chat-footer">
-            <input type="text" id="userMsg" placeholder="Type a message...">
-            <button onclick="aiResponse()">Send</button>
+            <input type="text" id="userMsg" placeholder="Ask about bread...">
+            <button onclick="aiResponse()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <div id="adminPanel" style="display:none; position:fixed; top:10%; left:10%; width:80%; height:80%; background:white; z-index:2000; border:2px solid var(--primary); padding:30px; border-radius:15px; overflow-y:auto;">
-        <button onclick="this.parentElement.style.display='none'" style="float:right;">Close</button>
-        <h3>Admin Inventory</h3>
-        <input type="text" id="newName" placeholder="Bread Name" class="calc-input">
-        <input type="number" id="newPrice" placeholder="Price" class="calc-input">
-        <button onclick="addProduct()" class="calc-btn">Upload to Shop</button>
+    <div id="adminPanel" style="display:none; position:fixed; top:5%; left:5%; width:90%; height:90%; background:white; z-index:2000; border:4px solid var(--primary); padding:30px; border-radius:20px; overflow-y:auto; box-shadow: 0 0 100px rgba(0,0,0,0.5);">
+        <button onclick="this.parentElement.style.display='none'" style="float:right; background:red; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">CLOSE DASHBOARD</button>
+        <h2 style="border-left-color: var(--secondary);">Store Management</h2>
+        <hr><br>
+        <div style="background:#f9f9f9; padding:20px; border-radius:10px;">
+            <h3>Update Product List</h3>
+            <input type="text" id="newName" placeholder="Name of Bread" class="calc-input">
+            <input type="number" id="newPrice" placeholder="Price (₦)" class="calc-input">
+            <button onclick="addProduct()" class="calc-btn" style="background:var(--primary)">PUBLISH TO WEBSITE</button>
+        </div>
     </div>
 
     <script>
@@ -182,11 +224,31 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 1. Splash
+        // 1. Splash Logic
         setTimeout(() => { document.getElementById('welcome-screen').style.opacity='0'; 
-        setTimeout(()=> document.getElementById('welcome-screen').style.display='none', 800); }, 2500);
+        setTimeout(()=> document.getElementById('welcome-screen').style.display='none', 800); }, 3000);
 
-        // 2. AI Chat Logic
+        // 2. Admin Security
+        function secureAdminToggle() {
+            const pin = prompt("Enter Store Access PIN:");
+            if(pin === "2006") { // CHANGE THIS PIN
+                document.getElementById('adminPanel').style.display = 'block';
+            } else {
+                alert("Unauthorized Access Attempt.");
+            }
+        }
+
+        // 3. Search Bar Functionality
+        function filterProducts() {
+            const query = document.getElementById('storeSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const name = card.querySelector('h4').innerText.toLowerCase();
+                card.style.display = name.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        // 4. AI Chat Bot
         function toggleChat() { 
             const win = document.getElementById('ai-chat-window');
             win.style.display = win.style.display === 'block' ? 'none' : 'block';
@@ -198,69 +260,68 @@
             if(!msg) return;
             flow.innerHTML += `<p style="text-align:right; margin:10px 0;"><b>You:</b> ${msg}</p>`;
             
-            let reply = "I'll get a human to help with that! Or you can try asking about 'wholesale' or 'delivery'.";
-            if(msg.includes("price")) reply = "Our fresh loaves range from ₦1,000 to ₦2,500.";
-            if(msg.includes("location")) reply = "We are located at Igbosoro Opaara, off Odogunyan, Ikorodu.";
-            if(msg.includes("wholesale")) reply = "We do bulk supply for businesses! Message our WhatsApp for the wholesale list.";
+            let reply = "Our staff will respond shortly! You can also check our delivery calc for shipping costs.";
+            if(msg.includes("price")) reply = "Our fresh bread starts at ₦1,000 for standard loaves and ₦1,350 for premium butter loaves.";
+            if(msg.includes("location") || msg.includes("store")) reply = "We are located at Igbosoro Opaara, off Odogunyan, Ikorodu.";
+            if(msg.includes("wholesale")) reply = "Yes! We distribute to schools, hotels, and retailers. Message us on WhatsApp for our wholesale price list.";
 
             setTimeout(() => {
-                flow.innerHTML += `<p style="background:#eee; padding:8px; border-radius:8px; margin-bottom:10px;"><b>AI:</b> ${reply}</p>`;
+                flow.innerHTML += `<p style="background:#f1f1f1; padding:10px; border-radius:10px; margin-bottom:10px;"><b>AI:</b> ${reply}</p>`;
                 flow.scrollTop = flow.scrollHeight;
             }, 600);
             document.getElementById('userMsg').value = "";
         }
 
-        // 3. Calculator
-        function calculateFee() {
-            const km = document.getElementById('distance').value;
-            let fee = km <= 2 ? 500 : 500 + ((km-2)*150);
-            document.getElementById('feeResult').innerText = "Delivery Fee: ₦" + fee;
-        }
-
-        // 4. WhatsApp
+        // 5. WhatsApp Integration
         function orderNow(item, price) {
             const phone = "2348094222602";
-            const text = `*New Order: Heavens Prime*%0A*Item:* ${item}%0A*Price:* ₦${price}`;
+            const text = `*NEW ORDER - HEAVENS PRIME*%0A--------------------------%0A*Item:* ${item}%0A*Price:* ₦${price}%0A--------------------------%0A_Please confirm my order and send payment details._`;
             window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
         }
 
-        // 5. Tracking
-        function trackOrder() {
-            document.getElementById('trackingView').style.display='block';
-            setTimeout(() => {
-                document.getElementById('s3').classList.add('active-dot');
-                alert("Rider is currently heading to your location!");
-            }, 1200);
+        // 6. Delivery Calc
+        function calculateFee() {
+            const km = document.getElementById('distance').value;
+            if(!km) return alert("Enter KM");
+            let fee = km <= 2 ? 500 : 500 + ((km-2)*150);
+            document.getElementById('feeResult').innerText = "₦" + fee.toLocaleString();
         }
 
-        // 6. Complaints
-        function submitComplaint() {
-            const name = document.getElementById('compName').value;
-            const msg = document.getElementById('compMessage').value;
-            db.collection("complaints").add({ name, msg, date: new Date() })
-            .then(() => { alert("Report Sent!"); location.reload(); });
-        }
-
-        // 7. Admin & Store Load
+        // 7. Store Management (Admin)
         function addProduct() {
             const name = document.getElementById('newName').value;
             const price = document.getElementById('newPrice').value;
+            if(!name || !price) return alert("Fill fields!");
             db.collection("products").add({ name, price, time: firebase.firestore.FieldValue.serverTimestamp() })
-            .then(() => location.reload());
+            .then(() => { alert("Inventory Updated!"); location.reload(); });
         }
 
+        function submitComplaint() {
+            const name = document.getElementById('compName').value;
+            const msg = document.getElementById('compMessage').value;
+            db.collection("complaints").add({ name, msg, time: new Date() }).then(() => alert("Submitted."));
+        }
+
+        function trackOrder() {
+            document.getElementById('trackingView').style.display = 'block';
+            setTimeout(() => { document.getElementById('dot3').style.background = '#f68b1e'; }, 1000);
+        }
+
+        // Load Products
         db.collection("products").orderBy("time", "desc").onSnapshot(snap => {
             const display = document.getElementById('productDisplay');
             snap.forEach(doc => {
                 const data = doc.data();
-                display.innerHTML += `<div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
-                    <h4>${data.name}</h4><p style="color:var(--primary); font-weight:bold;">₦${data.price}</p>
-                    <button class="btn-buy" onclick="orderNow('${data.name}', ${data.price})">Order on WhatsApp</button>
-                </div>`;
+                display.innerHTML += `
+                    <div class="product-card">
+                        <span class="enticement">Freshly Stocked!</span>
+                        <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
+                        <h4>${data.name}</h4>
+                        <p class="price-tag">₦${data.price}</p>
+                        <button class="btn-buy" onclick="orderNow('${data.name}', ${data.price})">BUY ON WHATSAPP</button>
+                    </div>`;
             });
         });
     </script>
 </body>
-      </html>                          
-    
+    </html>        
