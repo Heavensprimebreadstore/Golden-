@@ -1,346 +1,249 @@
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heaven's Prime Bread Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heavens Prime Bread Store | Freshness Delivered</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: linear-gradient(135deg, #fff3e0, #fff8f0);
-}
+    <style>
+        :root {
+            --primary: #f68b1e; /* Jumia Orange */
+            --secondary: #282828;
+            --light: #f1f1f1;
+            --white: #ffffff;
+        }
 
-nav {
-  background: linear-gradient(90deg, #d2691e, #ff8c42);
-  color: white;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+        body { background-color: #f5f5f5; color: var(--secondary); }
 
-nav a {
-  color: white;
-  margin: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
+        /* Navigation */
+        header {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-.container { padding: 15px; }
+        .logo { font-size: 22px; font-weight: 900; letter-spacing: -1px; }
+        .logo span { color: var(--primary); }
 
-.card {
-  background: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
+        .search-container { flex: 0.6; display: flex; }
+        .search-container input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px 0 0 4px; outline: none; }
+        .search-container button { background: var(--primary); border: none; padding: 0 20px; color: white; border-radius: 0 4px 4px 0; cursor: pointer; }
 
-button {
-  background: linear-gradient(90deg, #d2691e, #ff8c42);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+        /* Hero Animation */
+        .hero {
+            height: 350px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            animation: slideIn 1.2s ease-out;
+        }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-  gap: 10px;
-}
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.hidden { display: none; }
-</style>
+        /* Product Grid */
+        .container { padding: 30px 5%; }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 4px; }
+        .card h3 { font-size: 14px; margin: 10px 0; font-weight: 400; }
+        .card .price { font-weight: bold; font-size: 18px; color: #333; }
+        .card .btn-buy { background: var(--primary); color: white; border: none; width: 100%; padding: 8px; margin-top: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
+        /* Admin Dashboard Section */
+        .admin-section {
+            background: #fff;
+            margin-top: 50px;
+            padding: 30px;
+            border-top: 5px solid var(--primary);
+        }
+
+        .stats-grid { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+        .stat-card { background: #f9f9f9; padding: 20px; flex: 1; min-width: 200px; border-radius: 8px; border-left: 5px solid var(--primary); }
+
+        /* Delivery Calculator */
+        .calculator { background: #eee; padding: 20px; border-radius: 8px; margin-top: 20px; }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 10px; }
+            .search-container { width: 100%; }
+        }
+    </style>
 </head>
-
 <body>
 
-<nav>
-  <div>🍞 Heaven's Prime</div>
-  <div>
-    <a onclick="show('home')">Home</a>
-    <a onclick="show('shop')">Shop</a>
-    <a onclick="show('cart')">Cart (<span id="count">0</span>)</a>
-    <a onclick="show('track')">Track</a>
-    <a onclick="goAdmin()">Admin</a>
-  </div>
-</nav>
+    <header>
+        <div class="logo">HEAVENS<span>PRIME</span></div>
+        <div class="search-container">
+            <input type="text" placeholder="Search fresh bread varieties...">
+            <button>SEARCH</button>
+        </div>
+        <div class="nav-icons">
+            <button onclick="toggleAdmin()" style="background:none; border:1px solid #ccc; padding:5px 10px; cursor:pointer;">Admin</button>
+        </div>
+    </header>
 
-<div class="container">
+    <section class="hero">
+        <h1>Fresh Bread to Your Doorstep</h1>
+        <p>Retail & Wholesale Distribution for Businesses of All Sizes</p>
+    </section>
 
-<!-- HOME -->
-<div id="home">
+    <div class="container">
+        <h2>Our Fresh Stock</h2>
+        <div class="product-grid" id="productDisplay">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400" alt="Bread">
+                <h3>Standard Family Loaf</h3>
+                <p class="price">₦1,100</p>
+                <button class="btn-buy">ADD TO CART</button>
+            </div>
+        </div>
 
-  <div class="card">
-    <h1>Fresh Bread Distribution Across Lagos 🍞</h1>
-    <p>Fast delivery • Wholesale & Retail Supply • Trusted by Businesses</p>
-  </div>
+        <div class="calculator">
+            <h3><i class="fas fa-truck"></i> Delivery Cost Calculator</h3>
+            <input type="number" id="kmInput" placeholder="Enter Distance in KM" style="padding:10px; margin-top:10px;">
+            <button onclick="calcDelivery()" style="padding:10px; background:var(--secondary); color:white; border:none; cursor:pointer;">Calculate</button>
+            <p id="deliveryResult" style="margin-top:10px; font-weight:bold;"></p>
+        </div>
 
-  <!-- ✅ BUSINESS DESCRIPTION (UPDATED + CORRECTED) -->
-  <div class="card">
-    <h2>About Heaven’s Prime Bread Store 🏢🍞</h2>
+        <div id="adminPanel" class="admin-section" style="display:none;">
+            <h2><i class="fas fa-chart-line"></i> Admin Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Total Sales</h3><p id="totalSalesText">₦0</p></div>
+                <div class="stat-card"><h3>Active Orders</h3><p id="orderCountText">0</p></div>
+            </div>
+            
+            <canvas id="salesChart" width="400" height="150"></canvas>
 
-    <p>
-      Heaven’s Prime Bread Store is a trusted bread distribution company
-      serving Lagos State with reliable supply of bread to businesses of all sizes.
-    </p>
+            <div style="margin-top:30px; border:1px solid #ddd; padding:20px;">
+                <h3>Add/Edit Product</h3>
+                <input type="text" id="newProdName" placeholder="Product Name" style="width:100%; margin:10px 0; padding:10px;">
+                <input type="number" id="newProdPrice" placeholder="Price (₦)" style="width:100%; margin:10px 0; padding:10px;">
+                <button onclick="addProduct()" style="background:var(--primary); color:white; border:none; padding:15px; width:100%; cursor:pointer;">UPLOAD PRODUCT</button>
+            </div>
+        </div>
+    </div>
 
-    <p>
-      We specialize in <b>wholesale and retail bread distribution</b>,
-      ensuring supermarkets, schools, restaurants, hotels, retail shops,
-      and corporate organizations receive steady and timely supply.
-    </p>
+    <script>
+        // --- FIREBASE INITIALIZATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDexFAjH2YvspspIe94FqSljJlXV6Ji1IA",
+            authDomain: "bread-store-a28e8.firebaseapp.com",
+            projectId: "bread-store-a28e8",
+            storageBucket: "bread-store-a28e8.firebasestorage.app",
+            messagingSenderId: "126719314073",
+            appId: "1:126719314073:web:cbc9a3fd876bcd3a97d008"
+        };
 
-    <p>
-      Our mission is to make bread distribution fast, affordable, and consistent
-      across Lagos by connecting production sources to businesses through a
-      smooth and reliable supply chain.
-    </p>
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-    <p>
-      🚚 Fast delivery across Lagos<br>
-      🏢 Wholesale supply for businesses of all sizes<br>
-      🛒 Retail supply for smaller orders<br>
-      📦 Daily and bulk distribution system<br>
-      💼 Trusted by growing businesses across Lagos
-    </p>
+        // --- ADMIN TOGGLE ---
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            initChart(); // Load graph when admin panel opens
+        }
 
-    <p>
-      Whether you run a small shop or a large commercial operation,
-      we ensure you get steady supply, fair pricing, and reliable delivery.
-    </p>
-  </div>
+        // --- DELIVERY CALCULATOR ---
+        function calcDelivery() {
+            const km = document.getElementById('kmInput').value;
+            const baseFee = 500;
+            const total = baseFee + (km * 100);
+            document.getElementById('deliveryResult').innerText = "Estimated Delivery: ₦" + total;
+        }
 
-</div>
+        // --- ADD PRODUCT TO FIREBASE ---
+        function addProduct() {
+            const name = document.getElementById('newProdName').value;
+            const price = document.getElementById('newProdPrice').value;
 
-<!-- SHOP -->
-<div id="shop" class="hidden">
-  <h2>Products</h2>
-  <div id="products" class="grid"></div>
-</div>
+            if(name && price) {
+                db.collection("products").add({
+                    name: name,
+                    price: price,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    alert("Bread Added Successfully!");
+                    location.reload();
+                });
+            } else {
+                alert("Please fill in all fields");
+            }
+        }
 
-<!-- CART -->
-<div id="cart" class="hidden card">
-  <h2>Your Cart</h2>
-  <div id="items"></div>
-  <h3>Total: ₦<span id="total">0</span></h3>
-  <button onclick="checkout()">Checkout</button>
-</div>
+        // --- SALES GRAPH (Chart.js) ---
+        function initChart() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Weekly Sales (₦)',
+                        data: [12000, 19000, 15000, 25000, 22000, 30000, 45000],
+                        borderColor: '#f68b1e',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(246, 139, 30, 0.1)'
+                    }]
+                }
+            });
+        }
 
-<!-- TRACK -->
-<div id="track" class="hidden card">
-  <h2>Track Order</h2>
-  <input id="trackId" placeholder="Order ID">
-  <button onclick="trackOrder()">Track</button>
-  <div id="trackResult"></div>
-</div>
-
-<!-- ADMIN -->
-<div id="admin" class="hidden">
-
-  <div class="card">
-    <h2>📦 Product Manager</h2>
-
-    <input id="pname" placeholder="Product Name"><br><br>
-    <input id="pprice" placeholder="Price"><br><br>
-    <input id="pimg" placeholder="Image URL"><br><br>
-
-    <button onclick="addProduct()">Add Product</button>
-  </div>
-
-  <div class="card">
-    <h2>🔥 Orders Dashboard (Live Timeline)</h2>
-    <div id="orders"></div>
-  </div>
-
-</div>
-
-</div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getDatabase,
-  ref,
-  push,
-  onValue,
-  update,
-  remove,
-  get,
-  child
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDexFAjH2YvspspIe94FqSljJlXV6Ji1IA",
-  authDomain: "bread-store-a28e8.firebaseapp.com",
-  projectId: "bread-store-a28e8",
-  storageBucket: "bread-store-a28e8.firebasestorage.app",
-  messagingSenderId: "126719314073",
-  appId: "1:126719314073:web:cbc9a3fd876bcd3a97d008"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
-
-const ADMIN_EMAIL = "okorosavi2006@gmail.com";
-const WHATSAPP_NUMBER = "2348094222602";
-
-/* NAV */
-window.show = function(page){
-  ["home","shop","cart","track","admin"].forEach(p=>{
-    document.getElementById(p).classList.add("hidden");
-  });
-
-  document.getElementById(page).classList.remove("hidden");
-}
-
-/* PRODUCTS */
-const productRef = ref(db,"products");
-
-onValue(productRef,(snap)=>{
-  let data = snap.val();
-  let html = "";
-
-  for(let id in data){
-    html += `
-      <div class="card">
-        <h3>${data[id].name}</h3>
-        <p>₦${data[id].price}</p>
-
-        <button onclick="addCart('${id}','${data[id].name}',${data[id].price})">Add</button>
-        <button onclick="editProduct('${id}','${data[id].name}',${data[id].price})">Edit</button>
-        <button onclick="deleteProduct('${id}')">Delete</button>
-      </div>
-    `;
-  }
-
-  products.innerHTML = html || "No products yet";
-});
-
-/* ADD PRODUCT */
-window.addProduct = function(){
-  push(ref(db,"products"),{
-    name: pname.value,
-    price: parseInt(pprice.value),
-    image: pimg.value
-  });
-
-  alert("Product added");
-}
-
-/* EDIT */
-window.editProduct = function(id,name,price){
-  let newPrice = prompt("New price:",price);
-  let newName = prompt("New name:",name);
-
-  update(ref(db,"products/"+id),{
-    name: newName,
-    price: parseInt(newPrice)
-  });
-}
-
-/* DELETE */
-window.deleteProduct = function(id){
-  remove(ref(db,"products/"+id));
-}
-
-/* CART */
-let cart = [];
-
-window.addCart = function(id,name,price){
-  cart.push({id,name,price});
-  count.innerText = cart.length;
-  render();
-}
-
-function render(){
-  let total = 0;
-  let html = "";
-
-  cart.forEach((c,i)=>{
-    total += c.price;
-    html += `<p>${c.name} ₦${c.price}
-    <button onclick="removeItem(${i})">X</button></p>`;
-  });
-
-  items.innerHTML = html;
-  total.innerText = total;
-}
-
-window.removeItem = function(i){
-  cart.splice(i,1);
-  count.innerText = cart.length;
-  render();
-}
-
-/* CHECKOUT + WHATSAPP */
-window.checkout = function(){
-
-  const orderRef = push(ref(db,"orders"),{
-    items: cart,
-    status: "pending",
-    timeline: [{status:"pending",time:new Date().toString()}]
-  });
-
-  const orderId = orderRef.key;
-
-  let msg = `New Order:%0AID: ${orderId}%0AItems: ${JSON.stringify(cart)}`;
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
-
-  alert("Order placed: " + orderId);
-
-  cart = [];
-  render();
-  count.innerText = 0;
-}
-
-/* TRACK */
-window.trackOrder = function(){
-  const id = trackId.value;
-
-  get(child(ref(db),"orders/"+id)).then((snap)=>{
-    if(snap.exists()){
-      let d = snap.val();
-
-      let timeline = "";
-      d.timeline.forEach(t=>{
-        timeline += `<p>✔ ${t.status} - ${t.time}</p>`;
-      });
-
-      trackResult.innerHTML =
-        `Status: ${d.status}<br><br>${timeline}`;
-    } else {
-      trackResult.innerHTML = "Order not found";
-    }
-  });
-}
-
-/* ADMIN */
-window.goAdmin = function(){
-  const user = auth.currentUser;
-
-  if(!user){
-    alert("Login required");
-    return;
-  }
-
-  if(user.email !== ADMIN_EMAIL){
-    alert("Access denied");
-    return;
-  }
-
-  show("admin");
-}
-
-</script>
-
+        // --- LOAD PRODUCTS FROM DATABASE ---
+        db.collection("products").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+            const productDisplay = document.getElementById('productDisplay');
+            // productDisplay.innerHTML = ""; // Clear existing
+            snapshot.forEach((doc) => {
+                const item = doc.data();
+                productDisplay.innerHTML += `
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400" alt="Bread">
+                        <h3>${item.name}</h3>
+                        <p class="price">₦${item.price}</p>
+                        <button class="btn-buy">ADD TO CART</button>
+                    </div>
+                `;
+            });
+        });
+    </script>
 </body>
-                                      </html>
+      </html>
