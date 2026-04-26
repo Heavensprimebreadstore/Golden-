@@ -21,7 +21,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         
         body { 
-            /* Background Graphics: Baked Cookies/Pastries */
             background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
                         url('https://images.unsplash.com/photo-1486427944299-d1955d23e34d?q=80&w=1500');
             background-attachment: fixed;
@@ -30,25 +29,15 @@
             overflow-x: hidden;
         }
 
-        /* Catchy Ticker */
-        .ticker {
-            background: var(--accent);
-            color: white;
-            padding: 8px 0;
-            font-weight: bold;
-            text-align: center;
-            font-size: 14px;
-            overflow: hidden;
-        }
+        .ticker { background: var(--accent); color: white; padding: 8px 0; font-weight: bold; text-align: center; font-size: 14px; }
 
-        /* Splash Screen */
         #welcome-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: var(--secondary); display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999; color: white;
+            transition: 0.8s;
         }
 
-        /* Colourful & Bolder Header */
         header {
             background: var(--white); padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -57,36 +46,28 @@
             border-bottom: 4px solid var(--primary);
         }
         .logo-box { display: flex; align-items: center; gap: 12px; }
-        .logo-circle { background: var(--primary); color: white; width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .logo-text { font-weight: 900; font-size: 26px; letter-spacing: -1px; text-transform: uppercase; color: var(--secondary); }
+        .logo-circle { background: var(--primary); color: white; width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; }
+        .logo-text { font-weight: 900; font-size: 26px; text-transform: uppercase; color: var(--secondary); }
         .logo-text span { color: var(--primary); }
 
-        /* Search Bar Area */
         .search-area { padding: 20px 5%; text-align: center; }
-        .search-box { width: 100%; max-width: 600px; padding: 15px; border: 2px solid var(--primary); border-radius: 30px; outline: none; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .search-box { width: 100%; max-width: 600px; padding: 15px; border: 2px solid var(--primary); border-radius: 30px; outline: none; font-size: 16px; }
 
-        /* Layout */
         .section-container { padding: 20px 5%; }
         .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
         @media (max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
 
         .panel { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #eee; }
-        h2 { margin-bottom: 20px; border-left: 6px solid var(--primary); padding-left: 15px; font-weight: 800; color: var(--secondary); text-transform: uppercase; }
+        h2 { margin-bottom: 20px; border-left: 6px solid var(--primary); padding-left: 15px; font-weight: 800; text-transform: uppercase; }
 
-        /* Product Cards */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         .product-card { background: white; border: 1px solid #eee; padding: 15px; border-radius: 15px; text-align: center; transition: 0.3s; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
         .product-card img { width: 100%; border-radius: 10px; height: 160px; object-fit: cover; margin-bottom: 10px; }
         .price-tag { color: var(--primary); font-weight: 800; font-size: 20px; margin: 5px 0; }
-
-        /* Enticement Word */
         .enticement { font-weight: bold; color: var(--accent); font-size: 13px; margin-bottom: 10px; display: block; }
+        .btn-buy { background: var(--success); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        .btn-buy { background: var(--success); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-buy:hover { background: #1eb954; }
-
-        /* Floating AI Chat */
         #ai-chat-window {
             position: fixed; bottom: 95px; right: 20px; width: 320px;
             background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -108,13 +89,13 @@
 
         .calc-input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; margin-bottom: 10px; font-size: 14px; }
         .calc-btn { background: var(--secondary); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        
+        .admin-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0; gap: 10px; flex-wrap: wrap; }
     </style>
 </head>
 <body>
 
-    <div class="ticker">
-        🔥 CRAVING FRESHNESS? WE DELIVER THE SOFTEST BREAD IN IKORODU RIGHT TO YOUR DOOR! 🔥
-    </div>
+    <div class="ticker">🔥 CRAVING FRESHNESS? WE DELIVER THE SOFTEST BREAD IN IKORODU RIGHT TO YOUR DOOR! 🔥</div>
 
     <div id="welcome-screen">
         <div class="logo-circle" style="width:80px; height:80px; font-size:40px;">H</div>
@@ -131,23 +112,22 @@
     </header>
 
     <div class="search-area">
-        <input type="text" id="storeSearch" class="search-box" placeholder="Search for your favorite loaf (e.g., Butter, Milk, Wheat)..." onkeyup="filterProducts()">
+        <input type="text" id="storeSearch" class="search-box" placeholder="Search for bread (e.g., Butter, Milk)..." onkeyup="filterProducts()">
     </div>
 
     <div class="section-container">
         <div class="grid-layout">
-            
             <div>
                 <div class="panel">
                     <h2><i class="fas fa-route"></i> Order Tracking</h2>
                     <div style="display:flex; gap:10px;">
-                        <input type="text" id="trackID" placeholder="Paste Order ID here" class="calc-input" style="margin:0;">
+                        <input type="text" id="trackID" placeholder="Order ID" class="calc-input" style="margin:0;">
                         <button onclick="trackOrder()" class="calc-btn" style="width:120px; background:var(--primary)">LOCATE</button>
                     </div>
                     <div id="trackingView" style="display:none; margin-top:25px;">
                         <div style="display:flex; justify-content:space-between; position:relative;">
                             <div style="height:4px; width:100%; background:#eee; position:absolute; top:12px; z-index:0;"></div>
-                            <div style="z-index:1; text-align:center;"><div style="width:25px; height:25px; background:var(--primary); border-radius:50%; margin:auto;"></div><small>Confirmed</small></div>
+                            <div style="z-index:1; text-align:center;"><div style="width:25px; height:25px; background:var(--primary); border-radius:50%; margin:auto;"></div><small>Paid</small></div>
                             <div style="z-index:1; text-align:center;"><div style="width:25px; height:25px; background:var(--primary); border-radius:50%; margin:auto;"></div><small>Packed</small></div>
                             <div style="z-index:1; text-align:center;"><div id="dot3" style="width:25px; height:25px; background:#ddd; border-radius:50%; margin:auto;"></div><small>On Road</small></div>
                         </div>
@@ -156,59 +136,50 @@
 
                 <div class="panel">
                     <h2><i class="fas fa-bread-slice"></i> Store Inventory</h2>
-                    <div class="product-grid" id="productDisplay">
-                        <div class="product-card">
-                            <span class="enticement">Best Seller!</span>
-                            <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
-                            <h4>Jendol-Style Butter Loaf</h4>
-                            <p class="price-tag">₦1,350</p>
-                            <button class="btn-buy" onclick="orderNow('Jendol-Style Butter Loaf', 1350)">BUY ON WHATSAPP</button>
-                        </div>
-                    </div>
+                    <div class="product-grid" id="productDisplay"></div>
                 </div>
             </div>
 
             <div>
                 <div class="panel">
                     <h2><i class="fas fa-truck"></i> Delivery Calc</h2>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Pickup: Igbosoro Opaara, Odogunyan</p>
-                    <input type="number" id="distance" placeholder="Distance from Store (KM)" class="calc-input">
-                    <button onclick="calculateFee()" class="calc-btn">CALCULATE FEE</button>
+                    <input type="number" id="distance" placeholder="KM from Odogunyan" class="calc-input">
+                    <button onclick="calculateFee()" class="calc-btn">CHECK FEE</button>
                     <div id="feeResult" style="margin-top:15px; font-weight:900; color:var(--primary); font-size:22px; text-align:center;"></div>
                 </div>
 
                 <div class="panel">
-                    <h2><i class="fas fa-headset"></i> Help Center</h2>
+                    <h2><i class="fas fa-headset"></i> Complaints</h2>
                     <input type="text" id="compName" placeholder="Full Name" class="calc-input">
-                    <textarea id="compMessage" placeholder="What is the issue?" class="calc-input" style="height:80px;"></textarea>
-                    <button onclick="submitComplaint()" class="calc-btn" style="background:#ff4757">SUBMIT COMPLAINT</button>
+                    <textarea id="compMessage" placeholder="Issue..." class="calc-input" style="height:80px;"></textarea>
+                    <button onclick="submitComplaint()" class="calc-btn" style="background:#ff4757">SUBMIT</button>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div class="chat-trigger" onclick="toggleChat()"><i class="fas fa-comment-dots fa-2x"></i></div>
     <div id="ai-chat-window">
-        <div class="chat-header">Heavens Prime AI Assistant</div>
-        <div class="chat-body" id="chatFlow">
-            <p style="background:#f1f1f1; padding:10px; border-radius:10px; margin-bottom:10px;">Hello! I am the Heavens Prime Assistant. I can help you with prices, wholesale orders, and our store location in Odogunyan.</p>
-        </div>
+        <div class="chat-header">Heavens Prime AI</div>
+        <div class="chat-body" id="chatFlow"></div>
         <div class="chat-footer">
-            <input type="text" id="userMsg" placeholder="Ask about bread...">
+            <input type="text" id="userMsg" placeholder="Ask AI...">
             <button onclick="aiResponse()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
     <div id="adminPanel" style="display:none; position:fixed; top:5%; left:5%; width:90%; height:90%; background:white; z-index:2000; border:4px solid var(--primary); padding:30px; border-radius:20px; overflow-y:auto; box-shadow: 0 0 100px rgba(0,0,0,0.5);">
-        <button onclick="this.parentElement.style.display='none'" style="float:right; background:red; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">CLOSE DASHBOARD</button>
-        <h2 style="border-left-color: var(--secondary);">Store Management</h2>
-        <hr><br>
-        <div style="background:#f9f9f9; padding:20px; border-radius:10px;">
-            <h3>Update Product List</h3>
-            <input type="text" id="newName" placeholder="Name of Bread" class="calc-input">
+        <button onclick="this.parentElement.style.display='none'" style="float:right; background:red; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">CLOSE</button>
+        <h2>Store Management</h2>
+        <div style="background:#f9f9f9; padding:20px; border-radius:10px; margin-bottom: 20px;">
+            <h3>Add New Bread</h3>
+            <input type="text" id="newName" placeholder="Bread Name" class="calc-input">
             <input type="number" id="newPrice" placeholder="Price (₦)" class="calc-input">
-            <button onclick="addProduct()" class="calc-btn" style="background:var(--primary)">PUBLISH TO WEBSITE</button>
+            <button onclick="addProduct()" class="calc-btn" style="background:var(--primary)">PUBLISH</button>
+        </div>
+        <div style="background:#fff; padding:20px; border: 1px solid #eee; border-radius:10px;">
+            <h3>Current Stock Management</h3>
+            <div id="adminProductList"></div>
         </div>
     </div>
 
@@ -224,104 +195,77 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 1. Splash Logic
-        setTimeout(() => { document.getElementById('welcome-screen').style.opacity='0'; 
-        setTimeout(()=> document.getElementById('welcome-screen').style.display='none', 800); }, 3000);
+        setTimeout(() => { 
+            document.getElementById('welcome-screen').style.opacity='0'; 
+            setTimeout(()=> document.getElementById('welcome-screen').style.display='none', 800); 
+        }, 3000);
 
-        // 2. Admin Security
         function secureAdminToggle() {
-            const pin = prompt("Enter Store Access PIN:");
-            if(pin === "2006") { // CHANGE THIS PIN
-                document.getElementById('adminPanel').style.display = 'block';
-            } else {
-                alert("Unauthorized Access Attempt.");
-            }
+            const pin = prompt("Enter PIN:");
+            if(pin === "2006") document.getElementById('adminPanel').style.display = 'block';
+            else alert("Denied.");
         }
 
-        // 3. Search Bar Functionality
-        function filterProducts() {
-            const query = document.getElementById('storeSearch').value.toLowerCase();
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                const name = card.querySelector('h4').innerText.toLowerCase();
-                card.style.display = name.includes(query) ? 'block' : 'none';
+        db.collection("products").orderBy("time", "desc").onSnapshot(snap => {
+            const adminList = document.getElementById('adminProductList');
+            const storeDisplay = document.getElementById('productDisplay');
+            adminList.innerHTML = ""; storeDisplay.innerHTML = "";
+            snap.forEach(doc => {
+                const data = doc.data(); const id = doc.id;
+                storeDisplay.innerHTML += `
+                    <div class="product-card">
+                        <span class="enticement">Freshly Stocked!</span>
+                        <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
+                        <h4>${data.name}</h4><p class="price-tag">₦${data.price}</p>
+                        <button class="btn-buy" onclick="orderNow('${data.name}', ${data.price})">WHATSAPP</button>
+                    </div>`;
+                adminList.innerHTML += `
+                    <div class="admin-item">
+                        <div><strong>${data.name}</strong> - ₦${data.price}</div>
+                        <div style="display:flex; gap:5px;">
+                            <button onclick="editName('${id}', '${data.name}')" style="background:#007bff; color:white; border:none; padding:5px; border-radius:4px; font-size:11px;">Edit Name</button>
+                            <button onclick="editPrice('${id}', '${data.name}', '${data.price}')" style="background:orange; color:white; border:none; padding:5px; border-radius:4px; font-size:11px;">Edit Price</button>
+                            <button onclick="deleteProduct('${id}')" style="background:red; color:white; border:none; padding:5px; border-radius:4px; font-size:11px;">Delete</button>
+                        </div>
+                    </div>`;
+            });
+        });
+
+        function editName(id, old) { const n = prompt("New Name:", old); if(n && n !== old) db.collection("products").doc(id).update({name:n}); }
+        function editPrice(id, name, old) { const p = prompt(`New Price for ${name}:`, old); if(p && p !== old) db.collection("products").doc(id).update({price:p}); }
+        function deleteProduct(id) { if(confirm("Delete?")) db.collection("products").doc(id).delete(); }
+        function addProduct() {
+            const n = document.getElementById('newName').value; const p = document.getElementById('newPrice').value;
+            if(n && p) db.collection("products").add({name:n, price:p, time:firebase.firestore.FieldValue.serverTimestamp()}).then(() => {
+                document.getElementById('newName').value = ""; document.getElementById('newPrice').value = "";
             });
         }
 
-        // 4. AI Chat Bot
-        function toggleChat() { 
-            const win = document.getElementById('ai-chat-window');
-            win.style.display = win.style.display === 'block' ? 'none' : 'block';
+        function filterProducts() {
+            const q = document.getElementById('storeSearch').value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(c => {
+                c.style.display = c.querySelector('h4').innerText.toLowerCase().includes(q) ? 'block' : 'none';
+            });
         }
 
-        function aiResponse() {
-            const msg = document.getElementById('userMsg').value.toLowerCase();
-            const flow = document.getElementById('chatFlow');
-            if(!msg) return;
-            flow.innerHTML += `<p style="text-align:right; margin:10px 0;"><b>You:</b> ${msg}</p>`;
-            
-            let reply = "Our staff will respond shortly! You can also check our delivery calc for shipping costs.";
-            if(msg.includes("price")) reply = "Our fresh bread starts at ₦1,000 for standard loaves and ₦1,350 for premium butter loaves.";
-            if(msg.includes("location") || msg.includes("store")) reply = "We are located at Igbosoro Opaara, off Odogunyan, Ikorodu.";
-            if(msg.includes("wholesale")) reply = "Yes! We distribute to schools, hotels, and retailers. Message us on WhatsApp for our wholesale price list.";
-
-            setTimeout(() => {
-                flow.innerHTML += `<p style="background:#f1f1f1; padding:10px; border-radius:10px; margin-bottom:10px;"><b>AI:</b> ${reply}</p>`;
-                flow.scrollTop = flow.scrollHeight;
-            }, 600);
-            document.getElementById('userMsg').value = "";
-        }
-
-        // 5. WhatsApp Integration
-        function orderNow(item, price) {
-            const phone = "2348094222602";
-            const text = `*NEW ORDER - HEAVENS PRIME*%0A--------------------------%0A*Item:* ${item}%0A*Price:* ₦${price}%0A--------------------------%0A_Please confirm my order and send payment details._`;
-            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
-        }
-
-        // 6. Delivery Calc
         function calculateFee() {
             const km = document.getElementById('distance').value;
-            if(!km) return alert("Enter KM");
             let fee = km <= 2 ? 500 : 500 + ((km-2)*150);
             document.getElementById('feeResult').innerText = "₦" + fee.toLocaleString();
         }
 
-        // 7. Store Management (Admin)
-        function addProduct() {
-            const name = document.getElementById('newName').value;
-            const price = document.getElementById('newPrice').value;
-            if(!name || !price) return alert("Fill fields!");
-            db.collection("products").add({ name, price, time: firebase.firestore.FieldValue.serverTimestamp() })
-            .then(() => { alert("Inventory Updated!"); location.reload(); });
+        function orderNow(i, p) { window.open(`https://wa.me/2348094222602?text=*ORDER:* ${i} (₦${p})`, '_blank'); }
+        function trackOrder() { document.getElementById('trackingView').style.display='block'; }
+        function submitComplaint() { alert("Received!"); }
+        function toggleChat() { const w = document.getElementById('ai-chat-window'); w.style.display = w.style.display==='block' ? 'none':'block'; }
+        function aiResponse() {
+            const m = document.getElementById('userMsg').value.toLowerCase();
+            let r = "Contact WhatsApp for support!";
+            if(m.includes("price")) r = "Bread starts at ₦1,000.";
+            if(m.includes("location")) r = "Igbosoro Opaara, Odogunyan.";
+            document.getElementById('chatFlow').innerHTML += `<p><b>You:</b> ${m}</p><p><b>AI:</b> ${r}</p>`;
+            document.getElementById('userMsg').value = "";
         }
-
-        function submitComplaint() {
-            const name = document.getElementById('compName').value;
-            const msg = document.getElementById('compMessage').value;
-            db.collection("complaints").add({ name, msg, time: new Date() }).then(() => alert("Submitted."));
-        }
-
-        function trackOrder() {
-            document.getElementById('trackingView').style.display = 'block';
-            setTimeout(() => { document.getElementById('dot3').style.background = '#f68b1e'; }, 1000);
-        }
-
-        // Load Products
-        db.collection("products").orderBy("time", "desc").onSnapshot(snap => {
-            const display = document.getElementById('productDisplay');
-            snap.forEach(doc => {
-                const data = doc.data();
-                display.innerHTML += `
-                    <div class="product-card">
-                        <span class="enticement">Freshly Stocked!</span>
-                        <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" alt="Bread">
-                        <h4>${data.name}</h4>
-                        <p class="price-tag">₦${data.price}</p>
-                        <button class="btn-buy" onclick="orderNow('${data.name}', ${data.price})">BUY ON WHATSAPP</button>
-                    </div>`;
-            });
-        });
     </script>
 </body>
-    </html>        
+    </html>                
