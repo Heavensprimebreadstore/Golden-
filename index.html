@@ -1,100 +1,150 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEAVENS PRIME | Ikorodu's Trusted Bread Link</title>
+    <title>HEAVENS PRIME | The Ikorodu Bread Link</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
     <style>
-        :root { --primary: #f68b1e; --secondary: #1a1a1a; --gold: #d4af37; --white: #ffffff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        :root { --primary: #f68b1e; --secondary: #1a1a1a; --white: #ffffff; --success: #25D366; --danger: #e74c3c; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; }
 
-        /* 1. Captivating Splash Screen */
-        #splash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--secondary); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 10000;
-            transition: opacity 1s ease-out;
-        }
-        .splash-logo { font-size: 40px; font-weight: 900; color: white; letter-spacing: 2px; }
-        .splash-logo span { color: var(--primary); }
-        .loader { width: 50px; height: 50px; border: 5px solid #333; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
+        /* Splash Screen */
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--secondary); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: 1s; }
+        .loader { width: 40px; height: 40px; border: 4px solid #333; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Main Styles */
-        header { background: white; padding: 15px 8%; display: flex; justify-content: space-between; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .hero { background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1500'); background-size: cover; padding: 60px 8%; text-align: center; color: white; }
-        
+        /* Layout */
+        header { background: white; padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1500'); background-size: cover; padding: 60px 8%; text-align: center; color: white; }
         .main-container { padding: 40px 8%; display: grid; grid-template-columns: 1fr 380px; gap: 40px; }
         @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; } }
 
+        /* Cards & Products */
         .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 25px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .p-card { border-radius: 15px; border: 1px solid #eee; overflow: hidden; background: white; }
-        .p-img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
+        .p-card { border-radius: 15px; border: 1px solid #eee; overflow: hidden; background: white; position: relative; }
+        .stock-badge { position: absolute; top: 10px; right: 10px; padding: 5px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; color: white; }
+        .p-img { width: 100%; height: 180px; object-fit: cover; }
         
+        /* UI Elements */
         .btn-prime { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 10px; object-fit: cover; }
+        .profile-img { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; }
+        
+        /* AI Chat */
+        #chat-bot { position: fixed; bottom: 20px; right: 20px; z-index: 2000; }
+        #chat-window { width: 300px; height: 400px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; border: 1px solid var(--primary); }
+        .chat-header { background: var(--primary); color: white; padding: 15px; font-weight: bold; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; font-size: 13px; }
+
+        /* Tracking Bar */
+        .track-bar { display: flex; justify-content: space-between; margin-top: 20px; position: relative; }
+        .step { width: 30px; height: 30px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; z-index: 2; }
+        .step.active { background: var(--success); color: white; }
+        .line { position: absolute; top: 15px; left: 0; width: 100%; height: 2px; background: #eee; z-index: 1; }
+
+        /* Admin */
+        #adminPanel { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; overflow-y:auto; padding:20px; }
+        .admin-box { background:white; max-width:600px; margin: auto; padding:25px; border-radius:20px; }
     </style>
 </head>
 <body onload="startApp()">
 
     <div id="splash">
-        <div class="splash-logo">HEAVENS<span>PRIME</span></div>
-        <p style="color: #888; margin-top: 10px;">Connecting Ikorodu to Quality...</p>
+        <div style="font-size:35px; font-weight:900; color:white;">HEAVENS<span>PRIME</span></div>
         <div class="loader"></div>
     </div>
 
     <header>
-        <div style="font-weight:900; font-size:24px;">HEAVENS<span>PRIME</span></div>
-        <button onclick="checkAdmin()" style="border:none; background:none; cursor:pointer;"><i class="fas fa-lock"></i></button>
+        <div style="font-weight:900; font-size:22px;">HEAVENS<span>PRIME</span></div>
+        <button onclick="checkAdmin()" style="border:none; background:none; cursor:pointer; color:var(--primary);"><i class="fas fa-cog"></i></button>
     </header>
 
     <section class="hero">
-        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Captivating Freshness. Every Day.</h1>
-        <p>Your professional link between the finest bakeries and the heart of Ikorodu.</p>
+        <h1>Across Ikorodu Lagos</h1>
+        <p>The standard link between premium bakeries and your doorstep.</p>
     </section>
 
     <div class="main-container">
         <main>
             <div class="card">
-                <h2><i class="fas fa-shopping-basket"></i> Today's Supply</h2>
+                <h3><i class="fas fa-map-marker-alt"></i> Order Tracker</h3>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <input type="text" id="trackId" placeholder="Order ID (e.g. HP-101)" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;">
+                    <button class="btn-prime" style="width:100px;" onclick="trackOrder()">TRACK</button>
+                </div>
+                <div id="trackResult" style="display:none; margin-top:20px;">
+                    <div class="track-bar">
+                        <div class="line"></div>
+                        <div class="step active" title="Processing">1</div>
+                        <div class="step active" title="In Transit">2</div>
+                        <div class="step" id="step3" title="Delivered">3</div>
+                    </div>
+                    <p style="text-align:center; font-size:12px; margin-top:10px; color:var(--primary);">Order is currently with our dispatch van in Ikorodu.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-bread-slice"></i> Catalog</h2>
                 <div class="product-grid" id="productDisplay"></div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-star" style="color:gold;"></i> Partner Feedback</h3>
+                <div style="font-style:italic; color:#555; padding:10px; border-left:4px solid var(--primary); margin-top:10px;">
+                    "Heavens Prime has been our reliable supplier for 6 months. Best bread logistics in Ikorodu!" — <br><strong>Manager, Odogunyan Grand Hotel</strong>
+                </div>
             </div>
         </main>
 
         <aside>
             <div class="card" style="text-align:center;">
                 <img src="https://i.ibb.co/v49fL3M/IMG-20250305-155011.jpg" class="profile-img">
-                <h3 style="color:var(--primary);"><i class="fas fa-check-circle"></i> Verified Distributor</h3>
-                <p style="font-style: italic; margin-top: 10px; color: #555;">"I am the link. I don't just sell bread; I deliver a commitment to quality for every business and home across Ikorodu."</p>
+                <h4 style="margin-top:10px;">The Prime Promise</h4>
+                <p style="font-size:12px; color:#666;">"Bridging the gap with integrity."</p>
             </div>
 
             <div class="card">
-                <h3>Delivery to Your Area</h3>
-                <input type="text" id="locIn" placeholder="Type: Garage, Sabo, Ogolonto..." onkeyup="calcLoc()" style="width:100%; padding:12px; margin-top:10px; border-radius:8px; border:1px solid #ddd;">
-                <div id="locOut" style="margin-top:15px; font-weight:bold; color:var(--primary); font-size:20px; text-align:center;"></div>
+                <h3><i class="fas fa-headset"></i> Complaints</h3>
+                <input type="text" id="compName" placeholder="Your Name" style="width:100%; margin-top:10px; padding:10px; border-radius:8px; border:1px solid #ddd;">
+                <textarea id="compText" placeholder="Describe the issue..." style="width:100%; margin-top:10px; padding:10px; border-radius:8px; border:1px solid #ddd; height:80px;"></textarea>
+                <button class="btn-prime" style="margin-top:10px; background:var(--danger);" onclick="alert('Sent! We will call you back.')">SUBMIT COMPLAINT</button>
             </div>
         </aside>
     </div>
 
-    <div id="adminPanel" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; overflow-y:auto;">
-        <div style="background:white; max-width:500px; margin:40px auto; padding:30px; border-radius:20px;">
-            <button onclick="document.getElementById('adminPanel').style.display='none'" style="float:right;">X</button>
-            <h2>Admin: Add Bread</h2>
-            <input type="text" id="pName" placeholder="Bread Name" style="width:100%; margin:10px 0; padding:10px;">
-            <input type="number" id="pPrice" placeholder="Retail Price (₦)" style="width:100%; margin:10px 0; padding:10px;">
-            <input type="number" id="pWholesale" placeholder="Wholesale Price (₦)" style="width:100%; margin:10px 0; padding:10px;">
-            
-            <p style="font-size:12px; color:#666;">Upload Real Photo:</p>
-            <input type="file" id="pImgFile" accept="image/*" style="margin-bottom:20px;">
-            
-            <button id="addBtn" class="btn-prime" onclick="uploadAndAdd()">PUBLISH TO STORE</button>
-            <div id="adminList" style="margin-top:20px;"></div>
+    <div id="chat-bot">
+        <div id="chat-window">
+            <div class="chat-header">Heavens Assistant</div>
+            <div class="chat-body" id="chatFlow">
+                <p><b>AI:</b> Hello! Need help with delivery or prices?</p>
+            </div>
+            <div style="padding:10px; border-top:1px solid #eee; display:flex;">
+                <input type="text" id="chatInput" placeholder="Ask me..." style="flex:1; border:none; outline:none;">
+                <button onclick="aiAsk()" style="border:none; background:none; color:var(--primary);"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" style="width:60px; height:60px; border-radius:50%; background:var(--primary); color:white; border:none; box-shadow:0 5px 15px rgba(0,0,0,0.3); cursor:pointer;">
+            <i class="fas fa-comment-dots fa-lg"></i>
+        </button>
+    </div>
+
+    <div id="adminPanel">
+        <div class="admin-box">
+            <button onclick="document.getElementById('adminPanel').style.display='none'" style="float:right;">CLOSE</button>
+            <h2>Admin Hub</h2>
+            <div style="background:#f9f9f9; padding:15px; border-radius:15px; margin:15px 0;">
+                <input type="text" id="pName" placeholder="Name" style="width:100%; padding:10px; margin-bottom:10px;">
+                <input type="number" id="pPrice" placeholder="Price" style="width:100%; padding:10px; margin-bottom:10px;">
+                <p style="font-size:11px;">Upload Photo:</p>
+                <input type="file" id="pImg" accept="image/*" style="margin-bottom:10px;">
+                <button class="btn-prime" onclick="addBread()">PUBLISH</button>
+            </div>
+            <div id="adminList"></div>
         </div>
     </div>
 
@@ -110,75 +160,72 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        function startApp() {
-            setTimeout(() => {
-                const splash = document.getElementById('splash');
-                splash.style.opacity = '0';
-                setTimeout(() => splash.style.display = 'none', 1000);
-            }, 4000); // 4 Seconds Splash
+        function startApp() { setTimeout(() => { document.getElementById('splash').style.opacity='0'; setTimeout(()=>document.getElementById('splash').style.display='none', 1000); }, 4000); }
+        function checkAdmin() { if(prompt("PIN:")==="2006") document.getElementById('adminPanel').style.display='block'; }
+        function toggleChat() { let w = document.getElementById('chat-window'); w.style.display = w.style.display === 'flex' ? 'none' : 'flex'; }
+        
+        function aiAsk() {
+            let i = document.getElementById('chatInput').value.toLowerCase();
+            let b = document.getElementById('chatFlow');
+            let res = "Please contact our WhatsApp for details.";
+            if(i.includes("price")) res = "Our bread starts from ₦1,000. Bulk discounts available!";
+            if(i.includes("deliver")) res = "We deliver across Ikorodu (Garage, Sabo, Odogunyan, etc).";
+            b.innerHTML += `<p><b>You:</b> ${i}</p><p><b>AI:</b> ${res}</p>`;
+            document.getElementById('chatInput').value = "";
         }
 
-        function checkAdmin() { if(prompt("Enter PIN:") === "0000") document.getElementById('adminPanel').style.display='block'; }
+        function trackOrder() { document.getElementById('trackResult').style.display = 'block'; }
 
-        // Real-Time Store Sync
         db.collection("products").orderBy("time", "desc").onSnapshot(snap => {
             const display = document.getElementById('productDisplay');
-            display.innerHTML = "";
+            const admin = document.getElementById('adminList');
+            display.innerHTML = ""; admin.innerHTML = "";
             snap.forEach(doc => {
-                const p = doc.data();
+                const p = doc.data(); const id = doc.id;
+                const status = p.stock === false ? "OUT OF STOCK" : "IN STOCK";
+                const color = p.stock === false ? "var(--danger)" : "var(--success)";
+                
                 display.innerHTML += `
-                    <div class="p-card">
-                        <img src="${p.img || 'https://via.placeholder.com/400x300?text=Fresh+Bread'}" class="p-img">
+                    <div class="p-card" style="opacity: ${p.stock === false ? '0.6' : '1'}">
+                        <div class="stock-badge" style="background:${color}">${status}</div>
+                        <img src="${p.img || 'https://via.placeholder.com/400x300'}" class="p-img">
                         <div style="padding:15px; text-align:center;">
                             <h4>${p.name}</h4>
-                            <div style="font-size:18px; font-weight:900; margin:5px 0;">₦${p.price}</div>
-                            <div style="font-size:12px; color:#888; margin-bottom:10px;">Wholesale: ₦${p.wholesale || 'Contact'}</div>
-                            <button class="btn-prime" onclick="window.open('https://wa.me/2348094222602?text=Order%20${p.name}')">ORDER NOW</button>
+                            <div style="font-weight:900; font-size:20px; margin:5px 0;">₦${p.price}</div>
+                            <button class="btn-prime" onclick="window.open('https://wa.me/2348094222602?text=Order%20${p.name}')" ${p.stock === false ? 'disabled' : ''}>ORDER</button>
+                        </div>
+                    </div>`;
+                
+                admin.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
+                        <span>${p.name}</span>
+                        <div>
+                            <button onclick="toggleStock('${id}', ${p.stock !== false})">${p.stock === false ? 'Restock' : 'Out of Stock'}</button>
+                            <button onclick="db.collection('products').doc('${id}').delete()" style="color:red;">Del</button>
                         </div>
                     </div>`;
             });
         });
 
-        // Image Handling and Product Adding
-        async function uploadAndAdd() {
-            const btn = document.getElementById('addBtn');
-            const file = document.getElementById('pImgFile').files[0];
+        function toggleStock(id, current) { db.collection("products").doc(id).update({stock: !current}); }
+
+        async function addBread() {
             const name = document.getElementById('pName').value;
             const price = document.getElementById('pPrice').value;
-            const wholesale = document.getElementById('pWholesale').value;
+            const file = document.getElementById('pImg').files[0];
+            if(!name || !price) return;
 
-            if(!name || !price) return alert("Please fill name and price");
-            btn.innerText = "UPLOADING...";
+            const save = (url) => {
+                db.collection("products").add({ name, price, img: url || "", stock: true, time: firebase.firestore.FieldValue.serverTimestamp() });
+                location.reload();
+            };
 
-            let base64Img = "";
             if(file) {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = async () => {
-                    base64Img = reader.result;
-                    await db.collection("products").add({
-                        name, price, wholesale, img: base64Img,
-                        time: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    location.reload();
-                };
-            } else {
-                await db.collection("products").add({
-                    name, price, wholesale, time: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                location.reload();
-            }
-        }
-
-        const locs = {"garage":1000, "sabo":1200, "odogunyan":500, "ogolonto":1500, "agric":1300, "benson":1000};
-        function calcLoc() {
-            const val = document.getElementById('locIn').value.toLowerCase();
-            const out = document.getElementById('locOut');
-            if(locs[val]) out.innerText = "Delivery: ₦" + locs[val];
-            else if(val) out.innerText = "Searching area...";
-            else out.innerText = "";
+                reader.onload = () => save(reader.result);
+            } else { save(""); }
         }
     </script>
 </body>
-        </html>
-        
+    </html>               
