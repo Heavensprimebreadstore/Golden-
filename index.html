@@ -1,74 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEAVENS PRIME | Ikorodu Bread Distributor & Retail</title>
+    <title>HEAVENS PRIME | Ikorodu's Trusted Bread Link</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
     <style>
-        :root { --primary: #f68b1e; --secondary: #1a1a1a; --gold: #d4af37; --white: #ffffff; --success: #25D366; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background: #fcfcfc; color: var(--secondary); line-height: 1.6; }
+        :root { --primary: #f68b1e; --secondary: #1a1a1a; --gold: #d4af37; --white: #ffffff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
 
-        header {
-            background: var(--white); padding: 15px 8%;
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            border-bottom: 3px solid var(--primary);
+        /* 1. Captivating Splash Screen */
+        #splash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--secondary); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 10000;
+            transition: opacity 1s ease-out;
         }
-        .logo-text { font-weight: 900; font-size: 24px; color: var(--secondary); letter-spacing: -1px; }
-        .logo-text span { color: var(--primary); }
+        .splash-logo { font-size: 40px; font-weight: 900; color: white; letter-spacing: 2px; }
+        .splash-logo span { color: var(--primary); }
+        .loader { width: 50px; height: 50px; border: 5px solid #333; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1500');
-            background-size: cover; background-position: center;
-            color: white; padding: 80px 8% 50px; text-align: center;
-        }
-        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-transform: uppercase; }
+        /* Main Styles */
+        header { background: white; padding: 15px 8%; display: flex; justify-content: space-between; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1500'); background-size: cover; padding: 60px 8%; text-align: center; color: white; }
         
         .main-container { padding: 40px 8%; display: grid; grid-template-columns: 1fr 380px; gap: 40px; }
         @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; } }
 
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 25px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .p-card { border: 1px solid #eee; border-radius: 15px; overflow: hidden; transition: 0.3s; background: #fff; position: relative; }
-        .p-img { width: 100%; height: 180px; object-fit: cover; }
-        .p-info { padding: 15px; text-align: center; }
-        .p-price-row { display: flex; justify-content: space-around; margin: 10px 0; background: #fff8f2; padding: 8px; border-radius: 8px; }
-        .price-item small { font-size: 10px; color: #888; display: block; }
-        .price-item span { font-weight: 800; color: var(--secondary); }
-
-        .btn-prime { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-wa { background: var(--success); }
-
-        .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 10px; object-fit: cover; }
-        .location-suggest { border: 1px solid #ddd; border-top: none; max-height: 150px; overflow-y: auto; display: none; background: white; border-radius: 0 0 10px 10px; }
-        .suggest-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
-        .suggest-item:hover { background: #fff8f2; }
+        .p-card { border-radius: 15px; border: 1px solid #eee; overflow: hidden; background: white; }
+        .p-img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
+        
+        .btn-prime { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 10px; object-fit: cover; }
     </style>
 </head>
-<body>
+<body onload="startApp()">
+
+    <div id="splash">
+        <div class="splash-logo">HEAVENS<span>PRIME</span></div>
+        <p style="color: #888; margin-top: 10px;">Connecting Ikorodu to Quality...</p>
+        <div class="loader"></div>
+    </div>
 
     <header>
-        <div class="logo-text">HEAVENS<span>PRIME</span></div>
-        <button onclick="checkAdmin()" style="border:none; background:none; cursor:pointer;"><i class="fas fa-user-shield"></i></button>
+        <div style="font-weight:900; font-size:24px;">HEAVENS<span>PRIME</span></div>
+        <button onclick="checkAdmin()" style="border:none; background:none; cursor:pointer;"><i class="fas fa-lock"></i></button>
     </header>
 
     <section class="hero">
-        <h1>Retail & Bulk Supply</h1>
-        <p>Across Ikorodu Lagos — Connecting Top Bakeries to Homes and Businesses.</p>
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Captivating Freshness. Every Day.</h1>
+        <p>Your professional link between the finest bakeries and the heart of Ikorodu.</p>
     </section>
 
     <div class="main-container">
         <main>
             <div class="card">
-                <h2><i class="fas fa-bread-slice"></i> Available Inventory</h2>
+                <h2><i class="fas fa-shopping-basket"></i> Today's Supply</h2>
                 <div class="product-grid" id="productDisplay"></div>
             </div>
         </main>
@@ -76,32 +70,30 @@
         <aside>
             <div class="card" style="text-align:center;">
                 <img src="https://i.ibb.co/v49fL3M/IMG-20250305-155011.jpg" class="profile-img">
-                <h3>The Distributor's Promise</h3>
-                <p style="font-size: 13px; color: #666;">"We are the link. Whether you need 1 loaf for breakfast or 500 for your business, Heavens Prime delivers freshness."</p>
+                <h3 style="color:var(--primary);"><i class="fas fa-check-circle"></i> Verified Distributor</h3>
+                <p style="font-style: italic; margin-top: 10px; color: #555;">"I am the link. I don't just sell bread; I deliver a commitment to quality for every business and home across Ikorodu."</p>
             </div>
 
             <div class="card">
-                <h2><i class="fas fa-map-marker-alt"></i> Delivery Calculator</h2>
-                <p style="font-size: 12px; color: #888; margin-bottom: 10px;">Type your area (e.g. Garage, Sabo, Ogolonto)</p>
-                <input type="text" id="locInput" placeholder="Enter your area in Ikorodu..." onkeyup="searchLoc()" style="padding:15px; border:2px solid var(--primary); border-radius:10px;">
-                <div id="locSuggestions" class="location-suggest"></div>
-                
-                <div id="feeResult" style="display:none; margin-top:20px; text-align:center; padding:15px; background: #f0fff4; border-radius: 10px;">
-                    <small>Delivery to <span id="resName"></span></small>
-                    <div style="font-size: 24px; font-weight: 900; color: #2d3436;">₦<span id="resFee"></span></div>
-                </div>
+                <h3>Delivery to Your Area</h3>
+                <input type="text" id="locIn" placeholder="Type: Garage, Sabo, Ogolonto..." onkeyup="calcLoc()" style="width:100%; padding:12px; margin-top:10px; border-radius:8px; border:1px solid #ddd;">
+                <div id="locOut" style="margin-top:15px; font-weight:bold; color:var(--primary); font-size:20px; text-align:center;"></div>
             </div>
         </aside>
     </div>
 
-    <div id="adminPanel" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; overflow-y:auto; padding:20px;">
-        <div style="background:white; max-width:500px; margin:auto; padding:30px; border-radius:20px;">
-            <button onclick="document.getElementById('adminPanel').style.display='none'" style="float:right;">Close</button>
-            <h3>Manage Products</h3>
-            <input type="text" id="pName" placeholder="Bread Name" style="margin:10px 0;">
-            <input type="number" id="pRetail" placeholder="Retail Price (₦)" style="margin:10px 0;">
-            <input type="number" id="pWholesale" placeholder="Wholesale Price (₦)" style="margin:10px 0;">
-            <button class="btn-prime" onclick="addP()">ADD TO STORE</button>
+    <div id="adminPanel" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; overflow-y:auto;">
+        <div style="background:white; max-width:500px; margin:40px auto; padding:30px; border-radius:20px;">
+            <button onclick="document.getElementById('adminPanel').style.display='none'" style="float:right;">X</button>
+            <h2>Admin: Add Bread</h2>
+            <input type="text" id="pName" placeholder="Bread Name" style="width:100%; margin:10px 0; padding:10px;">
+            <input type="number" id="pPrice" placeholder="Retail Price (₦)" style="width:100%; margin:10px 0; padding:10px;">
+            <input type="number" id="pWholesale" placeholder="Wholesale Price (₦)" style="width:100%; margin:10px 0; padding:10px;">
+            
+            <p style="font-size:12px; color:#666;">Upload Real Photo:</p>
+            <input type="file" id="pImgFile" accept="image/*" style="margin-bottom:20px;">
+            
+            <button id="addBtn" class="btn-prime" onclick="uploadAndAdd()">PUBLISH TO STORE</button>
             <div id="adminList" style="margin-top:20px;"></div>
         </div>
     </div>
@@ -118,84 +110,75 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Location Database for Ikorodu
-        const locations = {
-            "Odogunyan": 500, "Garage": 1000, "Sabo": 1200, "Ikorodu Roundabout": 1100,
-            "Ogolonto": 1500, "Benson": 1000, "Agric": 1300, "Ibeshe": 2000,
-            "Ebute": 1500, "Imota": 3000, "Ijede": 2500, "Maya": 1200, "Adamo": 1500
-        };
-
-        function searchLoc() {
-            const input = document.getElementById('locInput').value.toLowerCase();
-            const box = document.getElementById('locSuggestions');
-            box.innerHTML = "";
-            if(!input) { box.style.display = 'none'; return; }
-            
-            let matches = Object.keys(locations).filter(l => l.toLowerCase().includes(input));
-            if(matches.length > 0) {
-                box.style.display = 'block';
-                matches.forEach(m => {
-                    const div = document.createElement('div');
-                    div.className = 'suggest-item';
-                    div.innerText = m;
-                    div.onclick = () => selectLoc(m);
-                    box.appendChild(div);
-                });
-            }
+        function startApp() {
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 1000);
+            }, 4000); // 4 Seconds Splash
         }
 
-        function selectLoc(name) {
-            document.getElementById('locInput').value = name;
-            document.getElementById('locSuggestions').style.display = 'none';
-            document.getElementById('feeResult').style.display = 'block';
-            document.getElementById('resName').innerText = name;
-            document.getElementById('resFee').innerText = locations[name].toLocaleString();
-        }
+        function checkAdmin() { if(prompt("Enter PIN:") === "0000") document.getElementById('adminPanel').style.display='block'; }
 
-        function checkAdmin() { if(prompt("Enter PIN:") === "2006") document.getElementById('adminPanel').style.display='block'; }
-
+        // Real-Time Store Sync
         db.collection("products").orderBy("time", "desc").onSnapshot(snap => {
             const display = document.getElementById('productDisplay');
-            const admin = document.getElementById('adminList');
-            display.innerHTML = ""; admin.innerHTML = "";
+            display.innerHTML = "";
             snap.forEach(doc => {
-                const data = doc.data(); const id = doc.id;
+                const p = doc.data();
                 display.innerHTML += `
                     <div class="p-card">
-                        <img src="https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=400" class="p-img">
-                        <div class="p-info">
-                            <h4>${data.name}</h4>
-                            <div class="p-price-row">
-                                <div class="price-item"><small>RETAIL</small><span>₦${data.retail || data.price}</span></div>
-                                <div class="price-item"><small>WHOLESALE</small><span>₦${data.wholesale || 'Contact'}</span></div>
-                            </div>
-                            <button class="btn-prime btn-wa" onclick="window.open('https://wa.me/2348094222602?text=Order%20${data.name}')">
-                                <i class="fab fa-whatsapp"></i> ORDER NOW
-                            </button>
+                        <img src="${p.img || 'https://via.placeholder.com/400x300?text=Fresh+Bread'}" class="p-img">
+                        <div style="padding:15px; text-align:center;">
+                            <h4>${p.name}</h4>
+                            <div style="font-size:18px; font-weight:900; margin:5px 0;">₦${p.price}</div>
+                            <div style="font-size:12px; color:#888; margin-bottom:10px;">Wholesale: ₦${p.wholesale || 'Contact'}</div>
+                            <button class="btn-prime" onclick="window.open('https://wa.me/2348094222602?text=Order%20${p.name}')">ORDER NOW</button>
                         </div>
                     </div>`;
-                admin.innerHTML += `<div style="border-bottom:1px solid #eee; padding:10px; display:flex; justify-content:space-between;">
-                    <span>${data.name}</span>
-                    <button onclick="db.collection('products').doc('${id}').delete()" style="color:red; border:none; background:none; cursor:pointer;">Delete</button>
-                </div>`;
             });
         });
 
-        function addP() {
+        // Image Handling and Product Adding
+        async function uploadAndAdd() {
+            const btn = document.getElementById('addBtn');
+            const file = document.getElementById('pImgFile').files[0];
             const name = document.getElementById('pName').value;
-            const retail = document.getElementById('pRetail').value;
+            const price = document.getElementById('pPrice').value;
             const wholesale = document.getElementById('pWholesale').value;
-            if(name && retail) {
-                db.collection("products").add({
-                    name, retail, wholesale, time: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    document.getElementById('pName').value="";
-                    document.getElementById('pRetail').value="";
-                    document.getElementById('pWholesale').value="";
+
+            if(!name || !price) return alert("Please fill name and price");
+            btn.innerText = "UPLOADING...";
+
+            let base64Img = "";
+            if(file) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                    base64Img = reader.result;
+                    await db.collection("products").add({
+                        name, price, wholesale, img: base64Img,
+                        time: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    location.reload();
+                };
+            } else {
+                await db.collection("products").add({
+                    name, price, wholesale, time: firebase.firestore.FieldValue.serverTimestamp()
                 });
+                location.reload();
             }
+        }
+
+        const locs = {"garage":1000, "sabo":1200, "odogunyan":500, "ogolonto":1500, "agric":1300, "benson":1000};
+        function calcLoc() {
+            const val = document.getElementById('locIn').value.toLowerCase();
+            const out = document.getElementById('locOut');
+            if(locs[val]) out.innerText = "Delivery: ₦" + locs[val];
+            else if(val) out.innerText = "Searching area...";
+            else out.innerText = "";
         }
     </script>
 </body>
-    </html>        
-            
+        </html>
+        
