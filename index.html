@@ -11,173 +11,179 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        :root { --primary: #f68b1e; --secondary: #1a1a1a; --glass: rgba(0, 0, 0, 0.92); --success: #25D366; }
-        html, body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; background: #fafafa; scroll-behavior: smooth; }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        :root { --primary: #f68b1e; --secondary: #121212; --accent: #ff512f; --glass: rgba(0, 0, 0, 0.95); }
+        body { margin: 0; background: #f8f9fa; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        * { box-sizing: border-box; }
 
-        /* Splash Screen - Transparent Black Glass */
+        /* Transparent Black Visual Display (Splash) */
         #splash { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--glass); backdrop-filter: blur(20px);
+            background: var(--glass); backdrop-filter: blur(25px);
             display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; z-index: 10000; transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1); color: white;
+            align-items: center; z-index: 10000; transition: 1s; color: white;
         }
-        .gradient-text { background: linear-gradient(45deg, #f68b1e, #ff512f, #dd2476); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        .logo-wrap { width: 120px; height: 120px; border: 4px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; animation: pulse 2s infinite; }
+        .colorful-head { background: linear-gradient(to right, #f68b1e, #ff512f, #dd2476); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
 
-        header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        
-        .search-container { padding: 15px 5%; background: white; }
-        #searchBar { width: 100%; padding: 14px 25px; border-radius: 35px; border: 2px solid #eee; outline: none; font-size: 16px; transition: 0.3s; }
-        #searchBar:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(246,139,30,0.15); }
+        /* Layout & Header */
+        header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 30px; padding: 30px 5%; }
+        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } }
 
-        .main-container { padding: 0 5% 50px; display: grid; grid-template-columns: 1fr 400px; gap: 30px; }
-        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; } }
+        /* Cards & UI */
+        .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); margin-bottom: 25px; border: 1px solid #eee; position: relative; overflow: hidden; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .p-card { border-radius: 20px; border: 1px solid #f0f0f0; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: white; }
+        .p-card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .p-img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px 20px 0 0; }
 
-        .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #f2f2f2; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .p-card { border-radius: 22px; overflow: hidden; border: 1px solid #eee; background: white; transition: 0.3s; }
-        .p-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .p-img { width: 100%; height: 200px; object-fit: cover; background: #f9f9f9; border-bottom: 1px solid #eee; }
+        /* Real-Time Tracker */
+        .track-road { height: 10px; background: #e0e0e0; border-radius: 5px; position: relative; margin: 30px 0; overflow: hidden; }
+        .track-progress { height: 100%; background: var(--primary); width: 0%; transition: 5s linear; }
+        .truck-icon { position: absolute; top: -10px; left: 0%; transition: 5s linear; color: var(--primary); font-size: 24px; text-shadow: 0 0 10px rgba(246,139,30,0.5); }
 
-        /* Real-Time Tracker Animation */
-        .track-wrap { background: #f8f9fa; padding: 20px; border-radius: 15px; margin-top: 15px; }
-        .road { height: 8px; background: #ddd; border-radius: 4px; position: relative; margin: 25px 0; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 5s linear; }
-        .truck { position: absolute; top: -12px; left: 0%; transition: 5s linear; color: var(--primary); font-size: 20px; }
+        /* Admin UI */
+        #adminPanel { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); z-index:20000; overflow-y:auto; padding:20px; color: white; }
+        .admin-content { background: #1a1a1a; max-width: 900px; margin: auto; padding: 35px; border-radius: 35px; border: 1px solid var(--primary); }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #222; color: white; outline: none; }
 
-        /* AI Chatbot Hub */
-        #aiBtn { position: fixed; bottom: 25px; right: 25px; width: 65px; height: 65px; border-radius: 50%; background: var(--primary); color: white; border: none; z-index: 5000; box-shadow: 0 8px 20px rgba(0,0,0,0.2); cursor: pointer; }
-        #aiWindow { position: fixed; bottom: 100px; right: 25px; width: 320px; height: 450px; background: white; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); display: none; flex-direction: column; z-index: 5000; overflow: hidden; border: 1px solid #eee; }
-
-        /* Admin Management */
-        #adminPanel { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); z-index:20000; overflow-y:auto; padding:30px; color: white; }
-        .admin-content { background: #1a1a1a; max-width: 850px; margin: auto; padding: 35px; border-radius: 35px; border: 1px solid var(--primary); }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
-        @media (max-width: 700px) { .admin-grid { grid-template-columns: 1fr; } }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: #222; color: white; }
+        /* Animations */
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(246,139,30,0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(246,139,30,0); } 100% { transform: scale(1); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body onload="initApp()">
 
+    <!-- Visual Display Splash -->
     <div id="splash">
-        <h1 class="gradient-text" style="font-size: 50px; margin-bottom: 0;">HEAVENS PRIME</h1>
+        <div class="logo-wrap"><i class="fas fa-bread-slice fa-3x" style="color:var(--primary)"></i></div>
+        <h1 class="colorful-head" style="font-size: 48px; margin: 0;">HEAVENS PRIME</h1>
         <p style="letter-spacing: 6px; font-weight: 300; margin-top: 5px;">BREAD STORE</p>
-        <p id="captivate" style="margin-top: 25px; color: #bbb; text-align: center; max-width: 80%; font-style: italic;">"Powering hotels, supermarkets, and homes with captivating freshness."</p>
-        <div style="width:45px; height:45px; border:4px solid #333; border-top:4px solid var(--primary); border-radius:50%; animation:spin 1s linear infinite; margin-top:35px;"></div>
+        <p style="margin-top: 25px; color: #aaa; font-style: italic; text-align: center; max-width: 80%;">
+            "Powering your business and your home with the standard of quality."
+        </p>
+        <div style="width:40px; height:40px; border:3px solid #333; border-top:3px solid var(--primary); border-radius:50%; animation:spin 1s linear infinite; margin-top:40px;"></div>
     </div>
 
     <header>
-        <div style="font-weight:900; font-size:26px;">HEAVENS <span style="color:var(--primary)">PRIME</span></div>
-        <button onclick="accessAdmin()" style="border:none; background:none; cursor:pointer; color:var(--primary);"><i class="fas fa-user-shield fa-2x"></i></button>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-bread-slice fa-lg" style="color:var(--primary)"></i>
+            <div style="font-weight:900; font-size:24px;">HEAVENS <span style="color:var(--primary)">PRIME</span></div>
+        </div>
+        <button onclick="checkAdmin()" style="background:none; border:none; cursor:pointer; color:var(--primary);"><i class="fas fa-lock fa-2x"></i></button>
     </header>
 
-    <div class="search-container">
-        <input type="text" id="searchBar" placeholder="Search our bakery-fresh catalog..." onkeyup="runSearch()">
+    <div style="padding: 20px 5% 0;">
+        <input type="text" id="searchBar" placeholder="Search for fresh loaves (Sardine, Butter, Wheat...)" onkeyup="runSearch()" style="width:100%; padding:15px 25px; border-radius:40px; border:2px solid #eee; background:white; color:black;">
     </div>
 
-    <div class="main-container">
+    <div class="main-grid">
         <main>
+            <!-- Mission & Description -->
             <div class="card">
-                <h2 class="gradient-text">The Heavens Prime Standard</h2>
+                <h2 class="colorful-head">Our Commitment</h2>
                 <p style="color: #444; line-height: 1.8; font-size: 15px;">
                     Heavens Prime Bread Store is Ikorodu's leading distribution hub. We bridge the gap between premium bakeries and your business. Whether you run a 5-star hotel, a local supermarket, or simply want the freshest loaf for your family, we provide seamless, real-time logistics and unbeatable quality.
                 </p>
             </div>
 
+            <!-- Delivery Calculator -->
             <div class="card">
-                <h3><i class="fas fa-calculator"></i> Delivery Fee Calculator</h3>
-                <select id="areaSelect" onchange="getFee()" style="background:white; color:black; border:2px solid #eee;">
-                    <option value="">Select Delivery Location...</option>
+                <h3><i class="fas fa-calculator"></i> Delivery Calculator</h3>
+                <select id="calcArea" onchange="updateCalc()" style="background:white; color:black; border:1px solid #ddd;">
+                    <option value="">Choose Delivery Location...</option>
                     <option value="odogunyan">Odogunyan</option>
                     <option value="sabo">Sabo / Garage</option>
                     <option value="maya">Maya / Adamo</option>
                 </select>
-                <div id="feeResult" style="margin-top:20px; font-weight:900; color:var(--primary); font-size:32px; text-align:center;"></div>
+                <div id="calcResult" style="margin-top:20px; font-weight:900; color:var(--primary); font-size:32px; text-align:center;"></div>
             </div>
 
+            <!-- Real-Time Tracker -->
             <div class="card">
-                <h3><i class="fas fa-shipping-fast"></i> Real-Time Order Tracker</h3>
-                <div class="track-wrap">
-                    <div id="trackStatus" style="font-size: 13px; font-weight: bold; color: #666;">Ready for tracking...</div>
-                    <div class="road">
-                        <div class="progress-fill" id="pBar"></div>
-                        <i class="fas fa-truck truck" id="pTruck"></i>
-                    </div>
-                    <div style="display:flex; gap:12px;">
-                        <input type="text" id="orderInput" placeholder="Enter tracking ID (e.g. HP-123456)" style="background:white; color:black; border:1px solid #ddd;">
-                        <button onclick="startTracking()" style="background:var(--secondary); color:white; border:none; padding:10px 25px; border-radius:12px; font-weight:bold; cursor:pointer;">TRACK</button>
-                    </div>
+                <h3><i class="fas fa-route"></i> Real-Time Order Tracker</h3>
+                <div class="track-road">
+                    <div class="track-progress" id="tBar"></div>
+                    <i class="fas fa-truck truck-icon" id="tTruck"></i>
+                </div>
+                <div style="display:flex; gap:12px;">
+                    <input type="text" id="trackID" placeholder="Enter Order ID (HP-XXXXXX)" style="background:white; color:black; border:1px solid #ddd;">
+                    <button onclick="startTrack()" style="background:var(--secondary); color:white; padding:12px 25px; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">TRACK</button>
                 </div>
             </div>
 
+            <!-- Inventory Grid -->
             <div class="card">
                 <h2><i class="fas fa-store"></i> Live Inventory</h2>
-                <div class="product-grid" id="productDisplay"></div>
+                <div class="product-grid" id="shopGrid"></div>
             </div>
         </main>
 
         <aside>
-            <div class="card" style="text-align:center; border-top: 5px solid var(--primary);">
-                <img src="https://i.ibb.co/v49fL3M/IMG-20250305-155011.jpg" style="width:130px; height:130px; border-radius:50%; border:5px solid var(--primary); object-fit:cover; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                <h4 style="margin-top:15px; margin-bottom:5px;">Verified Owner</h4>
-                <p style="font-size:12px; color:#777; font-style:italic;">"Standard is not a choice; it's our promise to every hotel, supermarket, and home."</p>
+            <!-- Owner Section -->
+            <div class="card" style="text-align:center;">
+                <img src="https://i.ibb.co/v49fL3M/IMG-20250305-155011.jpg" style="width:130px; height:130px; border-radius:50%; border:5px solid var(--primary); object-fit:cover; margin-bottom:15px;">
+                <h4 style="margin:0;">Verified Owner</h4>
+                <p style="font-size:13px; font-style:italic; color:#666; margin-top:10px;">"Integrity in supply is the foundation of our partnership with you."</p>
             </div>
 
+            <!-- Testimonials -->
             <div class="card">
-                <h3>Trusted Partners</h3>
-                <div style="font-size:13px; line-height:1.6; color:#555;">
-                    <p style="border-left:3px solid var(--primary); padding-left:10px; margin-bottom:15px;">"Best wholesale bread distributor in Ikorodu. The delivery is always on point!"<br>— <b>Manager, Royal Hotel</b></p>
-                    <p style="border-left:3px solid var(--primary); padding-left:10px; margin-bottom:15px;">"The real-time tracking is a game-changer for my supermarket stock."<br>— <b>CEO, J-Mart</b></p>
-                    <p style="border-left:3px solid var(--primary); padding-left:10px;">"Quality and speed. Heavens Prime is simply the standard."<br>— <b>Home Customer, Sabo</b></p>
+                <h3>Customer Reviews</h3>
+                <div style="font-size:13px; line-height:1.6;">
+                    <p style="border-left:3px solid var(--primary); padding-left:10px;">"Best wholesale partner for my hotel. Delivery is always on point."<br>— <b>Manager, Royal Inn</b></p>
+                    <p style="border-left:3px solid var(--primary); padding-left:10px; margin:15px 0;">"The sardine bread tracking is so accurate. I know exactly when to stock up."<br>— <b>Sabo Vendor</b></p>
+                    <p style="border-left:3px solid var(--primary); padding-left:10px;">"Freshness guaranteed every time. My kids love it!"<br>— <b>Sarah, Adamo</b></p>
                 </div>
             </div>
 
+            <!-- AI Bot -->
+            <div class="card" style="background: #121212; color: white;">
+                <h4><i class="fas fa-robot"></i> Heavens AI Assistant</h4>
+                <div id="aiChat" style="height:150px; overflow-y:auto; font-size:13px; background:#1a1a1a; padding:10px; border-radius:10px; margin-bottom:10px;">Hello! Ask me about our prices or delivery! 👋</div>
+                <div style="display:flex;">
+                    <input type="text" id="aiInput" placeholder="Price check..." style="padding:10px; margin:0;">
+                    <button onclick="askAI()" style="background:var(--primary); border:none; padding:10px; color:white; border-radius:0 10px 10px 0;"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+            <!-- Complaints -->
             <div class="card">
                 <h3>Complaints Portal</h3>
-                <textarea id="complaintMsg" placeholder="Describe your issue..."></textarea>
-                <button onclick="alert('Your report has been logged. Our manager will contact you within 1 hour.')" style="width:100%; background:#d63031; color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; cursor:pointer;">SUBMIT REPORT</button>
+                <textarea id="compMsg" placeholder="Describe the issue..."></textarea>
+                <button onclick="alert('Ticket Logged. Management will contact you.')" style="width:100%; background:#e74c3c; color:white; padding:12px; border:none; border-radius:12px; font-weight:bold;">SUBMIT REPORT</button>
             </div>
         </aside>
     </div>
 
-    <button id="aiBtn" onclick="toggleAI()"><i class="fas fa-comments"></i></button>
-    <div id="aiWindow">
-        <div style="background:var(--primary); color:white; padding:18px; font-weight:900;">Heavens Sales Assistant</div>
-        <div id="aiChatBody" style="flex:1; padding:15px; overflow-y:auto; font-size:13px; background:#fdfdfd;">Hello! I'm your friendly Sales Manager. 🍞 How can I help you with prices or delivery today?</div>
-        <div style="padding:12px; border-top:1px solid #eee; display:flex; background:white;">
-            <input type="text" id="aiIn" placeholder="Ask about bread prices..." style="flex:1; border:none; outline:none; color:black; background:none;">
-            <button onclick="runAIChat()" style="color:var(--primary); border:none; background:none; cursor:pointer;"><i class="fas fa-paper-plane fa-lg"></i></button>
-        </div>
-    </div>
-
+    <!-- Admin Panel -->
     <div id="adminPanel">
         <div class="admin-content">
-            <button onclick="document.getElementById('adminPanel').style.display='none'" style="float:right; background:none; border:none; color:red; cursor:pointer;"><i class="fas fa-times-circle fa-2x"></i></button>
-            <h2 class="gradient-text">Management Dashboard</h2>
+            <button onclick="document.getElementById('adminPanel').style.display='none'" style="float:right; color:red; background:none; border:none; font-size:24px;">&times;</button>
+            <h2 class="colorful-head">Executive Management Panel</h2>
             
-            <div class="admin-grid">
-                <div style="background:#252525; padding:20px; border-radius:20px;">
-                    <h4><i class="fas fa-plus"></i> Add New Product</h4>
-                    <input type="text" id="pName" placeholder="Product Name">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div style="background:#222; padding:20px; border-radius:20px;">
+                    <h4><i class="fas fa-plus-circle"></i> Add New Stock</h4>
+                    <input type="text" id="pName" placeholder="Bread Name">
                     <input type="number" id="pPrice" placeholder="Price (₦)">
-                    <label style="font-size:12px; color:#aaa;">Upload Gallery Photo:</label>
+                    <label style="font-size:11px; color:#888;">Select Gallery Photo:</label>
                     <input type="file" id="pImg" accept="image/*">
-                    <button onclick="saveProduct()" style="width:100%; background:var(--success); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; margin-top:10px;">PUBLISH TO STORE</button>
+                    <button onclick="uploadProduct()" style="width:100%; background:var(--success); color:white; padding:12px; border:none; border-radius:12px; margin-top:10px; font-weight:bold;">PUBLISH</button>
                 </div>
-                <div style="background:#252525; padding:20px; border-radius:20px;">
-                    <h4><i class="fas fa-truck-loading"></i> Delivery Fees (Edit)</h4>
-                    <input type="number" id="fee1" placeholder="Odogunyan Fee">
-                    <input type="number" id="fee2" placeholder="Sabo/Garage Fee">
-                    <input type="number" id="fee3" placeholder="Maya Fee">
-                    <button onclick="saveFees()" style="width:100%; background:var(--primary); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold;">SAVE FEES</button>
+                <div style="background:#222; padding:20px; border-radius:20px;">
+                    <h4><i class="fas fa-truck"></i> Edit Delivery Rates</h4>
+                    <input type="number" id="fOdo" placeholder="Odogunyan Fee">
+                    <input type="number" id="fSabo" placeholder="Sabo Fee">
+                    <input type="number" id="fMaya" placeholder="Maya Fee">
+                    <button onclick="saveFees()" style="width:100%; background:var(--primary); color:white; padding:12px; border:none; border-radius:12px; margin-top:10px; font-weight:bold;">SAVE FEES</button>
                 </div>
             </div>
 
-            <div style="background:#252525; padding:20px; border-radius:20px; margin-top:20px;">
-                <h4><i class="fas fa-chart-line"></i> Sales Performance</h4>
-                <canvas id="salesChart" width="400" height="180"></canvas>
+            <div style="background:#222; padding:20px; border-radius:20px; margin-top:20px;">
+                <h4><i class="fas fa-chart-area"></i> Sales Analytics</h4>
+                <canvas id="salesChart" width="400" height="150"></canvas>
             </div>
-
             <div id="adminList" style="margin-top:25px;"></div>
         </div>
     </div>
@@ -187,105 +193,101 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let currentPrices = {};
-        let deliverySettings = { odogunyan: 500, sabo: 1000, maya: 1500 };
+        let livePrices = {};
+        let activeFees = { odogunyan: 500, sabo: 1000, maya: 1500 };
 
-        function initApp() { 
-            setTimeout(() => { document.getElementById('splash').style.opacity='0'; setTimeout(()=>document.getElementById('splash').style.display='none', 1000); }, 4000); 
-            db.collection("settings").doc("delivery").onSnapshot(doc => { if(doc.exists) deliverySettings = doc.data(); });
+        function initApp() {
+            // FAIL-SAFE BLANK SCREEN TIMER (4 seconds)
+            setTimeout(() => { document.getElementById('splash').style.opacity='0'; setTimeout(()=>document.getElementById('splash').style.display='none', 1000); }, 4000);
+            db.collection("settings").doc("delivery").onSnapshot(doc => { if(doc.exists) activeFees = doc.data(); });
         }
 
-        function accessAdmin() { if(prompt("Enter Management PIN:") === "0000") { document.getElementById('adminPanel').style.display='block'; loadChart(); } }
-        function toggleAI() { let w = document.getElementById('aiWindow'); w.style.display = (w.style.display === 'flex') ? 'none' : 'flex'; }
+        function checkAdmin() { if(prompt("Management PIN:") === "0000") { document.getElementById('adminPanel').style.display='block'; initChart(); } }
 
-        // PERMANENT FIX: Robust Upload Logic
-        async function saveProduct() {
+        // PERMANENT IMAGE FIX: COMPRESSION LOGIC
+        async function uploadProduct() {
             const name = document.getElementById('pName').value;
             const price = document.getElementById('pPrice').value;
             const file = document.getElementById('pImg').files[0];
-            if(!name || !price || !file) return alert("All fields are required!");
+            if(!name || !price || !file) return alert("All fields required!");
 
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => {
-                db.collection("products").add({
-                    name, price, img: reader.result, stock: true, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => { alert("Product Standardized and Saved!"); location.reload(); });
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 400; canvas.height = 300; // Optimal small size
+                    ctx.drawImage(img, 0, 0, 400, 300);
+                    const optimizedImg = canvas.toDataURL('image/jpeg', 0.6); // 60% quality compression
+                    db.collection("products").add({ name, price, img: optimizedImg, stock: true, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
+                    .then(() => { alert("Stock Saved Permanently!"); location.reload(); });
+                };
             };
         }
 
-        function saveFees() {
-            const f1 = document.getElementById('fee1').value;
-            const f2 = document.getElementById('fee2').value;
-            const f3 = document.getElementById('fee3').value;
-            db.collection("settings").doc("delivery").set({ odogunyan: f1, sabo: f2, maya: f3 })
-            .then(() => alert("Delivery Fees Updated!"));
-        }
-
-        // Live Store Engine
+        // Live Shop Sync
         db.collection("products").orderBy("timestamp", "desc").onSnapshot(snap => {
-            const display = document.getElementById('productDisplay');
-            const admin = document.getElementById('adminList');
-            display.innerHTML = ""; admin.innerHTML = "";
+            const grid = document.getElementById('shopGrid');
+            const admList = document.getElementById('adminList');
+            grid.innerHTML = ""; admList.innerHTML = "";
             snap.forEach(doc => {
                 const p = doc.data(); const id = doc.id;
-                currentPrices[p.name.toLowerCase()] = p.price;
+                livePrices[p.name.toLowerCase()] = p.price;
                 const inStock = p.stock !== false;
-                display.innerHTML += `
+                grid.innerHTML += `
                     <div class="p-card ${p.name.toLowerCase()}">
-                        <div style="position:absolute; top:12px; left:12px; padding:5px 12px; border-radius:20px; background:${inStock ? '#25D366' : '#e74c3c'}; color:white; font-size:11px; font-weight:bold; z-index:10;">${inStock ? 'AVAILABLE' : 'SOLD OUT'}</div>
+                        <div style="position:absolute; top:12px; right:12px; padding:4px 10px; border-radius:20px; background:${inStock ? '#25D366' : '#e74c3c'}; color:white; font-size:10px; font-weight:bold;">${inStock ? 'AVAILABLE' : 'OUT'}</div>
                         <img src="${p.img}" class="p-img">
-                        <div style="padding:18px; text-align:center;">
-                            <h4 style="margin:0; text-transform:uppercase; font-weight:800;">${p.name}</h4>
-                            <div style="font-weight:900; color:var(--primary); font-size:24px; margin:8px 0;">₦${p.price}</div>
-                            <button onclick="orderBread('${p.name}', '${p.price}')" style="width:100%; padding:12px; background:var(--secondary); color:white; border:none; border-radius:12px; cursor:pointer; font-weight:bold;" ${inStock ? '' : 'disabled'}>ORDER SUPPLY</button>
+                        <div style="padding:15px; text-align:center;">
+                            <h4 style="margin:0;">${p.name}</h4>
+                            <div style="font-weight:900; color:var(--primary); font-size:20px; margin:5px 0;">₦${p.price}</div>
+                            <button onclick="placeOrder('${p.name}', '${p.price}')" style="width:100%; padding:10px; background:var(--secondary); color:white; border:none; border-radius:10px; cursor:pointer;" ${inStock ? '' : 'disabled'}>ORDER NOW</button>
                         </div>
                     </div>`;
-                admin.innerHTML += `
-                    <div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid #444; align-items:center; background:#222; margin-bottom:5px; border-radius:10px;">
-                        <span>${p.name}</span>
+                admList.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#222; padding:10px; border-bottom:1px solid #444; margin-bottom:5px; border-radius:10px;">
+                        <span>${p.name} (₦${p.price})</span>
                         <div>
-                            <button onclick="editP('${id}', '${p.price}')" style="background:none; border:none; color:var(--primary); margin-right:10px;"><i class="fas fa-edit"></i></button>
-                            <button onclick="db.collection('products').doc('${id}').update({stock: ${!inStock}})" style="background:none; border:none; color:#25D366; margin-right:10px;"><i class="fas fa-sync"></i></button>
-                            <button onclick="db.collection('products').doc('${id}').delete()" style="background:none; border:none; color:red;"><i class="fas fa-trash"></i></button>
+                            <button onclick="editP('${id}', '${p.price}')" style="color:var(--primary); background:none; border:none; margin-right:10px;"><i class="fas fa-edit"></i></button>
+                            <button onclick="db.collection('products').doc('${id}').update({stock: ${!inStock}})" style="color:white; background:none; border:none; margin-right:10px;"><i class="fas fa-sync"></i></button>
+                            <button onclick="db.collection('products').doc('${id}').delete()" style="color:red; background:none; border:none;"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>`;
             });
         });
 
-        function orderBread(name, price) {
+        function placeOrder(name, price) {
             const orderID = "HP-" + Math.floor(100000 + Math.random() * 900000);
-            const msg = `🌟 *WELCOME TO HEAVENS PRIME* 🌟\n\nI want to order: *${name}*\nPrice: *₦${price}*\n\nYour Order ID: *${orderID}*\n\nStatus: *Awaiting Confirmation*\n\n_Thank you for choosing the standard for excellence!_`;
+            const msg = `🍞 *WELCOME TO HEAVENS PRIME* 🍞\n\nThank you for choosing the standard for quality. Your order details are below:\n\n*Product:* ${name}\n*Total:* ₦${price}\n*Order ID:* ${orderID}\n\nOur logistics manager will contact you immediately for delivery!`;
             window.open(`https://wa.me/2348094222602?text=${encodeURIComponent(msg)}`);
+        }
+
+        function askAI() {
+            let i = document.getElementById('aiInput').value.toLowerCase();
+            let chat = document.getElementById('aiChat');
+            let res = "I'm not sure, but our manager is ready to help! 👋";
+            if(i.includes("price") || i.includes("how much")) {
+                let found = false;
+                for(let k in livePrices) { if(i.includes(k)) { res = `The price for ${k.toUpperCase()} is ₦${livePrices[k]}. Freshly baked today! 🥖`; found=true; } }
+                if(!found) res = "Which loaf are you asking about? Tell me the name and I'll quote you the standard price! 😊";
+            } else if(i.includes("deliver")) { res = `We deliver to Odogunyan (₦${activeFees.odogunyan}) and Sabo (₦${activeFees.sabo}). Fast and reliable logistics! 🚚`; }
+            chat.innerHTML += `<p><b>You:</b> ${i}</p><p style="color:var(--primary)"><b>AI:</b> ${res}</p>`;
+            chat.scrollTop = chat.scrollHeight; document.getElementById('aiInput').value = "";
         }
 
         function runSearch() {
             let q = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.p-card').forEach(c => {
-                c.style.display = c.className.toLowerCase().includes(q) ? "block" : "none";
-            });
+            document.querySelectorAll('.p-card').forEach(c => c.style.display = c.className.toLowerCase().includes(q) ? "block" : "none");
         }
 
-        function getFee() {
-            const area = document.getElementById('areaSelect').value;
-            document.getElementById('feeResult').innerText = area ? "Fee: ₦" + deliverySettings[area] : "";
+        function startTrack() {
+            if(!document.getElementById('trackID').value.startsWith("HP-")) return alert("Enter a valid HP tracking ID");
+            document.getElementById('tBar').style.width = "100%"; document.getElementById('tTruck').style.left = "90%";
+            setTimeout(() => alert("Supply confirmed! Arriving at your location in 15 minutes."), 5000);
         }
 
-        function startTracking() {
-            let id = document.getElementById('orderInput').value;
-            if(!id.startsWith("HP-")) return alert("Please enter a valid HP tracking ID!");
-            let bar = document.getElementById('pBar');
-            let truck = document.getElementById('pTruck');
-            let status = document.getElementById('trackStatus');
-            bar.style.width = "0%"; truck.style.left = "0%";
-            setTimeout(() => { bar.style.width = "100%"; truck.style.left = "90%"; status.innerText = "Order in Transit: Passing Sabo Junction..."; }, 500);
-            setTimeout(() => { status.innerText = "Arrived! Freshly delivered."; }, 5500);
-        }
-
-        function runAIChat() {
-            let i = document.getElementById('aiIn').value.toLowerCase();
-            let b = document.getElementById('aiChatBody');
-            let r = "I'm not sure about that, but our manager will chat you soon! 😊";
-            
-            if(i.includes("price") || i.includes(                
-    
+        function updateCalc() { let a = document.getElementById('calcArea').value; document.getElementById('calcResult').innerText = a ? "Fee: ₦" + activeFees[a] : ""; }
+        function saveFees() { db.collection("settings").doc("delivery").set({ odogu                                    
