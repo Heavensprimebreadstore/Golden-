@@ -3,166 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HEAVENS PRIME | Enterprise Distribution Hub</title>
+    <title>HEAVENS PRIME | Marketplace</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        :root { --primary: #f68b1e; --secondary: #121212; --accent: #ff512f; --glass: rgba(0, 0, 0, 0.95); }
-        body { margin: 0; background: #f8f9fa; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-        * { box-sizing: border-box; }
-
-        /* Splash Screen */
-        #splash { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--glass); backdrop-filter: blur(25px);
-            display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; z-index: 10000; transition: 1s; color: white;
-        }
-        .logo-wrap { width: 120px; height: 120px; border: 4px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; animation: pulse 2s infinite; }
-        .colorful-head { background: linear-gradient(to right, #f68b1e, #ff512f, #dd2476); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
-
-        /* Layout */
-        header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 30px; padding: 30px 5%; }
-        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } }
-
-        /* UI Components */
-        .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); margin-bottom: 25px; border: 1px solid #eee; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .p-card { border-radius: 20px; border: 1px solid #f0f0f0; transition: 0.3s; background: white; position: relative; }
-        .p-img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px 20px 0 0; }
-
-        /* Tracking Animation */
-        .track-road { height: 10px; background: #e0e0e0; border-radius: 5px; position: relative; margin: 30px 0; overflow: hidden; }
-        .track-progress { height: 100%; background: var(--primary); width: 0%; transition: 5s linear; }
-        .truck-icon { position: absolute; top: -10px; left: 0%; transition: 5s linear; color: var(--primary); font-size: 24px; }
-
-        /* Admin Styles */
-        #adminPanel { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); z-index:20000; overflow-y:auto; padding:20px; color: white; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #333; background: #222; color: white; }
+        :root { --jumia-orange: #f68b1e; --dark: #333; --bg: #f1f1f2; --white: #fff; }
+        body { margin: 0; background: var(--bg); font-family: 'Roboto', sans-serif; overflow-x: hidden; }
         
-        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(246,139,30,0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(246,139,30,0); } 100% { transform: scale(1); } }
+        /* Jumia-Style Header */
+        header { background: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .top-nav { background: #000; color: white; font-size: 11px; padding: 5px 5%; display: flex; justify-content: space-between; }
+        .main-nav { padding: 10px 5%; display: flex; align-items: center; gap: 20px; }
+        .search-box { flex-grow: 1; position: relative; display: flex; }
+        .search-box input { width: 100%; padding: 12px 40px; border: 1px solid #c7c7cd; border-radius: 4px; outline: none; }
+        .search-box i { position: absolute; left: 15px; top: 15px; color: #8e8e93; }
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .nav-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500; text-decoration: none; color: var(--dark); }
+
+        /* Jumia Layout */
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: grid; grid-template-columns: 240px 1fr; gap: 20px; }
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+        /* Sidebar Categories */
+        .sidebar { background: var(--white); border-radius: 4px; padding: 10px 0; height: fit-content; }
+        .cat-link { padding: 10px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #333; cursor: pointer; transition: 0.2s; }
+        .cat-link:hover { color: var(--jumia-orange); background: #fef3e9; }
+
+        /* Product Grid */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .p-card { background: var(--white); border-radius: 4px; padding: 10px; transition: 0.3s; position: relative; text-decoration: none; color: inherit; }
+        .p-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .p-img { width: 100%; height: 180px; object-fit: cover; border-radius: 2px; }
+        .p-info { padding: 8px 0; }
+        .p-name { font-size: 14px; margin-bottom: 5px; height: 32px; overflow: hidden; }
+        .p-price { font-size: 18px; font-weight: 700; color: #333; }
+        .p-vendor { font-size: 11px; color: #757544; background: #fef3e9; padding: 2px 5px; border-radius: 2px; display: inline-block; }
+
+        /* Cart Badge */
+        .cart-count { background: var(--jumia-orange); color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; position: absolute; top: -8px; right: -8px; }
+
+        /* Admin/Vendor Portal Styling */
+        #adminPanel { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999; padding:20px; overflow-y:auto; color:white; }
+        .admin-box { max-width: 600px; margin: auto; background: #222; padding: 30px; border-radius: 8px; border-top: 5px solid var(--jumia-orange); }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 4px; }
+        
+        /* Cart Sidebar */
+        #cartPanel { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 1001; transition: 0.3s; box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px; }
+        .cart-open { right: 0 !important; }
     </style>
 </head>
-<body onload="initApp()">
+<body>
 
-    <!-- Splash Screen -->
-    <div id="splash">
-        <div class="logo-wrap"><i class="fas fa-bread-slice fa-3x" style="color:var(--primary)"></i></div>
-        <h1 class="colorful-head" style="font-size: 42px; margin: 0;">HEAVENS PRIME</h1>
-        <p style="letter-spacing: 4px;">PREMIUM DISTRIBUTION HUB</p>
+    <div id="splash" style="position:fixed; inset:0; background:white; z-index:9999; display:flex; justify-content:center; align-items:center;">
+        <img src="https://i.ibb.co/v49fL3M/IMG-20250305-155011.jpg" style="width:80px; height:80px; border-radius:50%; animation: pulse 1s infinite;">
     </div>
 
     <header>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <i class="fas fa-bread-slice fa-lg" style="color:var(--primary)"></i>
-            <div style="font-weight:900; font-size:20px;">HEAVENS <span style="color:var(--primary)">PRIME</span></div>
+        <div class="top-nav">
+            <span>Official Intermediary Hub - Ikorodu & Ogijo</span>
+            <span>Sell on Heavens Prime</span>
         </div>
-        <button onclick="checkAdmin()" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-user-shield fa-xl"></i></button>
+        <div class="main-nav">
+            <a href="#" style="font-weight:900; font-size:22px; color:var(--dark); text-decoration:none;">HEAVENS <span style="color:var(--jumia-orange)">PRIME</span></a>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="mainSearch" onkeyup="searchProducts()" placeholder="Search products, brands and categories">
+                <button style="background:var(--jumia-orange); color:white; border:none; padding:0 20px; border-radius:0 4px 4px 0; font-weight:bold; cursor:pointer;">SEARCH</button>
+            </div>
+
+            <div class="nav-icons">
+                <div class="nav-item" onclick="openAdmin()">
+                    <i class="fas fa-user-circle fa-lg"></i> Account
+                </div>
+                <div class="nav-item" style="position:relative;" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart fa-lg"></i> Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <div class="main-grid">
-        <main>
-            <!-- Search & Mission -->
-            <div class="card">
-                <input type="text" id="searchBar" onkeyup="runSearch()" placeholder="Search our inventory..." style="background:white; color:black; border:1px solid #ddd;">
-                <p style="margin-top:15px; font-size:14px; color:#666;">
-                    <b>Heavens Prime Bread Store</b> is Ikorodu's leading distribution hub. Whether for 5-star hotels or your family table, we provide unbeatable quality.
-                </p>
-            </div>
-
-            <!-- Tracking & Calc -->
-            <div class="card">
-                <h3><i class="fas fa-route"></i> Live Order Tracking</h3>
-                <div class="track-road"><div class="track-progress" id="tBar"></div><i class="fas fa-truck truck-icon" id="tTruck"></i></div>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="trackID" placeholder="Order ID (HP-XXXXXX)" style="background:white; color:black; border:1px solid #ddd;">
-                    <button onclick="startTrack()" style="background:var(--primary); color:white; border:none; padding:0 20px; border-radius:12px; cursor:pointer;">TRACK</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-store"></i> Current Stock</h3>
-                <div class="product-grid" id="shopGrid"></div>
-            </div>
-        </main>
-
-        <aside>
-            <!-- Owner Section -->
-            <div class="card" style="text-align:center;">
-                <img src="https://i.ibb.co/v49fL3M/IMG-20250305-155011.jpg" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--primary); object-fit:cover;">
-                <h4 style="margin:10px 0 5px;">Verified Proprietor</h4>
-                <p style="font-size:12px; font-style:italic;">"Integrity in every loaf."</p>
-            </div>
-
-            <!-- AI Bot -->
-            <div class="card" style="background:#121212; color:white;">
-                <h5><i class="fas fa-robot"></i> Heavens Assistant</h5>
-                <div id="aiChat" style="height:120px; overflow-y:auto; font-size:12px; background:#1a1a1a; padding:10px; border-radius:10px; margin-bottom:10px;">How can I help you today? 👋</div>
-                <input type="text" id="aiInput" onkeydown="if(event.key==='Enter') askAI()" placeholder="Ask about prices..." style="padding:8px;">
-            </div>
-
-            <!-- Testimonials -->
-            <div class="card">
-                <h5 style="margin-bottom:10px;">Reviews</h5>
-                <div style="font-size:12px;">
-                    <p>"Seamless delivery to my hotel!" — <b>Manager</b></p>
-                    <p>"The freshest in Ikorodu." — <b>Local Customer</b></p>
-                </div>
-            </div>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="cat-link"><i class="fas fa-bread-slice"></i> Sardine Bread</div>
+            <div class="cat-link"><i class="fas fa-cookie"></i> Butter Loaves</div>
+            <div class="cat-link"><i class="fas fa-wheat-awn"></i> Whole Wheat</div>
+            <div class="cat-link"><i class="fas fa-truck"></i> Bulk Wholesale</div>
+            <hr style="border:0.5px solid #eee; margin:10px 0;">
+            <div class="cat-link" style="color:var(--jumia-orange); font-weight:bold;"><i class="fas fa-star"></i> Top Intermediaries</div>
         </aside>
+
+        <main>
+            <div style="background:var(--jumia-orange); padding:15px; border-radius:4px; color:white; margin-bottom:20px; font-weight:bold;">
+                🚚 Free Delivery for orders above ₦10,000 in Odogunyan!
+            </div>
+            
+            <div class="product-grid" id="marketGrid">
+                </div>
+        </main>
     </div>
 
-    <!-- Admin Panel -->
     <div id="adminPanel">
-        <div style="max-width:800px; margin:auto; background:#1a1a1a; padding:30px; border-radius:30px; border:1px solid var(--primary);">
-            <button onclick="document.getElementById('adminPanel').style.display='none'" style="float:right; color:red; background:none; border:none; font-size:24px;">&times;</button>
-            <h2 class="colorful-head">Management Panel</h2>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-                <div style="background:#222; padding:15px; border-radius:15px;">
-                    <h4>Add Inventory</h4>
-                    <input type="text" id="pName" placeholder="Name">
-                    <input type="number" id="pPrice" placeholder="Price (₦)">
-                    <input type="file" id="pImg" accept="image/*">
-                    <button onclick="uploadProduct()" style="width:100%; background:var(--primary); border:none; color:white; padding:10px; border-radius:10px; font-weight:bold;">PUBLISH</button>
-                </div>
-                <div style="background:#222; padding:15px; border-radius:15px;">
-                    <h4>Sales Overview</h4>
-                    <canvas id="salesChart" height="200"></canvas>
-                </div>
+        <div class="admin-box">
+            <h2 style="margin-top:0;">Vendor Dashboard</h2>
+            <p>List new bread types or adjust supply prices.</p>
+            <input type="text" id="pName" placeholder="Product Name (e.g. Premium Butter Bread)">
+            <input type="number" id="pPrice" placeholder="Selling Price (₦)">
+            <input type="text" id="pVendor" placeholder="Vendor Name (Intermediary Name)">
+            <input type="file" id="pImg" accept="image/*">
+            <button onclick="publishProduct()" style="width:100%; background:var(--jumia-orange); color:white; border:none; padding:15px; border-radius:4px; font-weight:bold; cursor:pointer;">UPLOAD TO MARKETPLACE</button>
+            <button onclick="document.getElementById('adminPanel').style.display='none'" style="width:100%; background:transparent; color:white; border:1px solid #555; margin-top:10px; padding:10px; cursor:pointer;">Close</button>
+        </div>
+    </div>
+
+    <div id="cartPanel">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding-bottom:10px;">
+            <h3>Cart ( <span id="cCount">0</span> )</h3>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer;"></i>
+        </div>
+        <div id="cartItems" style="height: calc(100% - 200px); overflow-y:auto; padding:10px 0;"></div>
+        <div style="border-top:1px solid #eee; padding-top:15px;">
+            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:18px;">
+                <span>Total:</span>
+                <span id="cartTotal">₦0</span>
             </div>
-            <hr style="border:0.5px solid #333; margin:20px 0;">
-            <div id="adminList"></div>
+            <button onclick="checkout()" style="width:100%; background:var(--jumia-orange); color:white; border:none; padding:15px; border-radius:4px; margin-top:20px; font-weight:bold; cursor:pointer;">CHECKOUT VIA WHATSAPP</button>
         </div>
     </div>
 
     <script>
-        // FIREBASE SETUP
+        // CONFIGURATION
         const firebaseConfig = { apiKey: "AIzaSyDexFAjH2YvspspIe94FqSljJlXV6Ji1IA", authDomain: "bread-store-a28e8.firebaseapp.com", projectId: "bread-store-a28e8", storageBucket: "bread-store-a28e8.firebasestorage.app", messagingSenderId: "126719314073", appId: "1:126719314073:web:cbc9a3fd876bcd3a97d008" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let livePrices = {};
+        let cart = JSON.parse(localStorage.getItem('hp_cart')) || [];
 
-        function initApp() {
-            // EMERGENCY SPLASH BYPASS (4 Seconds)
-            setTimeout(() => { 
-                const s = document.getElementById('splash');
-                if(s) { s.style.opacity='0'; setTimeout(()=>s.style.display='none', 1000); }
-            }, 4000);
-            loadProducts();
+        // INITIALIZE
+        window.onload = () => {
+            setTimeout(() => document.getElementById('splash').style.display='none', 1500);
+            updateCartUI();
+            loadMarketplace();
+        };
+
+        // LOAD PRODUCTS (NO GLITCH)
+        function loadMarketplace() {
+            db.collection("products").orderBy("timestamp", "desc").onSnapshot(snap => {
+                const grid = document.getElementById('marketGrid');
+                grid.innerHTML = "";
+                snap.forEach(doc => {
+                    const p = doc.data();
+                    grid.innerHTML += `
+                        <div class="p-card" onclick="addToCart('${p.name}', ${p.price}, '${p.img}')">
+                            <img src="${p.img}" class="p-img">
+                            <div class="p-info">
+                                <div class="p-name">${p.name}</div>
+                                <div class="p-price">₦${Number(p.price).toLocaleString()}</div>
+                                <div class="p-vendor"><i class="fas fa-check-circle"></i> ${p.vendor || 'Heavens Prime'}</div>
+                            </div>
+                        </div>`;
+                });
+            });
         }
 
-        function checkAdmin() { if(prompt("Enter Admin PIN:") === "0000") { document.getElementById('adminPanel').style.display='block'; initChart(); } }
+        // CART LOGIC
+        function toggleCart() { document.getElementById('cartPanel').classList.toggle('cart-open'); }
 
-        function uploadProduct() {
+        function addToCart(name, price, img) {
+            const index = cart.findIndex(item => item.name === name);
+            if(index > -1) { cart[index].qty++; } 
+            else { cart.push({name, price, img, qty: 1}); }
+            updateCartUI();
+            alert(name + " added to cart!");
+        }
+
+        function updateCartUI() {
+            localStorage.setItem('hp_cart', JSON.stringify(cart));
+            const list = document.getElementById('cartItems');
+            const count = document.getElementById('cartCount');
+            const cCount = document.getElementById('cCount');
+            const total = document.getElementById('cartTotal');
+            
+            list.innerHTML = "";
+            let sum = 0; let totalQty = 0;
+            
+            cart.forEach((item, idx) => {
+                sum += item.price * item.qty;
+                totalQty += item.qty;
+                list.innerHTML += `
+                    <div style="display:flex; gap:10px; margin-bottom:15px; align-items:center;">
+                        <img src="${item.img}" style="width:50px; height:50px; border-radius:4px; object-fit:cover;">
+                        <div style="flex-grow:1;">
+                            <div style="font-size:12px; font-weight:bold;">${item.name}</div>
+                            <div style="color:var(--jumia-orange); font-size:12px;">₦${item.price.toLocaleString()}</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <i class="fas fa-minus-circle" onclick="changeQty(${idx}, -1)" style="cursor:pointer; color:#888;"></i>
+                            <span>${item.qty}</span>
+                            <i class="fas fa-plus-circle" onclick="changeQty(${idx}, 1)" style="cursor:pointer; color:var(--jumia-orange);"></i>
+                        </div>
+                    </div>`;
+            });
+            
+            count.innerText = totalQty;
+            cCount.innerText = totalQty;
+            total.innerText = "₦" + sum.toLocaleString();
+        }
+
+        function changeQty(idx, amt) {
+            cart[idx].qty += amt;
+            if(cart[idx].qty < 1) cart.splice(idx, 1);
+            updateCartUI();
+        }
+
+        // SEARCH
+        function searchProducts() {
+            let q = document.getElementById('mainSearch').value.toLowerCase();
+            document.querySelectorAll('.p-card').forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(q) ? "block" : "none";
+            });
+        }
+
+        // ADMIN PANEL
+        function openAdmin() {
+            if(prompt("Enter Management PIN:") === "2006") {
+                document.getElementById('adminPanel').style.display = "block";
+            }
+        }
+
+        async function publishProduct() {
             const name = document.getElementById('pName').value;
             const price = document.getElementById('pPrice').value;
+            const vendor = document.getElementById('pVendor').value;
             const file = document.getElementById('pImg').files[0];
+
             if(!name || !price || !file) return alert("Fill all fields");
 
             const reader = new FileReader();
@@ -174,66 +254,26 @@
                     const canvas = document.createElement('canvas');
                     canvas.width = 400; canvas.height = 300;
                     canvas.getContext('2d').drawImage(img, 0, 0, 400, 300);
-                    const optimized = canvas.toDataURL('image/jpeg', 0.6); // Compression fix
-                    db.collection("products").add({ name, price, img: optimized, stock: true, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
-                    .then(() => alert("Saved Permanently!"));
+                    const optimized = canvas.toDataURL('image/jpeg', 0.6);
+
+                    db.collection("products").add({
+                        name, price: Number(price), vendor, img: optimized,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => {
+                        alert("Product Live on Marketplace!");
+                        document.getElementById('adminPanel').style.display = "none";
+                    });
                 };
             };
         }
 
-        function loadProducts() {
-            db.collection("products").orderBy("timestamp", "desc").onSnapshot(snap => {
-                const grid = document.getElementById('shopGrid');
-                const adm = document.getElementById('adminList');
-                grid.innerHTML = ""; adm.innerHTML = "";
-                snap.forEach(doc => {
-                    const p = doc.data(); const id = doc.id;
-                    livePrices[p.name.toLowerCase()] = p.price;
-                    grid.innerHTML += `<div class="p-card">
-                        <img src="${p.img}" class="p-img">
-                        <div style="padding:15px; text-align:center;">
-                            <b>${p.name}</b><br><span style="color:var(--primary); font-weight:900;">₦${p.price}</span>
-                            <button onclick="placeOrder('${p.name}', '${p.price}')" style="width:100%; margin-top:10px; border:none; background:var(--secondary); color:white; padding:8px; border-radius:8px; cursor:pointer;">ORDER</button>
-                        </div>
-                    </div>`;
-                    adm.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:5px; background:#333; padding:10px; border-radius:10px;">
-                        <span>${p.name} (₦${p.price})</span>
-                        <button onclick="db.collection('products').doc('${id}').delete()" style="color:red; background:none; border:none;"><i class="fas fa-trash"></i></button>
-                    </div>`;
-                });
-            });
-        }
-
-        function placeOrder(n, p) {
-            const id = "HP-" + Math.floor(100000 + Math.random() * 900000);
-            const msg = `🍞 *WELCOME TO HEAVENS PRIME* 🍞\nOrder: ${n}\nTotal: ₦${p}\nOrder ID: ${id}\nWe are preparing your delivery!`;
-            window.open(`https://wa.me/2348094222602?text=${encodeURIComponent(msg)}`);
-        }
-
-        function startTrack() {
-            if(!document.getElementById('trackID').value.startsWith("HP-")) return alert("Invalid ID");
-            document.getElementById('tBar').style.width = "100%";
-            document.getElementById('tTruck').style.left = "90%";
-            setTimeout(() => alert("Your supply is arriving in 15 minutes!"), 5000);
-        }
-
-        function askAI() {
-            const input = document.getElementById('aiInput').value.toLowerCase();
-            let res = "Our manager is ready to assist you! 👋";
-            for(let key in livePrices) { if(input.includes(key)) res = `The price for ${key.toUpperCase()} is ₦${livePrices[key]}. Freshly baked!`; }
-            document.getElementById('aiChat').innerHTML += `<p><b>You:</b> ${input}</p><p style="color:var(--primary)"><b>AI:</b> ${res}</p>`;
-            document.getElementById('aiInput').value = "";
-        }
-
-        function runSearch() {
-            const q = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.p-card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none");
-        }
-
-        function initChart() {
-            new Chart(document.getElementById('salesChart'), { type: 'line', data: { labels: ['M','T','W','T','F','S','S'], datasets: [{ label: 'Sales', data: [12, 19, 3, 5, 2, 3, 7], borderColor: '#f68b1e' }] } });
+        function checkout() {
+            let orderText = "🍞 *HEAVENS PRIME MARKETPLACE ORDER* 🍞\n\n";
+            cart.forEach(item => { orderText += `- ${item.name} (x${item.qty}): ₦${(item.price * item.qty).toLocaleString()}\n`; });
+            orderText += `\n*TOTAL:* ${document.getElementById('cartTotal').innerText}`;
+            orderText += `\n\n_Delivery Zones: Ikorodu & Ogijo coverage confirmed._`;
+            window.open(`https://wa.me/2348094222602?text=${encodeURIComponent(orderText)}`);
         }
     </script>
 </body>
-    </html>
-                                
+    </html> 
