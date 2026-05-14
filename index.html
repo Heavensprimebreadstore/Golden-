@@ -3,219 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heaven's Prime | Premium Bakery Marketplace</title>
+    <title>Heaven's Prime | Marketplace Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --hp-gold: #D4AF37; --hp-cream: #FFFDD0; --hp-choco: #3E2723; }
-        body { background: var(--hp-cream); font-family: 'Segoe UI', sans-serif; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        /* Instant Pop Animation */
-        .pop-in { animation: pop 0.3s ease-out forwards; }
-        @keyframes pop { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        #sidebar { transition: 0.3s ease-in-out; z-index: 1000; }
-        .hidden-panel { display: none !important; }
+        :root { --choco: #2D1B14; --gold: #C5A059; --cream: #FDFBF7; }
+        body { background-color: var(--cream); color: var(--choco); font-family: 'Inter', system-ui, sans-serif; }
+        
+        /* Premium UI Elements */
+        .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.85); }
+        .premium-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .premium-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        
+        /* Instant Search Animation */
+        .search-focus:focus { width: 110%; background: white; box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.2); }
+        
+        /* Mobile Slide-out Menu */
+        #mobileMenu { transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0); }
+        .menu-open { transform: translateX(0) !important; }
     </style>
 </head>
-<body class="text-stone-900">
+<body class="antialiased">
 
-    <!-- INSTANT SPLASH (Fades in 0.5s) -->
-    <div id="splash" class="fixed inset-0 bg-white z-[9999] flex flex-col justify-center items-center">
-        <div class="w-12 h-12 border-4 border-stone-200 border-t-orange-500 rounded-full animate-spin"></div>
-        <h1 class="mt-4 font-black text-xl tracking-widest text-orange-600">HEAVEN'S PRIME</h1>
+    <!-- ELITE SPLASH SCREEN -->
+    <div id="loadingLayer" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative w-24 h-24">
+            <div class="absolute inset-0 border-4 border-stone-100 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-t-[#C5A059] rounded-full animate-spin"></div>
+        </div>
+        <h1 class="mt-6 text-2xl font-black tracking-[0.2em] text-[#2D1B14]">HEAVEN'S PRIME</h1>
     </div>
 
-    <!-- JUMIA-STYLE SIDEBAR -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white shadow-2xl -translate-x-full overflow-y-auto">
-        <div class="p-6 bg-stone-900 text-white">
-            <h2 class="text-xl font-bold">Menu</h2>
-            <p class="text-xs text-stone-400">Freshness You Can Trust</p>
+    <!-- HIGH-END SIDEBAR (JUMIA STYLE) -->
+    <aside id="mobileMenu" class="fixed inset-y-0 left-0 w-[300px] bg-white shadow-2xl -translate-x-full z-[2000] p-8">
+        <div class="flex justify-between items-center mb-12">
+            <span class="font-black text-xl">NAVIGATION</span>
+            <button onclick="toggleMenu()" class="text-2xl text-stone-400 hover:text-black">×</button>
         </div>
-        <nav class="p-4 space-y-2">
-            <button onclick="showSection('home')" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold"><i class="fas fa-home"></i> Home</button>
-            <button onclick="toggleLogin()" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold"><i class="fas fa-user"></i> Customer Login</button>
-            <button onclick="showSection('complaints')" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold text-red-600"><i class="fas fa-exclamation-circle"></i> Complaints Portal</button>
-            <button onclick="enterAdmin()" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold text-orange-600 border-t mt-4"><i class="fas fa-lock"></i> Admin Dashboard</button>
+        <nav class="space-y-8">
+            <div class="group">
+                <p class="text-[10px] font-bold text-stone-400 mb-4 tracking-widest">MARKETPLACE</p>
+                <ul class="space-y-4 font-bold text-lg">
+                    <li class="hover:text-[#C5A059] cursor-pointer" onclick="filterCat('All')">Full Catalog</li>
+                    <li class="hover:text-[#C5A059] cursor-pointer" onclick="filterCat('Wholesale')">Wholesale Deals</li>
+                </ul>
+            </div>
+            <div class="group">
+                <p class="text-[10px] font-bold text-stone-400 mb-4 tracking-widest">SYSTEMS</p>
+                <ul class="space-y-4 font-bold">
+                    <li class="flex items-center gap-3 cursor-pointer hover:translate-x-2 transition-transform" onclick="openLogin()"><i class="fas fa-user-circle"></i> Customer Login</li>
+                    <li class="flex items-center gap-3 cursor-pointer hover:translate-x-2 transition-transform" onclick="openAdmin()"><i class="fas fa-shield-alt"></i> Admin Dashboard</li>
+                    <li class="flex items-center gap-3 cursor-pointer hover:translate-x-2 transition-transform text-red-500" onclick="openPortal()"><i class="fas fa-comment-dots"></i> Complaints Portal</li>
+                </ul>
+            </div>
         </nav>
-    </div>
+    </aside>
 
-    <!-- MAIN HEADER -->
-    <header class="sticky top-0 bg-white shadow-md z-50 px-4 py-3 flex items-center gap-4">
-        <button onclick="toggleSidebar()"><i class="fas fa-bars text-2xl"></i></button>
-        <div class="flex-1 relative">
-            <i class="fas fa-search absolute left-3 top-3 text-stone-400"></i>
-            <input type="text" id="mainSearch" onkeyup="instantSearch()" placeholder="Search bread, snacks..." class="w-full bg-stone-100 rounded-full py-2 px-10 focus:ring-2 focus:ring-orange-500 transition-all">
-        </div>
-        <div class="relative" onclick="showSection('cart')">
-            <i class="fas fa-shopping-basket text-2xl"></i>
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+    <!-- ELITE HEADER -->
+    <header class="glass-nav sticky top-0 z-[1000] border-b border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-8">
+            <button onclick="toggleMenu()" class="text-xl p-2 hover:bg-stone-50 rounded-full"><i class="fas fa-bars-staggered"></i></button>
+            
+            <div class="flex-1 max-w-2xl relative group hidden md:block">
+                <input type="text" id="liveSearch" onkeyup="instantSearch()" placeholder="Search our premium bakery stock..." 
+                       class="search-focus w-full bg-stone-100 border-none rounded-2xl py-3 px-12 transition-all duration-300">
+                <i class="fas fa-search absolute left-4 top-4 text-stone-400"></i>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="text-right hidden lg:block">
+                    <p class="text-[10px] font-bold text-stone-400">IKORODU HUB</p>
+                    <p class="font-bold text-sm">08094222602</p>
+                </div>
+                <button onclick="toggleCart()" class="relative p-3 bg-stone-900 text-white rounded-2xl shadow-xl hover:scale-105 transition-transform">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cartCount" class="absolute -top-1 -right-1 bg-[#C5A059] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- CONTENT SECTIONS -->
-    <main id="app-content" class="p-4 space-y-8">
-        <!-- PROMO VIDEO AREA -->
-        <div class="rounded-2xl overflow-hidden shadow-lg bg-black h-48 relative">
-            <video autoplay muted loop class="w-full h-full object-cover opacity-70">
-                <source src="your-promo.mp4" type="video/mp4">
-            </video>
-            <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
-                <h3 class="font-bold">HEAVEN'S PRIME ADVERT</h3>
-                <p class="text-xs">Supplying Homes & Supermarkets</p>
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- ADVERT VIDEO / PROMO -->
+        <section class="mb-12">
+            <div class="relative h-[400px] rounded-[2rem] overflow-hidden shadow-2xl group">
+                <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700">
+                    <source src="heaven-prime-advert.mp4" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex flex-col justify-center p-12 text-white">
+                    <span class="bg-[#C5A059] w-fit px-4 py-1 rounded-full text-[10px] font-bold mb-4">NOW SUPPLYING COMPANIES</span>
+                    <h2 class="text-5xl font-black mb-4 leading-tight">Freshness You <br>Can Trust.</h2>
+                    <button class="bg-white text-black px-8 py-4 rounded-2xl font-bold w-fit hover:bg-[#C5A059] hover:text-white transition-colors">EXPLORE CATALOG</button>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- HORIZONTAL CATEGORIES -->
-        <div>
-            <h3 class="font-bold mb-3">Categories</h3>
-            <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2" id="categoryList">
-                <!-- Categories dynamically loaded -->
+        <!-- PRODUCT ENGINE -->
+        <section>
+            <div class="flex justify-between items-end mb-8">
+                <h3 class="text-3xl font-black">Today's Batch</h3>
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 bg-stone-900 text-white rounded-xl text-xs font-bold">RETAIL</button>
+                    <button class="px-4 py-2 bg-white border border-stone-200 rounded-xl text-xs font-bold">WHOLESALE</button>
+                </div>
             </div>
-        </div>
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Products injected here -->
+            </div>
+        </section>
 
-        <!-- INSTANT PRODUCT GRID -->
-        <div>
-            <h3 class="font-bold mb-3">Today's Fresh Stock</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="productGrid">
-                <!-- Products pop up here -->
+        <!-- TESTIMONIALS (IKORODU) -->
+        <section class="mt-20 py-16 border-y border-stone-100 flex flex-col items-center">
+            <p class="text-[10px] font-bold text-[#C5A059] mb-4 tracking-[0.5em]">TRUSTED BY THOUSANDS</p>
+            <div id="testimonialBox" class="max-w-3xl text-center">
+                <h4 class="text-2xl font-serif italic text-stone-600">"The consistency of Heaven's Prime is unmatched in Ikorodu. Our supermarket shelves are never empty."</h4>
+                <p class="mt-6 font-bold text-stone-400">— Manager, Ogijo Superstores</p>
             </div>
-        </div>
-
-        <!-- TESTIMONIALS -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm italic text-stone-600">
-            <h3 class="font-bold not-italic mb-4 text-stone-900">What Ikorodu Says</h3>
-            <div id="testimonialSlider">
-                "The Sardine bread is literally the best in Odogunyan! Fast delivery too." - *Mrs. Adeola*
-            </div>
-        </div>
+        </section>
     </main>
 
-    <!-- ADMIN PANEL (Hidden by Default) -->
-    <div id="admin-panel" class="hidden-panel fixed inset-0 bg-white z-[2000] p-6 overflow-y-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-black">Admin Command Center</h2>
-            <button onclick="hideSection('admin-panel')" class="text-2xl">&times;</button>
-        </div>
-        <div class="space-y-4">
-            <input type="text" id="newPName" placeholder="Bread Name" class="w-full p-3 border rounded">
-            <div class="grid grid-cols-2 gap-4">
-                <input type="number" id="newPRetail" placeholder="Retail (₦)" class="w-full p-3 border rounded">
-                <input type="number" id="newPWhole" placeholder="Wholesale (₦)" class="w-full p-3 border rounded">
-            </div>
-            <input type="text" id="newPImg" placeholder="Image URL (Unsplash or Firebase)" class="w-full p-3 border rounded">
-            <button onclick="addProduct()" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold">UPLOAD PRODUCT INSTANTLY</button>
-            <hr class="my-6">
-            <div id="adminList" class="space-y-2">
-                <!-- Editable list here -->
+    <!-- ADMIN COMMAND DASHBOARD (ELITE) -->
+    <div id="adminPanel" class="fixed inset-0 bg-stone-950/90 z-[5000] hidden backdrop-blur-xl p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto bg-white rounded-[3rem] p-12 relative shadow-2xl">
+            <button onclick="closeAdmin()" class="absolute top-8 right-8 text-3xl">&times;</button>
+            <h2 class="text-4xl font-black mb-8">Admin Center</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h4 class="font-bold text-stone-400 tracking-widest">UPLOAD STOCK</h4>
+                    <input type="text" id="pName" placeholder="Product Title" class="w-full bg-stone-50 border-none p-4 rounded-2xl">
+                    <div class="flex gap-4">
+                        <input type="number" id="pRetail" placeholder="Retail Price" class="w-full bg-stone-50 border-none p-4 rounded-2xl">
+                        <input type="number" id="pWhole" placeholder="Wholesale" class="w-full bg-stone-50 border-none p-4 rounded-2xl">
+                    </div>
+                    <button onclick="createProduct()" class="w-full bg-[#C5A059] text-white py-5 rounded-2xl font-black shadow-lg shadow-[#C5A059]/30">PUBLISH PRODUCT</button>
+                </div>
+                
+                <div class="space-y-6">
+                    <h4 class="font-bold text-stone-400 tracking-widest">LOGISTICS (IKORODU/OGIJO)</h4>
+                    <div id="adminZones" class="space-y-3 h-[300px] overflow-y-auto pr-4">
+                        <!-- Zones injected here -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- COMPLAINTS PORTAL -->
-    <div id="complaints-panel" class="hidden-panel fixed inset-0 bg-white z-[2000] p-6">
-        <h2 class="text-2xl font-bold mb-4">Customer Support</h2>
-        <textarea id="complaintMsg" placeholder="Tell us what went wrong..." class="w-full h-48 p-4 border rounded-xl mb-4"></textarea>
-        <button onclick="sendComplaint()" class="w-full bg-red-600 text-white py-4 rounded-xl font-bold">SUBMIT TO HEAVEN'S PRIME</button>
+    <!-- CART SYSTEM (SLIDE OUT) -->
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-[3000] translate-x-full transition-transform duration-500 flex flex-col">
+        <div class="p-8 border-b flex justify-between items-center">
+            <h2 class="text-2xl font-black">YOUR SELECTIONS</h2>
+            <button onclick="toggleCart()" class="text-xl">CLOSE</button>
+        </div>
+        <div id="cartItems" class="flex-1 p-8 overflow-y-auto space-y-6"></div>
+        <div class="p-8 bg-stone-50 space-y-6">
+            <div>
+                <p class="text-[10px] font-bold text-stone-400 mb-2">DELIVERY DESTINATION</p>
+                <select id="zoneSelect" onchange="calculateGrandTotal()" class="w-full bg-white border-none p-4 rounded-2xl shadow-sm font-bold">
+                    <!-- Loaded via Admin -->
+                </select>
+            </div>
+            <div class="flex justify-between items-end">
+                <p class="text-stone-400">Total Payable</p>
+                <p id="finalPrice" class="text-3xl font-black">₦0</p>
+            </div>
+            <button onclick="processWhatsApp()" class="w-full bg-black text-white py-6 rounded-2xl font-black text-lg tracking-widest">CONFIRM & WHATSAPP</button>
+        </div>
     </div>
 
     <script>
-        // CORE STATE (Persists in LocalStorage for weak network speed)
-        let products = JSON.parse(localStorage.getItem('hp_stock')) || [
-            { id: 1, name: "Premium Butter Bread", retail: 1200, wholesale: 1000, img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400", cat: "Butter" }
-        ];
-        let cart = [];
-
-        // 1. INSTANT LOAD SYSTEM
-        window.onload = () => {
-            renderUI();
-            setTimeout(() => {
-                document.getElementById('splash').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash').style.display = 'none', 300);
-            }, 500); // 0.5s splash as requested
+        // CORE ENGINE STATE
+        let db = JSON.parse(localStorage.getItem('hp_enterprise_db')) || {
+            products: [
+                { id: 1, name: "Signature Butter Loaf", retail: 1200, wholesale: 1000, img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600" },
+                { id: 2, name: "Premium Sardine Bread", retail: 1600, wholesale: 1400, img: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600" }
+            ],
+            zones: [
+                { name: "Odogunyan Central", fee: 500 },
+                { name: "Sabo / Ikorodu Garage", fee: 1000 },
+                { name: "Ogijo / Maya Hub", fee: 1500 },
+                { name: "Agric / Ishawo", fee: 1200 }
+            ]
         };
 
-        // 2. RENDER ENGINE
-        function renderUI() {
-            const grid = document.getElementById('productGrid');
-            const adminList = document.getElementById('adminList');
-            grid.innerHTML = "";
-            adminList.innerHTML = "";
+        let cart = [];
 
-            products.forEach((p, idx) => {
-                // Customer View
+        // INITIALIZE APP
+        window.addEventListener('DOMContentLoaded', () => {
+            renderApp();
+            setTimeout(() => {
+                document.getElementById('loadingLayer').style.opacity = '0';
+                setTimeout(() => document.getElementById('loadingLayer').style.display = 'none', 500);
+            }, 800);
+        });
+
+        // RENDER ENGINE
+        function renderApp() {
+            const grid = document.getElementById('productGrid');
+            const adminZones = document.getElementById('adminZones');
+            const zoneSelect = document.getElementById('zoneSelect');
+            
+            grid.innerHTML = ""; adminZones.innerHTML = ""; 
+            zoneSelect.innerHTML = `<option value="0">Select Delivery Location</option>`;
+
+            db.products.forEach(p => {
                 grid.innerHTML += `
-                    <div class="pop-in bg-white p-3 rounded-2xl shadow-sm border border-stone-100">
-                        <img src="${p.img}" class="w-full h-32 object-cover rounded-xl mb-2">
-                        <h4 class="font-bold text-sm truncate">${p.name}</h4>
-                        <div class="flex justify-between items-center">
-                            <span class="text-orange-600 font-bold">₦${p.retail}</span>
-                            <button onclick="addToCart(${p.id})" class="bg-stone-900 text-white w-8 h-8 rounded-full">+</button>
+                    <div class="premium-card bg-white p-4 rounded-[2rem] shadow-sm border border-stone-50">
+                        <div class="relative h-56 rounded-2xl overflow-hidden mb-6">
+                            <img src="${p.img}" class="w-full h-full object-cover">
+                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black tracking-widest">FRESH</div>
                         </div>
-                    </div>`;
-                
-                // Admin Edit List
-                adminList.innerHTML += `
-                    <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg border">
-                        <span>${p.name} (₦${p.retail})</span>
-                        <div class="flex gap-2">
-                            <button onclick="deleteProduct(${idx})" class="text-red-500"><i class="fas fa-trash"></i></button>
+                        <h4 class="font-bold text-lg mb-2">${p.name}</h4>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-xs text-stone-400 font-bold uppercase">Retail</p>
+                                <p class="text-xl font-black">₦${p.retail.toLocaleString()}</p>
+                            </div>
+                            <button onclick="addToCart(${p.id})" class="bg-stone-900 text-white w-12 h-12 rounded-2xl hover:bg-[#C5A059] transition-colors shadow-lg">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                     </div>`;
             });
+
+            db.zones.forEach((z, i) => {
+                adminZones.innerHTML += `
+                    <div class="flex justify-between items-center p-4 bg-stone-50 rounded-2xl">
+                        <span class="font-bold text-sm">${z.name}</span>
+                        <input type="number" onchange="updateFee(${i}, this.value)" value="${z.fee}" class="w-24 bg-white border-none p-2 rounded-xl text-center font-bold">
+                    </div>`;
+                zoneSelect.innerHTML += `<option value="${z.fee}">${z.name}</option>`;
+            });
         }
 
-        // 3. ADMIN ACTIONS
-        function addProduct() {
-            const name = document.getElementById('newPName').value;
-            const retail = document.getElementById('newPRetail').value;
-            const whole = document.getElementById('newPWhole').value;
-            const img = document.getElementById('newPImg').value;
+        // CART & LOGISTICS LOGIC
+        function addToCart(id) {
+            const p = db.products.find(x => x.id === id);
+            cart.push({...p});
+            document.getElementById('cartCount').innerText = cart.length;
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            container.innerHTML = "";
+            cart.forEach((item, i) => {
+                container.innerHTML += `
+                    <div class="flex gap-4 items-center animate-pop-in">
+                        <img src="${item.img}" class="w-16 h-16 rounded-xl object-cover">
+                        <div class="flex-1">
+                            <p class="font-bold">${item.name}</p>
+                            <p class="text-sm font-black text-[#C5A059]">₦${item.retail}</p>
+                        </div>
+                        <button onclick="removeFromCart(${i})" class="text-stone-300">×</button>
+                    </div>`;
+            });
+            calculateGrandTotal();
+        }
+
+        function calculateGrandTotal() {
+            const fee = parseInt(document.getElementById('zoneSelect').value) || 0;
+            const subtotal = cart.reduce((acc, curr) => acc + curr.retail, 0);
+            document.getElementById('finalPrice').innerText = `₦${(subtotal + fee).toLocaleString()}`;
+        }
+
+        // WHATSAPP GENERATOR
+        function processWhatsApp() {
+            const fee = parseInt(document.getElementById('zoneSelect').value);
+            const zoneName = document.getElementById('zoneSelect').options[document.getElementById('zoneSelect').selectedIndex].text;
             
-            if(!name || !retail) return alert("Fill Name and Price!");
+            if(cart.length === 0) return alert("Your cart is empty!");
+            if(fee === 0) return alert("Select a delivery zone in Ikorodu/Ogijo!");
 
-            products.unshift({ id: Date.now(), name, retail, wholesale: whole, img: img || 'https://via.placeholder.com/150', cat: 'General' });
-            localStorage.setItem('hp_stock', JSON.stringify(products));
-            renderUI();
-            hideSection('admin-panel');
+            let subtotal = cart.reduce((acc, curr) => acc + curr.retail, 0);
+            let message = `*HEAVEN'S PRIME MARKETPLACE*%0A_Order Receipt_%0A----------------------------%0A`;
+            cart.forEach(i => message += `• ${i.name} (₦${i.retail})%0A`);
+            message += `----------------------------%0A*Subtotal:* ₦${subtotal}%0A*Delivery (${zoneName}):* ₦${fee}%0A*GRAND TOTAL:* ₦${subtotal + fee}%0A----------------------------%0A_Coverage: Verified Supermarket Supplier_`;
+
+            window.open(`https://wa.me/2348094222602?text=${message}`);
         }
 
-        function deleteProduct(idx) {
-            products.splice(idx, 1);
-            localStorage.setItem('hp_stock', JSON.stringify(products));
-            renderUI();
+        // ADMIN ACTIONS
+        function openAdmin() { if(prompt("ENTER MASTER PIN:") === "2006") document.getElementById('adminPanel').style.display = 'block'; }
+        function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+        
+        function createProduct() {
+            const n = document.getElementById('pName').value;
+            const r = parseInt(document.getElementById('pRetail').value);
+            const w = parseInt(document.getElementById('pWhole').value);
+            if(!n || !r) return;
+
+            db.products.unshift({id: Date.now(), name: n, retail: r, wholesale: w, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600'});
+            localStorage.setItem('hp_enterprise_db', JSON.stringify(db));
+            renderApp();
+            closeAdmin();
         }
 
-        // 4. SEARCH & NAVIGATION
+        function updateFee(i, val) {
+            db.zones[i].fee = parseInt(val);
+            localStorage.setItem('hp_enterprise_db', JSON.stringify(db));
+            renderApp();
+        }
+
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('menu-open'); }
+        function toggleCart() { document.getElementById('cartDrawer').classList.toggle('translate-x-full'); }
         function instantSearch() {
-            const query = document.getElementById('mainSearch').value.toLowerCase();
-            const cards = document.querySelectorAll('.pop-in');
-            cards.forEach(card => {
+            const query = document.getElementById('liveSearch').value.toLowerCase();
+            document.querySelectorAll('.premium-card').forEach(card => {
                 card.style.display = card.innerText.toLowerCase().includes(query) ? "block" : "none";
             });
         }
-
-        function toggleSidebar() { 
-            const s = document.getElementById('sidebar');
-            s.style.transform = s.style.transform === "translateX(0px)" ? "translateX(-100%)" : "translateX(0px)";
-        }
-
-        function showSection(id) { document.getElementById(id + '-panel').classList.remove('hidden-panel'); toggleSidebar(); }
-        function hideSection(id) { document.getElementById(id).classList.add('hidden-panel'); }
-
-        function enterAdmin() {
-            const pin = prompt("Enter Heaven's Prime Admin Pin:");
-            if(pin === "2006") showSection('admin');
-            else alert("Unauthorized Access!");
-        }
-
-        // 5. CHECKOUT (08094222602)
-        function checkout() {
-            let msg = "🍞 *HEAVEN'S PRIME ORDER*%0A";
-            cart.forEach(i => msg += `- ${i.name} x${i.qty}%0A`);
-            window.open(`https://wa.me/2348094222602?text=${msg}`);
-        }
     </script>
 </body>
-            </html>                    
-                        
+        </html>            
+                 
