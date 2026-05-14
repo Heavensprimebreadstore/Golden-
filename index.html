@@ -2,278 +2,254 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HEAVENS PRIME | Marketplace</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEAVEN'S PRIME | Premium Bakery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
     
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-
     <style>
-        :root { --jumia-orange: #f68b1e; --dark: #333; --bg: #f1f1f2; --white: #fff; }
-        body { margin: 0; background: var(--bg); font-family: 'Roboto', sans-serif; overflow-x: hidden; }
-        
-        /* Jumia-Style Header */
-        header { background: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .top-nav { background: #000; color: white; font-size: 11px; padding: 5px 5%; display: flex; justify-content: space-between; }
-        .main-nav { padding: 10px 5%; display: flex; align-items: center; gap: 20px; }
-        .search-box { flex-grow: 1; position: relative; display: flex; }
-        .search-box input { width: 100%; padding: 12px 40px; border: 1px solid #c7c7cd; border-radius: 4px; outline: none; }
-        .search-box i { position: absolute; left: 15px; top: 15px; color: #8e8e93; }
-        .nav-icons { display: flex; gap: 20px; align-items: center; }
-        .nav-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500; text-decoration: none; color: var(--dark); }
-
-        /* Jumia Layout */
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: grid; grid-template-columns: 240px 1fr; gap: 20px; }
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .sidebar { display: none; } }
-
-        /* Sidebar Categories */
-        .sidebar { background: var(--white); border-radius: 4px; padding: 10px 0; height: fit-content; }
-        .cat-link { padding: 10px 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #333; cursor: pointer; transition: 0.2s; }
-        .cat-link:hover { color: var(--jumia-orange); background: #fef3e9; }
-
-        /* Product Grid */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .p-card { background: var(--white); border-radius: 4px; padding: 10px; transition: 0.3s; position: relative; text-decoration: none; color: inherit; }
-        .p-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .p-img { width: 100%; height: 180px; object-fit: cover; border-radius: 2px; }
-        .p-info { padding: 8px 0; }
-        .p-name { font-size: 14px; margin-bottom: 5px; height: 32px; overflow: hidden; }
-        .p-price { font-size: 18px; font-weight: 700; color: #333; }
-        .p-vendor { font-size: 11px; color: #757544; background: #fef3e9; padding: 2px 5px; border-radius: 2px; display: inline-block; }
-
-        /* Cart Badge */
-        .cart-count { background: var(--jumia-orange); color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; position: absolute; top: -8px; right: -8px; }
-
-        /* Admin/Vendor Portal Styling */
-        #adminPanel { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999; padding:20px; overflow-y:auto; color:white; }
-        .admin-box { max-width: 600px; margin: auto; background: #222; padding: 30px; border-radius: 8px; border-top: 5px solid var(--jumia-orange); }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 4px; }
-        
-        /* Cart Sidebar */
-        #cartPanel { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 1001; transition: 0.3s; box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px; }
-        .cart-open { right: 0 !important; }
+        :root { --hp-gold: #D4AF37; --hp-cream: #FFFDD0; --hp-choco: #3E2723; }
+        body { background: var(--hp-cream); font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        #splash { position: fixed; inset: 0; background: white; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.3s; }
+        .sidebar { transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1001; }
+        .product-card { animation: popIn 0.3s ease-out forwards; }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
-<body>
+<body class="text-stone-900">
 
-    <div id="splash" style="position:fixed; inset:0; background:white; z-index:9999; display:flex; justify-content:center; align-items:center;">
-        <img src="https://i.ibb.co/v49fL3M/IMG-20250305-155011.jpg" style="width:80px; height:80px; border-radius:50%; animation: pulse 1s infinite;">
+    <!-- INSTANT SPLASH (0.5s) -->
+    <div id="splash">
+        <div class="w-12 h-12 border-4 border-stone-200 border-t-orange-500 rounded-full animate-spin"></div>
     </div>
 
-    <header>
-        <div class="top-nav">
-            <span>Official Intermediary Hub - Ikorodu & Ogijo</span>
-            <span>Sell on Heavens Prime</span>
+    <!-- JUMIA-STYLE SIDEBAR -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 w-72 bg-white shadow-2xl -translate-x-full overflow-y-auto">
+        <div class="p-6 bg-stone-900 text-white">
+            <h2 class="text-xl font-bold">HEAVEN'S PRIME</h2>
+            <p class="text-xs text-orange-400">Freshness You Can Trust</p>
         </div>
-        <div class="main-nav">
-            <a href="#" style="font-weight:900; font-size:22px; color:var(--dark); text-decoration:none;">HEAVENS <span style="color:var(--jumia-orange)">PRIME</span></a>
-            
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="mainSearch" onkeyup="searchProducts()" placeholder="Search products, brands and categories">
-                <button style="background:var(--jumia-orange); color:white; border:none; padding:0 20px; border-radius:0 4px 4px 0; font-weight:bold; cursor:pointer;">SEARCH</button>
-            </div>
+        <nav class="p-4 space-y-2">
+            <button onclick="navTo('home')" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold"><i class="fas fa-bread-slice"></i> Products</button>
+            <button onclick="toggleLogin()" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold"><i class="fas fa-user"></i> Customer Login</button>
+            <button onclick="navTo('complaints')" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold text-red-600"><i class="fas fa-headset"></i> Complaints Portal</button>
+            <button onclick="enterAdmin()" class="w-full text-left p-3 hover:bg-orange-50 rounded-lg flex items-center gap-3 font-bold text-orange-600 border-t mt-4"><i class="fas fa-user-shield"></i> Admin Command</button>
+        </nav>
+    </div>
 
-            <div class="nav-icons">
-                <div class="nav-item" onclick="openAdmin()">
-                    <i class="fas fa-user-circle fa-lg"></i> Account
-                </div>
-                <div class="nav-item" style="position:relative;" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart fa-lg"></i> Cart
-                    <span class="cart-count" id="cartCount">0</span>
-                </div>
-            </div>
+    <!-- MAIN INTERFACE -->
+    <header class="sticky top-0 bg-white shadow-md z-50 px-4 py-3 flex items-center gap-4">
+        <button onclick="toggleSidebar()"><i class="fas fa-bars text-2xl"></i></button>
+        <div class="flex-1 relative">
+            <i class="fas fa-search absolute left-3 top-3 text-stone-400"></i>
+            <input type="text" id="searchInput" onkeyup="instantSearch()" placeholder="Search bread..." class="w-full bg-stone-100 rounded-full py-2 px-10 focus:ring-2 focus:ring-orange-500">
+        </div>
+        <div class="relative" onclick="showCart()">
+            <i class="fas fa-shopping-basket text-2xl"></i>
+            <span id="cart-badge" class="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
         </div>
     </header>
 
-    <div class="container">
-        <aside class="sidebar">
-            <div class="cat-link"><i class="fas fa-bread-slice"></i> Sardine Bread</div>
-            <div class="cat-link"><i class="fas fa-cookie"></i> Butter Loaves</div>
-            <div class="cat-link"><i class="fas fa-wheat-awn"></i> Whole Wheat</div>
-            <div class="cat-link"><i class="fas fa-truck"></i> Bulk Wholesale</div>
-            <hr style="border:0.5px solid #eee; margin:10px 0;">
-            <div class="cat-link" style="color:var(--jumia-orange); font-weight:bold;"><i class="fas fa-star"></i> Top Intermediaries</div>
-        </aside>
-
-        <main>
-            <div style="background:var(--jumia-orange); padding:15px; border-radius:4px; color:white; margin-bottom:20px; font-weight:bold;">
-                🚚 Free Delivery for orders above ₦10,000 in Odogunyan!
+    <main class="p-4 space-y-6">
+        <!-- PROMO ADVERT VIDEO -->
+        <div class="rounded-2xl overflow-hidden bg-black h-40 relative">
+            <video autoplay muted loop class="w-full h-full object-cover opacity-60">
+                <source src="promo.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 flex flex-col justify-center items-center text-white p-4">
+                <h3 class="font-black text-lg">OFFICIAL ADVERT</h3>
+                <p class="text-[10px] text-center">Supplying Homes, Churches & Supermarkets</p>
             </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="grid grid-cols-2 gap-4" id="productGrid"></div>
+
+        <!-- CAPTIVATING TESTIMONIALS -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-100 italic">
+            <h3 class="not-italic font-black text-sm mb-2 text-stone-400">REVIEWS FROM IKORODU</h3>
+            <p id="testimonial">"The best bread supply in Ogijo, consistent and fresh!" - *Supermarket Manager*</p>
+        </div>
+    </main>
+
+    <!-- ADMIN DASHBOARD (MODAL) -->
+    <div id="adminPanel" class="fixed inset-0 bg-white z-[5000] hidden p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-black">ADMIN CENTER</h2>
+            <button onclick="closeAdmin()" class="text-3xl">&times;</button>
+        </div>
+        
+        <div class="space-y-4 bg-stone-50 p-4 rounded-xl mb-6">
+            <h3 class="font-bold">Add New Product</h3>
+            <input type="text" id="pName" placeholder="Product Name" class="w-full p-3 border rounded">
+            <div class="flex gap-2">
+                <input type="number" id="pRetail" placeholder="Retail ₦" class="w-full p-3 border rounded">
+                <input type="number" id="pWhole" placeholder="Wholesale ₦" class="w-full p-3 border rounded">
+            </div>
+            <input type="text" id="pImg" placeholder="Image URL" class="w-full p-3 border rounded">
+            <button onclick="addNewProduct()" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold">UPLOAD INSTANTLY</button>
+        </div>
+
+        <div class="bg-orange-50 p-4 rounded-xl mb-6">
+            <h3 class="font-bold mb-3">Edit Delivery Costs</h3>
+            <div id="deliveryEditList" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <!-- CART & DELIVERY CALCULATOR -->
+    <div id="cartPanel" class="fixed inset-0 bg-black/60 z-[6000] hidden flex justify-end">
+        <div class="bg-white w-full max-w-sm h-full p-6 flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-black">YOUR CART</h2>
+                <button onclick="closeCart()" class="text-2xl">&times;</button>
+            </div>
+            <div id="cartItems" class="flex-1 overflow-y-auto"></div>
             
-            <div class="product-grid" id="marketGrid">
-                </div>
-        </main>
-    </div>
-
-    <div id="adminPanel">
-        <div class="admin-box">
-            <h2 style="margin-top:0;">Vendor Dashboard</h2>
-            <p>List new bread types or adjust supply prices.</p>
-            <input type="text" id="pName" placeholder="Product Name (e.g. Premium Butter Bread)">
-            <input type="number" id="pPrice" placeholder="Selling Price (₦)">
-            <input type="text" id="pVendor" placeholder="Vendor Name (Intermediary Name)">
-            <input type="file" id="pImg" accept="image/*">
-            <button onclick="publishProduct()" style="width:100%; background:var(--jumia-orange); color:white; border:none; padding:15px; border-radius:4px; font-weight:bold; cursor:pointer;">UPLOAD TO MARKETPLACE</button>
-            <button onclick="document.getElementById('adminPanel').style.display='none'" style="width:100%; background:transparent; color:white; border:1px solid #555; margin-top:10px; padding:10px; cursor:pointer;">Close</button>
-        </div>
-    </div>
-
-    <div id="cartPanel">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding-bottom:10px;">
-            <h3>Cart ( <span id="cCount">0</span> )</h3>
-            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer;"></i>
-        </div>
-        <div id="cartItems" style="height: calc(100% - 200px); overflow-y:auto; padding:10px 0;"></div>
-        <div style="border-top:1px solid #eee; padding-top:15px;">
-            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:18px;">
-                <span>Total:</span>
-                <span id="cartTotal">₦0</span>
+            <div class="mt-4 p-4 bg-stone-50 rounded-xl">
+                <h4 class="font-bold text-sm mb-2">Select Delivery Zone</h4>
+                <select id="zoneSelect" onchange="calcTotal()" class="w-full p-3 border-2 border-orange-200 rounded-lg font-bold">
+                    <!-- Zones loaded from admin -->
+                </select>
             </div>
-            <button onclick="checkout()" style="width:100%; background:var(--jumia-orange); color:white; border:none; padding:15px; border-radius:4px; margin-top:20px; font-weight:bold; cursor:pointer;">CHECKOUT VIA WHATSAPP</button>
+
+            <div class="py-4 border-t mt-4">
+                <div class="flex justify-between font-black text-xl">
+                    <span>Total Cost:</span>
+                    <span id="grandTotal">₦0</span>
+                </div>
+                <button onclick="sendOrder()" class="w-full bg-orange-600 text-white py-4 rounded-xl font-black mt-4">ORDER VIA WHATSAPP</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // CONFIGURATION
-        const firebaseConfig = { apiKey: "AIzaSyDexFAjH2YvspspIe94FqSljJlXV6Ji1IA", authDomain: "bread-store-a28e8.firebaseapp.com", projectId: "bread-store-a28e8", storageBucket: "bread-store-a28e8.firebasestorage.app", messagingSenderId: "126719314073", appId: "1:126719314073:web:cbc9a3fd876bcd3a97d008" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        // DATA STATE (Admin Editable)
+        let products = JSON.parse(localStorage.getItem('hp_products')) || [
+            {id: 1, name: "Premium Butter Bread", retail: 1200, wholesale: 1000, img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400"}
+        ];
+        
+        let deliveryZones = JSON.parse(localStorage.getItem('hp_zones')) || [
+            {name: "Odogunyan / Igbosoro", cost: 500},
+            {name: "Sabo / Ikorodu Garage", cost: 1000},
+            {name: "Ogijo / Maya", cost: 1500}
+        ];
 
-        let cart = JSON.parse(localStorage.getItem('hp_cart')) || [];
+        let cart = [];
 
-        // INITIALIZE
+        // 1. INSTANT BOOT
         window.onload = () => {
-            setTimeout(() => document.getElementById('splash').style.display='none', 1500);
-            updateCartUI();
-            loadMarketplace();
+            renderProducts();
+            renderAdminZones();
+            setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 500);
         };
 
-        // LOAD PRODUCTS (NO GLITCH)
-        function loadMarketplace() {
-            db.collection("products").orderBy("timestamp", "desc").onSnapshot(snap => {
-                const grid = document.getElementById('marketGrid');
-                grid.innerHTML = "";
-                snap.forEach(doc => {
-                    const p = doc.data();
-                    grid.innerHTML += `
-                        <div class="p-card" onclick="addToCart('${p.name}', ${p.price}, '${p.img}')">
-                            <img src="${p.img}" class="p-img">
-                            <div class="p-info">
-                                <div class="p-name">${p.name}</div>
-                                <div class="p-price">₦${Number(p.price).toLocaleString()}</div>
-                                <div class="p-vendor"><i class="fas fa-check-circle"></i> ${p.vendor || 'Heavens Prime'}</div>
-                            </div>
-                        </div>`;
-                });
+        // 2. ADMIN DASHBOARD LOGIC
+        function addNewProduct() {
+            const name = document.getElementById('pName').value;
+            const retail = document.getElementById('pRetail').value;
+            const whole = document.getElementById('pWhole').value;
+            const img = document.getElementById('pImg').value;
+            if(!name || !retail) return alert("Fill Name and Price!");
+            
+            products.unshift({id: Date.now(), name, retail, wholesale: whole, img: img || 'https://via.placeholder.com/150'});
+            saveAndRefresh();
+            closeAdmin();
+        }
+
+        function renderAdminZones() {
+            const list = document.getElementById('deliveryEditList');
+            const select = document.getElementById('zoneSelect');
+            list.innerHTML = ""; select.innerHTML = `<option value="0">-- Select Neighborhood --</option>`;
+            
+            deliveryZones.forEach((z, i) => {
+                list.innerHTML += `
+                    <div class="flex gap-2 items-center">
+                        <span class="flex-1 text-sm font-bold">${z.name}</span>
+                        <input type="number" onchange="editZone(${i}, this.value)" value="${z.cost}" class="w-20 p-1 border rounded">
+                    </div>`;
+                select.innerHTML += `<option value="${z.cost}">${z.name} (₦${z.cost})</option>`;
             });
         }
 
-        // CART LOGIC
-        function toggleCart() { document.getElementById('cartPanel').classList.toggle('cart-open'); }
-
-        function addToCart(name, price, img) {
-            const index = cart.findIndex(item => item.name === name);
-            if(index > -1) { cart[index].qty++; } 
-            else { cart.push({name, price, img, qty: 1}); }
-            updateCartUI();
-            alert(name + " added to cart!");
+        function editZone(idx, newCost) {
+            deliveryZones[idx].cost = parseInt(newCost);
+            saveAndRefresh();
         }
 
-        function updateCartUI() {
-            localStorage.setItem('hp_cart', JSON.stringify(cart));
-            const list = document.getElementById('cartItems');
-            const count = document.getElementById('cartCount');
-            const cCount = document.getElementById('cCount');
-            const total = document.getElementById('cartTotal');
+        // 3. WHATSAPP ENGINE (Total + Delivery)
+        function sendOrder() {
+            const zoneSelect = document.getElementById('zoneSelect');
+            const deliveryCost = parseInt(zoneSelect.value);
+            const zoneName = zoneSelect.options[zoneSelect.selectedIndex].text;
             
-            list.innerHTML = "";
-            let sum = 0; let totalQty = 0;
-            
-            cart.forEach((item, idx) => {
-                sum += item.price * item.qty;
-                totalQty += item.qty;
-                list.innerHTML += `
-                    <div style="display:flex; gap:10px; margin-bottom:15px; align-items:center;">
-                        <img src="${item.img}" style="width:50px; height:50px; border-radius:4px; object-fit:cover;">
-                        <div style="flex-grow:1;">
-                            <div style="font-size:12px; font-weight:bold;">${item.name}</div>
-                            <div style="color:var(--jumia-orange); font-size:12px;">₦${item.price.toLocaleString()}</div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <i class="fas fa-minus-circle" onclick="changeQty(${idx}, -1)" style="cursor:pointer; color:#888;"></i>
-                            <span>${item.qty}</span>
-                            <i class="fas fa-plus-circle" onclick="changeQty(${idx}, 1)" style="cursor:pointer; color:var(--jumia-orange);"></i>
+            if(cart.length === 0) return alert("Cart empty!");
+            if(deliveryCost === 0) return alert("Select Delivery Zone!");
+
+            let subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+            let total = subtotal + deliveryCost;
+
+            let msg = `*🍞 HEAVEN'S PRIME ORDER* 🍞%0A----------------------------%0A`;
+            cart.forEach(item => msg += `• ${item.name} x${item.qty} (₦${item.price * item.qty})%0A`);
+            msg += `----------------------------%0A`;
+            msg += `*Subtotal:* ₦${subtotal.toLocaleString()}%0A`;
+            msg += `*Delivery (${zoneName}):* ₦${deliveryCost.toLocaleString()}%0A`;
+            msg += `*GRAND TOTAL:* ₦${total.toLocaleString()}%0A----------------------------%0A`;
+            msg += `_Supply for Supermarkets, Companies & Homes_`;
+
+            window.open(`https://wa.me/2348094222602?text=${msg}`);
+        }
+
+        // 4. CORE UI FUNCTIONS
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = "";
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="product-card bg-white p-3 rounded-2xl shadow-sm border border-stone-100">
+                        <img src="${p.img}" class="w-full h-32 object-cover rounded-xl mb-2">
+                        <h4 class="font-bold text-sm truncate">${p.name}</h4>
+                        <div class="flex justify-between items-center">
+                            <span class="text-orange-600 font-bold">₦${p.retail}</span>
+                            <button onclick="addToCart(${p.id})" class="bg-stone-900 text-white w-8 h-8 rounded-full">+</button>
                         </div>
                     </div>`;
             });
-            
-            count.innerText = totalQty;
-            cCount.innerText = totalQty;
-            total.innerText = "₦" + sum.toLocaleString();
         }
 
-        function changeQty(idx, amt) {
-            cart[idx].qty += amt;
-            if(cart[idx].qty < 1) cart.splice(idx, 1);
-            updateCartUI();
-        }
-
-        // SEARCH
-        function searchProducts() {
-            let q = document.getElementById('mainSearch').value.toLowerCase();
-            document.querySelectorAll('.p-card').forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(q) ? "block" : "none";
+        function instantSearch() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none";
             });
         }
 
-        // ADMIN PANEL
-        function openAdmin() {
-            if(prompt("Enter Management PIN:") === "2006") {
-                document.getElementById('adminPanel').style.display = "block";
-            }
+        function addToCart(id) {
+            const p = products.find(x => x.id === id);
+            cart.push({name: p.name, price: p.retail, qty: 1});
+            document.getElementById('cart-badge').innerText = cart.length;
+            alert("Added to cart!");
         }
 
-        async function publishProduct() {
-            const name = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            const vendor = document.getElementById('pVendor').value;
-            const file = document.getElementById('pImg').files[0];
-
-            if(!name || !price || !file) return alert("Fill all fields");
-
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (e) => {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 400; canvas.height = 300;
-                    canvas.getContext('2d').drawImage(img, 0, 0, 400, 300);
-                    const optimized = canvas.toDataURL('image/jpeg', 0.6);
-
-                    db.collection("products").add({
-                        name, price: Number(price), vendor, img: optimized,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    }).then(() => {
-                        alert("Product Live on Marketplace!");
-                        document.getElementById('adminPanel').style.display = "none";
-                    });
-                };
-            };
+        function calcTotal() {
+            const del = parseInt(document.getElementById('zoneSelect').value) || 0;
+            const sub = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+            document.getElementById('grandTotal').innerText = `₦${(sub + del).toLocaleString()}`;
         }
 
-        function checkout() {
-            let orderText = "🍞 *HEAVENS PRIME MARKETPLACE ORDER* 🍞\n\n";
-            cart.forEach(item => { orderText += `- ${item.name} (x${item.qty}): ₦${(item.price * item.qty).toLocaleString()}\n`; });
-            orderText += `\n*TOTAL:* ${document.getElementById('cartTotal').innerText}`;
-            orderText += `\n\n_Delivery Zones: Ikorodu & Ogijo coverage confirmed._`;
-            window.open(`https://wa.me/2348094222602?text=${encodeURIComponent(orderText)}`);
+        function saveAndRefresh() {
+            localStorage.setItem('hp_products', JSON.stringify(products));
+            localStorage.setItem('hp_zones', JSON.stringify(deliveryZones));
+            renderProducts();
+            renderAdminZones();
         }
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
+        function showCart() { document.getElementById('cartPanel').classList.remove('hidden'); calcTotal(); }
+        function closeCart() { document.getElementById('cartPanel').classList.add('hidden'); }
+        function enterAdmin() { if(prompt("Admin Pin:") === "2006") document.getElementById('adminPanel').classList.remove('hidden'); }
+        function closeAdmin() { document.getElementById('adminPanel').classList.add('hidden'); }
     </script>
 </body>
-    </html> 
+        </html>                        
+            
