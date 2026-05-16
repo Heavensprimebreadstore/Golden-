@@ -1,185 +1,170 @@
-                             <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heaven's Prime | Marketplace Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root { --choco: #2D1B14; --gold: #C5A059; --cream: #FDFBF7; }
-        body { background-color: var(--cream); color: var(--choco); font-family: 'Inter', sans-serif; }
-        .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.85); }
-        .premium-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        #mobileMenu { transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0); }
+        body { background-color: var(--cream); color: var(--choco); font-family: system-ui, -apple-system, sans-serif; }
+        .premium-card { transition: transform 0.2s ease; }
+        #mobileMenu { transition: transform 0.3s ease; }
         .menu-open { transform: translateX(0) !important; }
+        /* Ultra-fast pure CSS loading indicator */
+        .spinner { width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #C5A059; border-radius: 50%; animate: spin 0.4s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased">
 
-    <div id="loadingLayer" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="relative w-24 h-24">
-            <div class="absolute inset-0 border-4 border-stone-100 rounded-full"></div>
-            <div class="absolute inset-0 border-4 border-t-[#C5A059] rounded-full animate-spin"></div>
-        </div>
-        <h1 class="mt-6 text-2xl font-black tracking-[0.2em] text-[#2D1B14]">HEAVEN'S PRIME</h1>
+    <div id="loadingLayer" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center transition-opacity duration-200">
+        <div class="spinner"></div>
     </div>
 
-    <aside id="mobileMenu" class="fixed inset-y-0 left-0 w-[300px] bg-white shadow-2xl -translate-x-full z-[2000] p-8">
-        <div class="flex justify-between items-center mb-12">
-            <span class="font-black text-xl">NAVIGATION</span>
-            <button onclick="toggleMenu()" class="text-2xl text-stone-400">&times;</button>
+    <aside id="mobileMenu" class="fixed inset-y-0 left-0 w-[280px] bg-white shadow-2xl -translate-x-full z-[2000] p-6">
+        <div class="flex justify-between items-center mb-8">
+            <span class="font-black text-xl">MENU</span>
+            <button onclick="toggleMenu()" class="text-3xl font-light text-stone-400">&times;</button>
         </div>
-        <nav class="space-y-8">
-            <div class="group">
-                <p class="text-[10px] font-bold text-stone-400 mb-4 tracking-widest">MARKETPLACE</p>
-                <ul class="space-y-4 font-bold text-lg">
-                    <li class="hover:text-[#C5A059] cursor-pointer" onclick="setPriceMode('retail')">Retail Catalog</li>
-                    <li class="hover:text-[#C5A059] cursor-pointer text-orange-600" onclick="setPriceMode('wholesale')">Wholesale Store</li>
+        <nav class="space-y-6">
+            <div>
+                <p class="text-[10px] font-bold text-stone-400 mb-2 tracking-widest">MARKETPLACE</p>
+                <ul class="space-y-3 font-bold text-base">
+                    <li class="hover:text-[#C5A059] cursor-pointer" onclick="setPriceMode('retail')">🍞 Retail Catalog</li>
+                    <li class="hover:text-[#C5A059] cursor-pointer text-orange-600" onclick="setPriceMode('wholesale')">📦 Wholesale Store</li>
                 </ul>
             </div>
-            <div class="group">
-                <p class="text-[10px] font-bold text-stone-400 mb-4 tracking-widest">SYSTEMS</p>
-                <ul class="space-y-4 font-bold">
-                    <li class="cursor-pointer hover:text-[#C5A059]" onclick="showPortal('loginPortal')"><i class="fas fa-user-circle mr-2"></i> Customer Login</li>
-                    <li class="cursor-pointer hover:text-[#C5A059]" onclick="showPortal('complaintsPortal')"><i class="fas fa-comment-dots mr-2"></i> Complaints Portal</li>
-                    <li class="cursor-pointer text-orange-600" onclick="openAdmin()"><i class="fas fa-shield-alt mr-2"></i> Admin Dashboard</li>
+            <div>
+                <p class="text-[10px] font-bold text-stone-400 mb-2 tracking-widest">SYSTEMS</p>
+                <ul class="space-y-3 font-bold text-sm">
+                    <li class="cursor-pointer hover:text-[#C5A059]" onclick="showPortal('loginPortal')">👤 Customer Login</li>
+                    <li class="cursor-pointer hover:text-[#C5A059]" onclick="showPortal('complaintsPortal')">💬 Complaints Portal</li>
+                    <li class="cursor-pointer text-orange-600" onclick="openAdmin()">⚙️ Admin Dashboard</li>
                 </ul>
             </div>
         </nav>
     </aside>
 
-    <header class="glass-nav sticky top-0 z-[1000] border-b border-stone-100">
-        <div class="max-w-7xl mx-auto px-4 h-24 flex flex-col justify-center">
-            <div class="flex items-center justify-between gap-8">
-                <button onclick="toggleMenu()" class="text-xl p-2"><i class="fas fa-bars-staggered"></i></button>
-                <h1 class="text-xl md:text-3xl font-black tracking-tighter text-center uppercase">HEAVEN'S PRIME BREAD STORE</h1>
-                <button onclick="toggleCart()" class="relative p-3 bg-stone-900 text-white rounded-2xl">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span id="cartCount" class="absolute -top-1 -right-1 bg-[#C5A059] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
-                </button>
-            </div>
+    <header class="sticky top-0 z-[1000] bg-white/95 border-b border-stone-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-4">
+            <button onclick="toggleMenu()" class="text-2xl p-2 font-bold">☰</button>
+            <h1 class="text-lg md:text-2xl font-black tracking-tight text-center uppercase truncate">HEAVEN'S PRIME BREAD STORE</h1>
+            <button onclick="toggleCart()" class="relative p-3 bg-stone-900 text-white rounded-xl">
+                🛍️ <span id="cartCount" class="absolute -top-1 -right-1 bg-[#C5A059] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+            </button>
         </div>
         <div class="max-w-7xl mx-auto px-4 pb-3">
             <div class="relative">
-                <input type="text" id="liveSearch" onkeyup="instantSearch()" placeholder="Search bread..." class="w-full bg-stone-100 rounded-xl py-2 px-10 border-none">
-                <i class="fas fa-search absolute left-3 top-3 text-stone-400"></i>
+                <input type="text" id="liveSearch" onkeyup="instantSearch()" placeholder="Search bread stock instantly..." class="w-full bg-stone-100 rounded-xl py-2 px-4 border-none text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]">
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <section class="mb-12">
-            <div class="relative h-64 rounded-[2rem] overflow-hidden shadow-xl">
-                <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover">
-                    <source src="heaven-prime-advert.mp4" type="video/mp4">
-                </video>
-                <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white p-6 text-center">
-                    <h2 class="text-3xl font-black mb-2 uppercase">Supplying Homes & Supermarkets</h2>
-                    <p class="font-bold">The Best Taste in Ikorodu and Ogijo</p>
-                </div>
-            </div>
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <section class="mb-6 bg-stone-900 text-white p-6 rounded-2xl text-center shadow-lg">
+            <span class="bg-[#C5A059] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Official Supply Hub</span>
+            <h2 class="text-xl font-black mt-2 uppercase tracking-wide">Supplying Ikorodu & Ogijo</h2>
+            <p class="text-xs text-stone-300 mt-1">Premium Fresh Bread Dispatched Daily to Homes & Supermarkets</p>
         </section>
 
         <section id="storeFront">
-            <div class="flex justify-between items-center mb-8">
-                <h3 id="viewTitle" class="text-2xl font-black uppercase">RETAIL BATCH</h3>
-                <span id="modeBadge" class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">ACTIVE</span>
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="viewTitle" class="text-lg font-black uppercase tracking-tight">RETAIL BATCH</h3>
+                <span id="modeBadge" class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold">ONLINE</span>
             </div>
-            <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+            <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
         </section>
 
-        <section class="mt-16 py-12 border-t text-center">
-            <p class="text-[10px] font-bold text-[#C5A059] mb-4 tracking-[0.5em]">IKORODU REVIEWS</p>
-            <p class="text-lg italic font-serif text-stone-500">"Excellent supply for my supermarket at Ogijo. Best bread quality!"</p>
+        <section class="mt-12 py-6 border-t text-center text-xs text-stone-400 italic">
+            "Consistent, high-quality distribution network across Ogijo hubs." — Supermarket Management
         </section>
     </main>
 
-    <div id="loginPortal" class="fixed inset-0 bg-white z-[5000] hidden p-8">
+    <div id="loginPortal" class="fixed inset-0 bg-white z-[5000] hidden p-6">
         <div class="max-w-md mx-auto">
-            <div class="flex justify-between items-center mb-8 border-b pb-4">
-                <h2 class="text-3xl font-black uppercase tracking-tight">Customer Access</h2>
-                <button onclick="closePortals()" class="text-3xl font-bold text-stone-400 hover:text-black">&times;</button>
+            <div class="flex justify-between items-center mb-6 border-b pb-2">
+                <h2 class="text-2xl font-black uppercase">Customer Access</h2>
+                <button onclick="closePortals()" class="text-3xl text-stone-400">&times;</button>
             </div>
-            <div class="space-y-6 bg-stone-50 p-6 rounded-[2rem] border border-stone-100">
+            <div class="space-y-4 bg-stone-50 p-6 rounded-2xl">
                 <div>
-                    <label class="block text-xs font-bold text-stone-400 uppercase mb-2">Registered Phone or Email</label>
-                    <input type="text" id="loginUser" placeholder="e.g., 08033334444" class="w-full p-4 bg-white rounded-xl border border-stone-200">
+                    <label class="block text-xs font-bold text-stone-400 uppercase mb-1">Phone or Email</label>
+                    <input type="text" id="loginUser" class="w-full p-3 bg-white rounded-xl border">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-stone-400 uppercase mb-2">Security Password</label>
-                    <input type="password" id="loginPass" placeholder="••••••••" class="w-full p-4 bg-white rounded-xl border border-stone-200">
+                    <label class="block text-xs font-bold text-stone-400 uppercase mb-1">Password</label>
+                    <input type="password" id="loginPass" class="w-full p-3 bg-white rounded-xl border">
                 </div>
-                <button onclick="verifyCustomerLogin()" class="w-full bg-black text-white py-4 rounded-xl font-black tracking-widest text-sm">LOG IN</button>
+                <button onclick="verifyCustomerLogin()" class="w-full bg-black text-white py-3 rounded-xl font-bold text-sm">LOG IN</button>
             </div>
         </div>
     </div>
 
-    <div id="complaintsPortal" class="fixed inset-0 bg-white z-[5000] hidden p-8">
-        <div class="max-w-md mx-auto space-y-6">
-            <div class="flex justify-between items-center border-b pb-4">
-                <h2 class="text-3xl font-black">Complaints Portal</h2>
+    <div id="complaintsPortal" class="fixed inset-0 bg-white z-[5000] hidden p-6">
+        <div class="max-w-md mx-auto space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h2 class="text-2xl font-black">Complaints Portal</h2>
                 <button onclick="closePortals()" class="text-3xl">&times;</button>
             </div>
-            <input type="text" id="compName" placeholder="Your Name" class="w-full p-4 bg-stone-100 rounded-2xl border-none">
-            <textarea id="compMsg" placeholder="Describe the issue..." class="w-full h-40 p-4 bg-stone-100 rounded-2xl border-none"></textarea>
-            <button onclick="submitComplaint()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-bold">Submit Complaint</button>
+            <input type="text" id="compName" placeholder="Your Name" class="w-full p-3 bg-stone-100 rounded-xl border-none">
+            <textarea id="compMsg" placeholder="Describe the issue..." class="w-full h-32 p-3 bg-stone-100 rounded-xl border-none"></textarea>
+            <button onclick="submitComplaint()" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold">Submit Complaint</button>
         </div>
     </div>
 
-    <div id="adminPanel" class="fixed inset-0 bg-white z-[6000] hidden p-8 overflow-y-auto">
+    <div id="adminPanel" class="fixed inset-0 bg-white z-[6000] hidden p-6 overflow-y-auto">
         <div class="max-w-4xl mx-auto">
-            <div class="flex justify-between items-center mb-12 border-b pb-4">
-                <h2 class="text-4xl font-black uppercase tracking-tight">Admin Center</h2>
-                <button onclick="closeAdmin()" class="text-3xl font-bold text-stone-400 hover:text-black">&times;</button>
+            <div class="flex justify-between items-center mb-6 border-b pb-2">
+                <h2 class="text-2xl font-black uppercase">Admin Center</h2>
+                <button onclick="closeAdmin()" class="text-3xl">&times;</button>
             </div>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="bg-stone-50 p-8 rounded-[2rem] space-y-4 border border-stone-100">
-                    <h4 class="font-bold uppercase text-xs tracking-widest text-stone-400">Upload New Product</h4>
-                    <input type="text" id="pName" placeholder="Bread Name" class="w-full p-4 rounded-xl border border-stone-200">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-stone-50 p-6 rounded-2xl space-y-3">
+                    <h4 class="font-bold uppercase text-xs text-stone-400">Upload New Product</h4>
+                    <input type="text" id="pName" placeholder="Bread Name" class="w-full p-3 rounded-xl border">
                     <div class="flex gap-2">
-                        <input type="number" id="pRetail" placeholder="Retail ₦" class="w-full p-4 rounded-xl border border-stone-200">
-                        <input type="number" id="pWhole" placeholder="Wholesale ₦" class="w-full p-4 rounded-xl border border-stone-200">
+                        <input type="number" id="pRetail" placeholder="Retail ₦" class="w-full p-3 rounded-xl border">
+                        <input type="number" id="pWhole" placeholder="Wholesale ₦" class="w-full p-3 rounded-xl border">
                     </div>
-                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Select Image From Gallery:</p>
+                    <p class="text-[10px] font-bold text-stone-400 uppercase">Gallery Photo (Optional for speed):</p>
                     <input type="file" id="pImgFile" accept="image/*" class="w-full text-xs">
-                    <button onclick="uploadProduct()" class="w-full bg-[#C5A059] text-white py-4 rounded-xl font-bold hover:bg-stone-900 transition-colors">PUBLISH TO STORE</button>
+                    <button onclick="uploadProduct()" class="w-full bg-[#C5A059] text-white py-3 rounded-xl font-bold">PUBLISH TO STORE</button>
                 </div>
-                <div class="space-y-6">
+                <div class="space-y-4">
                     <div>
-                        <h4 class="font-bold uppercase text-xs tracking-widest text-stone-400 mb-3">Current Stock Management</h4>
-                        <div id="adminProductList" class="space-y-2 max-h-[250px] overflow-y-auto pr-2 border p-4 rounded-2xl bg-stone-50/50"></div>
+                        <h4 class="font-bold uppercase text-xs text-stone-400 mb-2">Current Inventory Management</h4>
+                        <div id="adminProductList" class="space-y-1 max-h-[180px] overflow-y-auto bg-stone-50 p-2 rounded-xl"></div>
                     </div>
                     <div>
-                        <h4 class="font-bold uppercase text-xs tracking-widest text-stone-400 mb-3">Edit Delivery Costs</h4>
-                        <div id="adminZones" class="space-y-2"></div>
+                        <h4 class="font-bold uppercase text-xs text-stone-400 mb-2">Edit Delivery Costs</h4>
+                        <div id="adminZones" class="space-y-1"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-[3000] translate-x-full transition-transform duration-500 flex flex-col">
-        <div class="p-8 border-b flex justify-between items-center">
-            <h2 class="text-2xl font-black uppercase">Your Cart</h2>
-            <button onclick="toggleCart()" class="text-xl">CLOSE</button>
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl z-[3000] translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b flex justify-between items-center">
+            <h2 class="text-xl font-black uppercase">Your Cart</h2>
+            <button onclick="toggleCart()" class="text-xl font-bold">CLOSE</button>
         </div>
-        <div id="cartItems" class="flex-1 p-8 overflow-y-auto space-y-4"></div>
-        <div class="p-8 bg-stone-50 space-y-4">
-            <p class="text-[10px] font-bold text-stone-400 tracking-wider uppercase">Delivery Destination</p>
-            <select id="zoneSelect" onchange="runCalculator()" class="w-full p-4 rounded-xl font-bold border-none shadow-sm"></select>
-            <div class="flex justify-between items-center border-t pt-4">
-                <span class="font-bold text-stone-400">Total Payable:</span>
-                <span id="finalPrice" class="text-3xl font-black text-stone-900">₦0</span>
+        <div id="cartItems" class="flex-1 p-6 overflow-y-auto space-y-2 text-sm"></div>
+        <div class="p-6 bg-stone-50 space-y-3">
+            <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Delivery Destination</p>
+            <select id="zoneSelect" onchange="runCalculator()" class="w-full p-3 rounded-xl font-bold bg-white border border-stone-200 text-sm"></select>
+            <div class="flex justify-between items-center border-t pt-3">
+                <span class="font-bold text-stone-400 text-xs">Total Payable:</span>
+                <span id="finalPrice" class="text-2xl font-black text-stone-900">₦0</span>
             </div>
-            <button onclick="sendToWhatsApp()" class="w-full bg-black text-white py-5 rounded-2xl font-black uppercase tracking-widest">ORDER ON WHATSAPP</button>
+            <button onclick="sendToWhatsApp()" class="w-full bg-black text-white py-4 rounded-xl font-black uppercase text-xs tracking-wider">ORDER ON WHATSAPP</button>
         </div>
     </div>
 
     <script>
         let currentMode = 'retail';
-        let db = JSON.parse(localStorage.getItem('hp_elite_v3')) || {
+        let db = JSON.parse(localStorage.getItem('hp_speed_v4')) || {
             products: [
                 { id: 1, name: "Signature Butter Loaf", retail: 1200, wholesale: 1000, img: "" },
                 { id: 2, name: "Premium Sardine Bread", retail: 1600, wholesale: 1400, img: "" }
@@ -194,10 +179,9 @@
 
         window.onload = () => {
             renderStore();
-            setTimeout(() => { 
-                document.getElementById('loadingLayer').style.opacity = '0'; 
-                setTimeout(() => document.getElementById('loadingLayer').style.display = 'none', 500); 
-            }, 500);
+            // Immediate fade out of loading mask to ensure instant interaction
+            document.getElementById('loadingLayer').style.opacity = '0'; 
+            setTimeout(() => document.getElementById('loadingLayer').style.display = 'none', 200); 
         };
 
         function renderStore() {
@@ -209,37 +193,40 @@
             grid.innerHTML = ""; adminZones.innerHTML = ""; adminProductList.innerHTML = "";
             zoneSelect.innerHTML = `<option value="0">Select Neighborhood</option>`;
 
-            // Render Storefront Items
             db.products.forEach(p => {
                 const price = currentMode === 'retail' ? p.retail : p.wholesale;
+                
+                // PERFORMANCE HOOK: If an image exists, render it. If it's blank or failing, render an ultra-lite placeholder instantly.
+                const imageTag = p.img 
+                    ? `<img src="${p.img}" class="w-full h-full object-cover" loading="lazy">` 
+                    : `<div class="w-full h-full bg-stone-100 flex items-center justify-center text-2xl">🍞</div>`;
+
                 grid.innerHTML += `
-                    <div class="premium-card bg-white p-3 rounded-[2rem] shadow-sm border">
-                        <div class="h-40 rounded-2xl bg-stone-100 overflow-hidden mb-4">
-                            <img src="${p.img || 'https://via.placeholder.com/300'}" class="w-full h-full object-cover">
+                    <div class="premium-card bg-white p-2 rounded-2xl shadow-sm border border-stone-100">
+                        <div class="h-32 rounded-xl bg-stone-50 overflow-hidden mb-2 relative">
+                            ${imageTag}
                         </div>
-                        <h4 class="font-bold text-sm mb-1 truncate">${p.name}</h4>
+                        <h4 class="font-bold text-xs mb-1 truncate">${p.name}</h4>
                         <div class="flex justify-between items-center">
-                            <span class="text-xl font-black text-[#C5A059]">₦${price.toLocaleString()}</span>
-                            <button onclick="addToCart(${p.id}, ${price})" class="bg-black text-white w-10 h-10 rounded-xl">+</button>
+                            <span class="text-base font-black text-[#C5A059]">₦${price}</span>
+                            <button onclick="addToCart(${p.id}, ${price})" class="bg-stone-950 text-white w-8 h-8 rounded-lg text-sm font-bold">+</button>
                         </div>
                     </div>`;
             });
 
-            // Render Trash/Delete List inside Admin Dashboard
             db.products.forEach((p, index) => {
                 adminProductList.innerHTML += `
-                    <div class="flex justify-between items-center p-2 bg-white rounded-xl border text-xs mb-1">
-                        <span class="font-bold truncate max-w-[150px]">${p.name}</span>
-                        <button onclick="instantDeleteProduct(${index})" class="text-red-500 p-1"><i class="fas fa-trash-alt"></i></button>
+                    <div class="flex justify-between items-center p-2 bg-white rounded-lg border text-xs mb-1">
+                        <span class="font-bold truncate max-w-[140px]">${p.name}</span>
+                        <button onclick="instantDeleteProduct(${index})" class="text-red-500 font-bold px-2">🗑️</button>
                     </div>`;
             });
 
-            // Render Logistics Configurations
             db.zones.forEach((z, i) => {
                 adminZones.innerHTML += `
-                    <div class="flex justify-between p-2 bg-stone-50 rounded-xl text-xs items-center">
-                        <span>${z.name}</span>
-                        <input type="number" onchange="updateFee(${i}, this.value)" value="${z.fee}" class="w-16 p-1 text-center rounded border">
+                    <div class="flex justify-between p-1.5 bg-white rounded-lg text-xs items-center border border-stone-100">
+                        <span class="truncate">${z.name}</span>
+                        <input type="number" onchange="updateFee(${i}, this.value)" value="${z.fee}" class="w-16 p-1 text-center rounded border bg-stone-50 font-bold">
                     </div>`;
                 zoneSelect.innerHTML += `<option value="${z.fee}">${z.name}</option>`;
             });
@@ -247,18 +234,30 @@
 
         function uploadProduct() {
             const file = document.getElementById('pImgFile').files[0];
-            const name = document.getElementById('pName').value;
+            const name = document.getElementById('pName').value.trim();
             const ret = parseInt(document.getElementById('pRetail').value);
             const who = parseInt(document.getElementById('pWhole').value);
 
-            if(!name || !ret || !who) return alert("Fill all fields!");
+            if(!name || !ret || !who) return alert("Fill out the details!");
 
+            // DDYNAMIC SPEED FIX: Compress heavy gallery uploads automatically into light-weight digital assets
             if(file) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    db.products.unshift({ id: Date.now(), name, retail: ret, wholesale: who, img: reader.result });
-                    saveAndMakeChanges();
-                    closeAdmin();
+                    const img = new Image();
+                    img.src = reader.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        // Force structural resize to protect system memory limits
+                        canvas.width = 300; 
+                        canvas.height = 300;
+                        ctx.drawImage(img, 0, 0, 300, 300);
+                        
+                        db.products.unshift({ id: Date.now(), name, retail: ret, wholesale: who, img: canvas.toDataURL('image/jpeg', 0.6) });
+                        saveAndMakeChanges();
+                        closeAdmin();
+                    };
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -281,7 +280,7 @@
         }
 
         function saveAndMakeChanges() {
-            localStorage.setItem('hp_elite_v3', JSON.stringify(db));
+            localStorage.setItem('hp_speed_v4', JSON.stringify(db));
             renderStore();
         }
 
@@ -295,14 +294,14 @@
         function addToCart(id, price) {
             const p = db.products.find(x => x.id === id);
             cart.push({ name: p.name, price: price });
-            document.getElementById('cartCount').innerText = Math.max(0, cart.length);
+            document.getElementById('cartCount').innerText = cart.length;
             renderCart();
         }
 
         function renderCart() {
             document.getElementById('cartItems').innerHTML = cart.map(item => `
-                <div class="flex justify-between items-center border-b pb-2 text-sm">
-                    <span class="font-bold">${item.name}</span>
+                <div class="flex justify-between items-center border-b border-stone-50 pb-1.5 text-xs">
+                    <span class="font-medium">${item.name}</span>
                     <span class="font-black text-[#C5A059]">₦${item.price}</span>
                 </div>
             `).join('');
@@ -323,10 +322,10 @@
         function verifyCustomerLogin() {
             const pass = document.getElementById('loginPass').value.trim();
             if(pass === "wholesale2026") {
-                alert("Verified Wholesaler Account! Switching layout to Wholesale Trade Prices.");
+                alert("Wholesale Account Verified!");
                 closePortals(); setPriceMode('wholesale');
             } else if(pass !== "") {
-                alert("Welcome back to Heaven's Prime!");
+                alert("Welcome back!");
                 closePortals(); setPriceMode('retail');
             } else { alert("Enter credentials!"); }
         }
@@ -335,12 +334,20 @@
             currentMode = mode;
             document.getElementById('viewTitle').innerText = mode.toUpperCase() + " BATCH";
             renderStore();
+            toggleMenu();
         }
 
         function showPortal(id) { closePortals(); document.getElementById(id).classList.remove('hidden'); toggleMenu(); }
         function closePortals() { document.querySelectorAll('#loginPortal, #complaintsPortal').forEach(el => el.classList.add('hidden')); }
-        function submitComplaint() { alert("Your complaint has been sent to Heaven's Prime management."); closePortals(); }
-        function openAdmin() { if(prompt("ADMIN PIN:") === "2006") { document.getElementById('adminPanel').classList.remove('hidden'); toggleMenu(); } else { alert("Wrong PIN!"); } }
+        function submitComplaint() { alert("Complaint dispatched to Heaven's Prime management."); closePortals(); }
+        function openAdmin() { if(prompt("ADMIN PIN:") === "2006") { document.getElementById('adminPanel').classList.remove('hidden'); toggleMenu(); } else { alert("Access Denied!"); } }
         function closeAdmin() { document.getElementById('adminPanel').classList.add('hidden'); }
         function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('menu-open'); }
-        function toggleCart() { document.getElementById('cartDrawer').classList.toggle('transla                                       
+        function toggleCart() { document.getElementById('cartDrawer').classList.toggle('translate-x-full'); }
+        function instantSearch() {
+            const q = document.getElementById('liveSearch').value.toLowerCase();
+            document.querySelectorAll('.premium-card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none");
+        }
+    </script>
+</body>
+</h                         
