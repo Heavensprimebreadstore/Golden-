@@ -225,7 +225,96 @@
 
         // INIT
         window.onload = () => {
-            renderStore();
+            // UPGRADED RENDER ENGINE WITH DELETE INTERFACE
+function renderStore() {
+    const grid = document.getElementById('productGrid');
+    const adminZones = document.getElementById('adminZones');
+    const zoneSelect = document.getElementById('zoneSelect');
+    const adminProductList = document.getElementById('adminProductList'); // New connection
+    
+    // Clear out containers to handle immediate redraws smoothly
+    grid.innerHTML = ""; 
+    adminZones.innerHTML = ""; 
+    adminProductList.innerHTML = "";
+    zoneSelect.innerHTML = `<option value="0">Select Neighborhood</option>`;
+
+    // 1. Render Products on Customer Front-end
+    db.products.forEach(p => {
+        const price = currentMode === 'retail' ? p.retail : p.wholesale;
+        grid.innerHTML += `
+            <div class="premium-card bg-white p-3 rounded-[2rem] shadow-sm border">
+                <div class="h-40 rounded-2xl bg-stone-100 overflow-hidden mb-4 relative">
+                    <img src="${p.img || 'https://via.placeholder.com/300'}" class="w-full h-full object-cover">
+                    <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-0.5 rounded-full text-[9px] font-black tracking-widest">FRESH</div>
+                </div>
+                <h4 class="font-bold text-sm mb-1 truncate">${p.name}</h4>
+                <div class="flex justify-between items-center">
+                    <span class="text-xl font-black text-[#C5A059]">₦${price.toLocaleString()}</span>
+                    <button onclick="addToCart(${p.id}, ${price})" class="bg-black text-white w-10 h-10 rounded-xl font-bold hover:bg-[#C5A059] transition-colors">+</button>
+                </div>
+            </div>`;
+    });
+
+    // 2. Render Products inside Admin Panel with functional Trash/Delete Action
+    if (db.products.length === 0) {
+        adminProductList.innerHTML = `<p class="text-xs text-stone-400 italic p-2 text-center">No active stock. Use the form to upload bread.</p>`;
+    } else {
+        db.products.forEach((p, index) => {
+            adminProductList.innerHTML += `
+                <div class="flex justify-between items-center p-3 bg-white rounded-xl border border-stone-100 shadow-sm animate-pop-in">
+                    <div class="flex items-center gap-3 truncate">
+                        <img src="${p.img || 'https://via.placeholder.com/300'}" class="w-8 h-8 rounded-lg object-cover bg-stone-100">
+                        <div class="truncate">
+                            <p class="font-bold text-xs text-stone-900 truncate">${p.name}</p>
+                            <p class="text-[10px] text-stone-400 font-medium">R: ₦${p.retail} | W: ₦${p.wholesale}</p>
+                        </div>
+                    </div>
+                    <button onclick="instantDeleteProduct(${index})" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 w-8 h-8 rounded-lg flex items-center justify-center transition-all" title="Delete ${p.name}">
+                        <i class="fas fa-trash-alt text-xs"></i>
+                    </button>
+                </div>`;
+        });
+    }
+
+    // 3. Render Logistics & Delivery Fees
+    db.zones.forEach((z, i) => {
+        adminZones.innerHTML += `
+            <div class="flex justify-between items-center p-3 bg-stone-50 rounded-xl border border-stone-100">
+                <span class="text-xs font-bold text-stone-700">${z.name}</span>
+                <div class="relative">
+                    <span class="absolute left-2 top-2.5 text-xs font-bold text-stone-400">₦</span>
+                    <input type="number" onchange="updateFee(${i}, this.value)" value="${z.fee}" class="w-24 pl-6 pr-2 py-1 bg-white border border-stone-200 text-sm font-black text-stone-800 rounded-lg text-right">
+                </div>
+            </div>`;
+        zoneSelect.innerHTML += `<option value="${z.fee}">${z.name} (₦${z.fee})</option>`;
+    });
+}
+
+// THE INSTANT DELETE ENGINE
+function instantDeleteProduct(index) {
+    const targetName = db.products[index].name;
+    
+    // Security Confirmation dialog
+    if (confirm(`Are you sure you want to delete "${targetName}" from Heaven's Prime storefront?`)) {
+        // Remove item from database array instantly
+        db.products.splice(index, 1);
+        
+        // Sync to local memory and update entire interface immediately 
+        saveAndMakeChanges();
+    }
+}
+
+// Master Save Function to make sure changes stick
+function saveAndMakeChanges() {
+    localStorage.setItem('hp_elite_v3', JSON.stringify(db));
+    renderStore();
+}
+
+// Swap old calls to point directly to master save function
+function updateFee(i, val) {
+    db.zones[i].fee = parseInt(val) || 0;
+    saveAndMakeChanges();
+        }
             setTimeout(() => { document.getElementById('loadingLayer').style.opacity = '0'; 
             setTimeout(() => document.getElementById('loadingLayer').style.display = 'none', 500); }, 800);
         };
