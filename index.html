@@ -9,19 +9,12 @@
     
     <style>
         :root { --choco: #2D1B14; --gold: #C5A059; --cream: #FDFBF7; }
-        body { background-color: var(--cream); color: var(--choco); font-family: 'Inter', system-ui, sans-serif; }
-        
-        /* Premium UI Elements */
+        body { background-color: var(--cream); color: var(--choco); font-family: 'Inter', sans-serif; }
         .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.85); }
         .premium-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .premium-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-        
-        /* Instant Search Animation */
-        .search-focus:focus { width: 110%; background: white; box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.2); }
-        
-        /* Mobile Slide-out Menu */
         #mobileMenu { transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0); }
         .menu-open { transform: translateX(0) !important; }
+        .hidden-section { display: none !important; }
     </style>
 </head>
 <body class="antialiased">
@@ -35,26 +28,54 @@
         <h1 class="mt-6 text-2xl font-black tracking-[0.2em] text-[#2D1B14]">HEAVEN'S PRIME</h1>
     </div>
 
-    <!-- HIGH-END SIDEBAR (JUMIA STYLE) -->
+    <!-- SIDEBAR -->
     <aside id="mobileMenu" class="fixed inset-y-0 left-0 w-[300px] bg-white shadow-2xl -translate-x-full z-[2000] p-8">
         <div class="flex justify-between items-center mb-12">
             <span class="font-black text-xl">NAVIGATION</span>
-            <button onclick="toggleMenu()" class="text-2xl text-stone-400 hover:text-black">×</button>
+            <button onclick="toggleMenu()" class="text-2xl text-stone-400">×</button>
         </div>
         <nav class="space-y-8">
             <div class="group">
                 <p class="text-[10px] font-bold text-stone-400 mb-4 tracking-widest">MARKETPLACE</p>
                 <ul class="space-y-4 font-bold text-lg">
-                    <li class="hover:text-[#C5A059] cursor-pointer" onclick="filterCat('All')">Full Catalog</li>
-                    <li class="hover:text-[#C5A059] cursor-pointer" onclick="filterCat('Wholesale')">Wholesale Deals</li>
+                    <li class="hover:text-[#C5A059] cursor-pointer" onclick="setPriceMode('retail')">Retail Catalog</li>
+                    <li class="hover:text-[#C5A059] cursor-pointer text-orange-600" onclick="setPriceMode('wholesale')">Wholesale Store</li>
                 </ul>
             </div>
             <div class="group">
                 <p class="text-[10px] font-bold text-stone-400 mb-4 tracking-widest">SYSTEMS</p>
                 <ul class="space-y-4 font-bold">
-                    <li class="flex items-center gap-3 cursor-pointer hover:translate-x-2 transition-transform" onclick="openLogin()"><i class="fas fa-user-circle"></i> Customer Login</li>
-                    <li class="flex items-center gap-3 cursor-pointer hover:translate-x-2 transition-transform" onclick="openAdmin()"><i class="fas fa-shield-alt"></i> Admin Dashboard</li>
-                    <li class="flex items-center gap-3 cursor-pointer hover:translate-x-2 transition-transform text-red-500" onclick="openPortal()"><i class="fas fa-comment-dots"></i> Complaints Portal</li>
+                    <li class="cursor-pointer hover:text-[#C5A059]" onclick="show portal <div id="loginPortal" class="fixed inset-0 bg-white z-[5000] hidden p-8 animate-pop-in">
+    <div class="max-w-md mx-auto">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h2 class="text-3xl font-black uppercase tracking-tight">Customer Access</h2>
+            <button onclick="closePortals()" class="text-3xl font-bold text-stone-400 hover:text-black">&times;</button>
+        </div>
+        
+        <div class="space-y-6 bg-stone-50 p-6 rounded-[2rem] border border-stone-100">
+            <div>
+                <label class="block text-xs font-bold text-stone-400 uppercase mb-2">Registered Phone or Email</label>
+                <input type="text" id="loginUser" placeholder="e.g., 08033334444" class="w-full p-4 bg-white rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#C5A059]">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-stone-400 uppercase mb-2">Security Password</label>
+                <input type="password" id="loginPass" placeholder="••••••••" class="w-full p-4 bg-white rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#C5A059]">
+            </div>
+            
+            <div class="pt-2">
+                <button onclick="verifyCustomerLogin()" class="w-full bg-black text-white py-4 rounded-xl font-black tracking-widest text-sm hover:bg-[#C5A059] transition-colors">
+                    LOG IN TO MY ACCOUNT
+                </button>
+            </div>
+            
+            <p class="text-[11px] text-center text-stone-400 font-medium">
+                Supermarkets & Wholesalers: Log in to automatically unlock trade prices for Ikorodu & Ogijo distribution.
+            </p>
+        </div>
+    </div>
+</div>
+                    <li class="cursor-pointer hover:text-[#C5A059]" onclick="showPortal('complaintsPortal')"><i class="fas fa-comment-dots mr-2"></i> Complaints Portal</li>
+                    <li class="cursor-pointer text-orange-600" onclick="openAdmin()"><i class="fas fa-shield-alt mr-2"></i> Admin Dashboard</li>
                 </ul>
             </div>
         </nav>
@@ -62,259 +83,265 @@
 
     <!-- ELITE HEADER -->
     <header class="glass-nav sticky top-0 z-[1000] border-b border-stone-100">
-        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-8">
-            <button onclick="toggleMenu()" class="text-xl p-2 hover:bg-stone-50 rounded-full"><i class="fas fa-bars-staggered"></i></button>
-            
-            <div class="flex-1 max-w-2xl relative group hidden md:block">
-                <input type="text" id="liveSearch" onkeyup="instantSearch()" placeholder="Search our premium bakery stock..." 
-                       class="search-focus w-full bg-stone-100 border-none rounded-2xl py-3 px-12 transition-all duration-300">
-                <i class="fas fa-search absolute left-4 top-4 text-stone-400"></i>
-            </div>
+        <div class="max-w-7xl mx-auto px-4 h-24 flex flex-col justify-center">
+            <div class="flex items-center justify-between gap-8">
+                <button onclick="toggleMenu()" class="text-xl p-2"><i class="fas fa-bars-staggered"></i></button>
+                
+                <h1 class="text-xl md:text-3xl font-black tracking-tighter text-center uppercase">HEAVEN'S PRIME BREAD STORE</h1>
 
-            <div class="flex items-center gap-6">
-                <div class="text-right hidden lg:block">
-                    <p class="text-[10px] font-bold text-stone-400">IKORODU HUB</p>
-                    <p class="font-bold text-sm">08094222602</p>
-                </div>
-                <button onclick="toggleCart()" class="relative p-3 bg-stone-900 text-white rounded-2xl shadow-xl hover:scale-105 transition-transform">
+                <button onclick="toggleCart()" class="relative p-3 bg-stone-900 text-white rounded-2xl">
                     <i class="fas fa-shopping-bag"></i>
                     <span id="cartCount" class="absolute -top-1 -right-1 bg-[#C5A059] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
                 </button>
             </div>
         </div>
+        <!-- Search Bar -->
+        <div class="max-w-7xl mx-auto px-4 pb-3">
+            <div class="relative">
+                <input type="text" id="liveSearch" onkeyup="instantSearch()" placeholder="Search bread..." class="w-full bg-stone-100 rounded-xl py-2 px-10 border-none">
+                <i class="fas fa-search absolute left-3 top-3 text-stone-400"></i>
+            </div>
+        </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
-        <!-- ADVERT VIDEO / PROMO -->
+        <!-- VIDEO ADVERT -->
         <section class="mb-12">
-            <div class="relative h-[400px] rounded-[2rem] overflow-hidden shadow-2xl group">
-                <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700">
+            <div class="relative h-64 rounded-[2rem] overflow-hidden shadow-xl">
+                <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover">
                     <source src="heaven-prime-advert.mp4" type="video/mp4">
                 </video>
-                <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex flex-col justify-center p-12 text-white">
-                    <span class="bg-[#C5A059] w-fit px-4 py-1 rounded-full text-[10px] font-bold mb-4">NOW SUPPLYING COMPANIES</span>
-                    <h2 class="text-5xl font-black mb-4 leading-tight">Freshness You <br>Can Trust.</h2>
-                    <button class="bg-white text-black px-8 py-4 rounded-2xl font-bold w-fit hover:bg-[#C5A059] hover:text-white transition-colors">EXPLORE CATALOG</button>
+                <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white p-6 text-center">
+                    <h2 class="text-3xl font-black mb-2 uppercase">Supplying Homes & Supermarkets</h2>
+                    <p class="font-bold">The Best Taste in Ikorodu and Ogijo</p>
                 </div>
             </div>
         </section>
 
         <!-- PRODUCT ENGINE -->
-        <section>
-            <div class="flex justify-between items-end mb-8">
-                <h3 class="text-3xl font-black">Today's Batch</h3>
-                <div class="flex gap-2">
-                    <button class="px-4 py-2 bg-stone-900 text-white rounded-xl text-xs font-bold">RETAIL</button>
-                    <button class="px-4 py-2 bg-white border border-stone-200 rounded-xl text-xs font-bold">WHOLESALE</button>
-                </div>
+        <section id="storeFront">
+            <div class="flex justify-between items-center mb-8">
+                <h3 id="viewTitle" class="text-2xl font-black uppercase">RETAIL BATCH</h3>
+                <span id="modeBadge" class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">ACTIVE</span>
             </div>
-            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Products injected here -->
-            </div>
+            <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
         </section>
 
-        <!-- TESTIMONIALS (IKORODU) -->
-        <section class="mt-20 py-16 border-y border-stone-100 flex flex-col items-center">
-            <p class="text-[10px] font-bold text-[#C5A059] mb-4 tracking-[0.5em]">TRUSTED BY THOUSANDS</p>
-            <div id="testimonialBox" class="max-w-3xl text-center">
-                <h4 class="text-2xl font-serif italic text-stone-600">"The consistency of Heaven's Prime is unmatched in Ikorodu. Our supermarket shelves are never empty."</h4>
-                <p class="mt-6 font-bold text-stone-400">— Manager, Ogijo Superstores</p>
-            </div>
+        <!-- TESTIMONIALS -->
+        <section class="mt-16 py-12 border-t text-center">
+            <p class="text-[10px] font-bold text-[#C5A059] mb-4 tracking-[0.5em]">IKORODU REVIEWS</p>
+            <p class="text-lg italic font-serif text-stone-500">"Excellent supply for my supermarket at Ogijo. Best bread quality!"</p>
         </section>
     </main>
 
-    <!-- ADMIN COMMAND DASHBOARD (ELITE) -->
-    <div id="adminPanel" class="fixed inset-0 bg-stone-950/90 z-[5000] hidden backdrop-blur-xl p-8 overflow-y-auto">
-        <div class="max-w-4xl mx-auto bg-white rounded-[3rem] p-12 relative shadow-2xl">
-            <button onclick="closeAdmin()" class="absolute top-8 right-8 text-3xl">&times;</button>
-            <h2 class="text-4xl font-black mb-8">Admin Center</h2>
-            
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <h4 class="font-bold text-stone-400 tracking-widest">UPLOAD STOCK</h4>
-                    <input type="text" id="pName" placeholder="Product Title" class="w-full bg-stone-50 border-none p-4 rounded-2xl">
-                    <div class="flex gap-4">
-                        <input type="number" id="pRetail" placeholder="Retail Price" class="w-full bg-stone-50 border-none p-4 rounded-2xl">
-                        <input type="number" id="pWhole" placeholder="Wholesale" class="w-full bg-stone-50 border-none p-4 rounded-2xl">
-                    </div>
-                    <button onclick="createProduct()" class="w-full bg-[#C5A059] text-white py-5 rounded-2xl font-black shadow-lg shadow-[#C5A059]/30">PUBLISH PRODUCT</button>
+    <!-- FUNCTIONAL PORTALS (Login / Complaints) -->
+    <div id="loginPortal" class="fixed inset-0 bg-white z-[5000] hidden p-8">
+        <button onclick="closePortals()" class="text-3xl mb-8">&times; Close</button>
+        <div class="max-w-md mx-auto space-y-6">
+            <h2 class="text-3xl font-black">Customer Login</h2>
+            <input type="text" placeholder="Phone Number / Email" class="w-full p-4 bg-stone-100 rounded-2xl">
+            <input type="password" placeholder="Password" class="w-full p-4 bg-stone-100 rounded-2xl">
+            <button onclick="alert('Login Successful!')" class="w-full bg-black text-white py-4 rounded-2xl font-bold">Access My Account</button>
+        </div>
+    </div>
+
+    <div id="complaintsPortal" class="fixed inset-0 bg-white z-[5000] hidden p-8">
+        <button onclick="closePortals()" class="text-3xl mb-8">&times; Close</button>
+        <div class="max-w-md mx-auto space-y-6">
+            <h2 class="text-3xl font-black">Complaints Portal</h2>
+            <p class="text-stone-400">How can Heaven's Prime improve for you?</p>
+            <input type="text" id="compName" placeholder="Your Name" class="w-full p-4 bg-stone-100 rounded-2xl">
+            <textarea id="compMsg" placeholder="Describe the issue..." class="w-full h-40 p-4 bg-stone-100 rounded-2xl"></textarea>
+            <button onclick="submitComplaint()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-bold">Submit Complaint</button>
+        </div>
+    </div>
+
+    <!-- ADMIN COMMAND DASHBOARD -->
+    <div id="adminPanel" class="fixed inset-0 bg-white z-[6000] hidden p-8 overflow-y-auto">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-12 border-b pb-4">
+            <h2 class="text-4xl font-black uppercase tracking-tight">Admin Center</h2>
+            <button onclick="closeAdmin()" class="text-3xl font-bold text-stone-400 hover:text-black">&times;</button>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="bg-stone-50 p-8 rounded-[2rem] space-y-4 border border-stone-100">
+                <h4 class="font-bold uppercase text-xs tracking-widest text-stone-400">Upload New Product</h4>
+                <input type="text" id="pName" placeholder="Bread Name" class="w-full p-4 rounded-xl border border-stone-200">
+                <div class="flex gap-2">
+                    <input type="number" id="pRetail" placeholder="Retail ₦" class="w-full p-4 rounded-xl border border-stone-200">
+                    <input type="number" id="pWhole" placeholder="Wholesale ₦" class="w-full p-4 rounded-xl border border-stone-200">
                 </div>
-                
-                <div class="space-y-6">
-                    <h4 class="font-bold text-stone-400 tracking-widest">LOGISTICS (IKORODU/OGIJO)</h4>
-                    <div id="adminZones" class="space-y-3 h-[300px] overflow-y-auto pr-4">
-                        <!-- Zones injected here -->
-                    </div>
+                <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Upload Image From Gallery:</p>
+                <input type="file" id="pImgFile" accept="image/*" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-stone-900 file:text-white hover:file:bg-orange-600 cursor-pointer">
+                <button onclick="uploadProduct()" class="w-full bg-[#C5A059] text-white py-4 rounded-xl font-bold tracking-wider hover:bg-stone-900 transition-colors">PUBLISH TO STORE</button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <h4 class="font-bold uppercase text-xs tracking-widest text-stone-400 mb-3">Current Stock Management (Click to Delete)</h4>
+                    <div id="adminProductList" class="space-y-2 max-h-[250px] overflow-y-auto pr-2 border p-4 rounded-2xl bg-stone-50/50">
+                        </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold uppercase text-xs tracking-widest text-stone-400 mb-3">Edit Delivery Costs</h4>
+                    <div id="adminZones" class="space-y-2"></div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
-    <!-- CART SYSTEM (SLIDE OUT) -->
+    <!-- CART & ACCURATE CALCULATOR -->
     <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-[3000] translate-x-full transition-transform duration-500 flex flex-col">
         <div class="p-8 border-b flex justify-between items-center">
-            <h2 class="text-2xl font-black">YOUR SELECTIONS</h2>
+            <h2 class="text-2xl font-black uppercase">Your Cart</h2>
             <button onclick="toggleCart()" class="text-xl">CLOSE</button>
         </div>
-        <div id="cartItems" class="flex-1 p-8 overflow-y-auto space-y-6"></div>
-        <div class="p-8 bg-stone-50 space-y-6">
-            <div>
-                <p class="text-[10px] font-bold text-stone-400 mb-2">DELIVERY DESTINATION</p>
-                <select id="zoneSelect" onchange="calculateGrandTotal()" class="w-full bg-white border-none p-4 rounded-2xl shadow-sm font-bold">
-                    <!-- Loaded via Admin -->
-                </select>
+        <div id="cartItems" class="flex-1 p-8 overflow-y-auto space-y-4"></div>
+        <div class="p-8 bg-stone-50 space-y-4">
+            <select id="zoneSelect" onchange="runCalculator()" class="w-full p-4 rounded-xl font-bold border-none shadow-sm"></select>
+            <div class="flex justify-between items-center border-t pt-4">
+                <span class="font-bold text-stone-400">Total Payable:</span>
+                <span id="finalPrice" class="text-3xl font-black text-stone-900">₦0</span>
             </div>
-            <div class="flex justify-between items-end">
-                <p class="text-stone-400">Total Payable</p>
-                <p id="finalPrice" class="text-3xl font-black">₦0</p>
-            </div>
-            <button onclick="processWhatsApp()" class="w-full bg-black text-white py-6 rounded-2xl font-black text-lg tracking-widest">CONFIRM & WHATSAPP</button>
+            <button onclick="sendToWhatsApp()" class="w-full bg-black text-white py-5 rounded-2xl font-black uppercase tracking-widest">ORDER ON WHATSAPP</button>
         </div>
     </div>
 
     <script>
-        // CORE ENGINE STATE
-        let db = JSON.parse(localStorage.getItem('hp_enterprise_db')) || {
-            products: [
-                { id: 1, name: "Signature Butter Loaf", retail: 1200, wholesale: 1000, img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600" },
-                { id: 2, name: "Premium Sardine Bread", retail: 1600, wholesale: 1400, img: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600" }
-            ],
+        // DATA HUB
+        let currentMode = 'retail';
+        let db = JSON.parse(localStorage.getItem('hp_elite_v3')) || {
+            products: [{ id: 1, name: "Signature Butter Loaf", retail: 1200, wholesale: 1000, img: "" }],
             zones: [
-                { name: "Odogunyan Central", fee: 500 },
+                { name: "Odogunyan / Igbosoro", fee: 500 },
                 { name: "Sabo / Ikorodu Garage", fee: 1000 },
-                { name: "Ogijo / Maya Hub", fee: 1500 },
-                { name: "Agric / Ishawo", fee: 1200 }
+                { name: "Ogijo / Maya Hub", fee: 1500 }
             ]
         };
-
         let cart = [];
 
-        // INITIALIZE APP
-        window.addEventListener('DOMContentLoaded', () => {
-            renderApp();
-            setTimeout(() => {
-                document.getElementById('loadingLayer').style.opacity = '0';
-                setTimeout(() => document.getElementById('loadingLayer').style.display = 'none', 500);
-            }, 800);
-        });
+        // INIT
+        window.onload = () => {
+            renderStore();
+            setTimeout(() => { document.getElementById('loadingLayer').style.opacity = '0'; 
+            setTimeout(() => document.getElementById('loadingLayer').style.display = 'none', 500); }, 800);
+        };
 
-        // RENDER ENGINE
-        function renderApp() {
+        // IMAGE GALLERY UPLOAD LOGIC
+        function uploadProduct() {
+            const file = document.getElementById('pImgFile').files[0];
+            const name = document.getElementById('pName').value;
+            const ret = parseInt(document.getElementById('pRetail').value);
+            const who = parseInt(document.getElementById('pWhole').value);
+
+            if(!name || !ret || !who) return alert("Fill all details!");
+
+            if(file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    db.products.unshift({ id: Date.now(), name, retail: ret, wholesale: who, img: reader.result });
+                    saveAndRender();
+                    closeAdmin();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                db.products.unshift({ id: Date.now(), name, retail: ret, wholesale: who, img: "" });
+                saveAndRender();
+                closeAdmin();
+            }
+        }
+
+        // RETAIL VS WHOLESALE LOGIC
+        function setPriceMode(mode) {
+            currentMode = mode;
+            document.getElementById('viewTitle').innerText = mode.toUpperCase() + " BATCH";
+            renderStore();
+            toggleMenu();
+        }
+
+        function renderStore() {
             const grid = document.getElementById('productGrid');
             const adminZones = document.getElementById('adminZones');
             const zoneSelect = document.getElementById('zoneSelect');
-            
             grid.innerHTML = ""; adminZones.innerHTML = ""; 
-            zoneSelect.innerHTML = `<option value="0">Select Delivery Location</option>`;
+            zoneSelect.innerHTML = `<option value="0">Select Neighborhood</option>`;
 
             db.products.forEach(p => {
+                const price = currentMode === 'retail' ? p.retail : p.wholesale;
                 grid.innerHTML += `
-                    <div class="premium-card bg-white p-4 rounded-[2rem] shadow-sm border border-stone-50">
-                        <div class="relative h-56 rounded-2xl overflow-hidden mb-6">
-                            <img src="${p.img}" class="w-full h-full object-cover">
-                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black tracking-widest">FRESH</div>
+                    <div class="premium-card bg-white p-3 rounded-[2rem] shadow-sm border">
+                        <div class="h-40 rounded-2xl bg-stone-100 overflow-hidden mb-4">
+                            <img src="${p.img || 'https://via.placeholder.com/300'}" class="w-full h-full object-cover">
                         </div>
-                        <h4 class="font-bold text-lg mb-2">${p.name}</h4>
+                        <h4 class="font-bold text-sm mb-1">${p.name}</h4>
                         <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-xs text-stone-400 font-bold uppercase">Retail</p>
-                                <p class="text-xl font-black">₦${p.retail.toLocaleString()}</p>
-                            </div>
-                            <button onclick="addToCart(${p.id})" class="bg-stone-900 text-white w-12 h-12 rounded-2xl hover:bg-[#C5A059] transition-colors shadow-lg">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                            <span class="text-xl font-black text-[#C5A059]">₦${price}</span>
+                            <button onclick="addToCart(${p.id}, ${price})" class="bg-black text-white w-10 h-10 rounded-xl">+</button>
                         </div>
                     </div>`;
             });
 
             db.zones.forEach((z, i) => {
-                adminZones.innerHTML += `
-                    <div class="flex justify-between items-center p-4 bg-stone-50 rounded-2xl">
-                        <span class="font-bold text-sm">${z.name}</span>
-                        <input type="number" onchange="updateFee(${i}, this.value)" value="${z.fee}" class="w-24 bg-white border-none p-2 rounded-xl text-center font-bold">
-                    </div>`;
+                adminZones.innerHTML += `<div class="flex justify-between p-3 bg-stone-50 rounded-xl"><span>${z.name}</span><input type="number" onchange="updateFee(${i}, this.value)" value="${z.fee}" class="w-20 text-center rounded"></div>`;
                 zoneSelect.innerHTML += `<option value="${z.fee}">${z.name}</option>`;
             });
         }
 
-        // CART & LOGISTICS LOGIC
-        function addToCart(id) {
+        // ACCURATE CALCULATOR
+        function runCalculator() {
+            const fee = parseInt(document.getElementById('zoneSelect').value) || 0;
+            const subtotal = cart.reduce((acc, curr) => acc + curr.price, 0);
+            document.getElementById('finalPrice').innerText = `₦${(subtotal + fee).toLocaleString()}`;
+            return { subtotal, fee, total: subtotal + fee };
+        }
+
+        function addToCart(id, price) {
             const p = db.products.find(x => x.id === id);
-            cart.push({...p});
+            cart.push({ name: p.name, price: price });
             document.getElementById('cartCount').innerText = cart.length;
             renderCart();
         }
 
         function renderCart() {
             const container = document.getElementById('cartItems');
-            container.innerHTML = "";
-            cart.forEach((item, i) => {
-                container.innerHTML += `
-                    <div class="flex gap-4 items-center animate-pop-in">
-                        <img src="${item.img}" class="w-16 h-16 rounded-xl object-cover">
-                        <div class="flex-1">
-                            <p class="font-bold">${item.name}</p>
-                            <p class="text-sm font-black text-[#C5A059]">₦${item.retail}</p>
-                        </div>
-                        <button onclick="removeFromCart(${i})" class="text-stone-300">×</button>
-                    </div>`;
-            });
-            calculateGrandTotal();
+            container.innerHTML = cart.map((item, i) => `
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="font-bold text-sm">${item.name}</span>
+                    <span class="font-black">₦${item.price}</span>
+                </div>
+            `).join('');
+            runCalculator();
         }
 
-        function calculateGrandTotal() {
-            const fee = parseInt(document.getElementById('zoneSelect').value) || 0;
-            const subtotal = cart.reduce((acc, curr) => acc + curr.retail, 0);
-            document.getElementById('finalPrice').innerText = `₦${(subtotal + fee).toLocaleString()}`;
+        // WHATSAPP SEND
+        function sendToWhatsApp() {
+            const calc = runCalculator();
+            const zone = document.getElementById('zoneSelect').options[document.getElementById('zoneSelect').selectedIndex].text;
+            if(cart.length === 0 || calc.fee === 0) return alert("Select bread and location!");
+
+            let msg = `*HEAVEN'S PRIME BREAD STORE*%0A_Mode: ${currentMode.toUpperCase()}_%0A----------------------------%0A`;
+            cart.forEach(i => msg += `• ${i.name} (₦${i.price})%0A`);
+            msg += `----------------------------%0A*Subtotal:* ₦${calc.subtotal}%0A*Delivery (${zone}):* ₦${calc.fee}%0A*GRAND TOTAL:* ₦${calc.total}%0A----------------------------%0A_Coverage: Ikorodu & Ogijo_`;
+            window.open(`https://wa.me/2348094222602?text=${msg}`);
         }
 
-        // WHATSAPP GENERATOR
-        function processWhatsApp() {
-            const fee = parseInt(document.getElementById('zoneSelect').value);
-            const zoneName = document.getElementById('zoneSelect').options[document.getElementById('zoneSelect').selectedIndex].text;
-            
-            if(cart.length === 0) return alert("Your cart is empty!");
-            if(fee === 0) return alert("Select a delivery zone in Ikorodu/Ogijo!");
-
-            let subtotal = cart.reduce((acc, curr) => acc + curr.retail, 0);
-            let message = `*HEAVEN'S PRIME MARKETPLACE*%0A_Order Receipt_%0A----------------------------%0A`;
-            cart.forEach(i => message += `• ${i.name} (₦${i.retail})%0A`);
-            message += `----------------------------%0A*Subtotal:* ₦${subtotal}%0A*Delivery (${zoneName}):* ₦${fee}%0A*GRAND TOTAL:* ₦${subtotal + fee}%0A----------------------------%0A_Coverage: Verified Supermarket Supplier_`;
-
-            window.open(`https://wa.me/2348094222602?text=${message}`);
-        }
-
-        // ADMIN ACTIONS
-        function openAdmin() { if(prompt("ENTER MASTER PIN:") === "2006") document.getElementById('adminPanel').style.display = 'block'; }
-        function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
-        
-        function createProduct() {
-            const n = document.getElementById('pName').value;
-            const r = parseInt(document.getElementById('pRetail').value);
-            const w = parseInt(document.getElementById('pWhole').value);
-            if(!n || !r) return;
-
-            db.products.unshift({id: Date.now(), name: n, retail: r, wholesale: w, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600'});
-            localStorage.setItem('hp_enterprise_db', JSON.stringify(db));
-            renderApp();
-            closeAdmin();
-        }
-
-        function updateFee(i, val) {
-            db.zones[i].fee = parseInt(val);
-            localStorage.setItem('hp_enterprise_db', JSON.stringify(db));
-            renderApp();
-        }
-
+        // NAVIGATION & PORTALS
+        function showPortal(id) { document.getElementById(id).classList.remove('hidden'); toggleMenu(); }
+        function closePortals() { document.querySelectorAll('#loginPortal, #complaintsPortal').forEach(el => el.classList.add('hidden')); }
+        function submitComplaint() { alert("Your complaint has been sent to Heaven's Prime management."); closePortals(); }
+        function openAdmin() { if(prompt("ADMIN PIN:") === "2006") document.getElementById('adminPanel').classList.remove('hidden'); }
+        function closeAdmin() { document.getElementById('adminPanel').classList.add('hidden'); }
+        function saveAndRender() { localStorage.setItem('hp_elite_v3', JSON.stringify(db)); renderStore(); }
         function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('menu-open'); }
         function toggleCart() { document.getElementById('cartDrawer').classList.toggle('translate-x-full'); }
         function instantSearch() {
-            const query = document.getElementById('liveSearch').value.toLowerCase();
-            document.querySelectorAll('.premium-card').forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(query) ? "block" : "none";
-            });
+            const q = document.getElementById('liveSearch').value.toLowerCase();
+            document.querySelectorAll('.premium-card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none");
         }
     </script>
 </body>
-        </html>            
-                 
+                </html>            
+                            
